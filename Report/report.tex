@@ -1,0 +1,49 @@
+\documentclass[a4paper,11pt,twoside]{report}
+
+\usepackage{a4wide}
+\usepackage[dutch]{babel}
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage[parfill]{parskip}
+\usepackage[small,bf,hang]{caption}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{xspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{siunitx}
+\graphicspath{ {images/} }
+\lstset{language=Matlab}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\title{Vakoverschrijdend project\large \\
+Voorraadbeheer}
+\author{Xavier Claerhoudt \\
+\texttt{Xavier.Claerhoudt@UGent.be}
+\and Bram De Smet \\
+\texttt{Bram.DeSmet@UGent.be}
+\and Robbe De Vilder \\
+\texttt{Robbe.DeVilder@UGent.be}
+\and Garben Tanghe \\
+\texttt{Garben.Tanghe@UGent.be}
+\and \textit{3\textsuperscript{de} Bachelor Computerwetenschappen}}
+\date{21 mei 2018}
+\maketitle
+
+\cleardoublepage
+
+\pagenumbering{roman}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\input{abstract.tex}
+\input{chapter1.tex}
+\input{chapter2.tex}
+
+\end{document}
