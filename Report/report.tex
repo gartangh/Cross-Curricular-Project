@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt,twoside]{report}
+\documentclass[a4paper,11pt]{report}
 
 \usepackage{a4wide}
 \usepackage[dutch]{babel}
@@ -14,36 +14,43 @@
 \usepackage{amssymb}
 \usepackage{listings}
 \usepackage{siunitx}
+\usepackage{cite}
+
 \graphicspath{ {images/} }
-\lstset{language=Matlab}
 
 \begin{document}
-\pagenumbering{gobble}
 
-\title{Vakoverschrijdend project\large \\
-Voorraadbeheer}
-\author{Xavier Claerhoudt \\
+\title{Vakoverschrijdend project\large\\
+Voorraadbeheer in magazijnen}
+\author{Xavier Claerhoudt\\
 \texttt{Xavier.Claerhoudt@UGent.be}
-\and Bram De Smet \\
+\and Bram De Smet\\
 \texttt{Bram.DeSmet@UGent.be}
-\and Robbe De Vilder \\
+\and Robbe De Vilder\\
 \texttt{Robbe.DeVilder@UGent.be}
-\and Garben Tanghe \\
+\and Garben Tanghe\\
 \texttt{Garben.Tanghe@UGent.be}
 \and \textit{3\textsuperscript{de} Bachelor Computerwetenschappen}}
 \date{21 mei 2018}
 \maketitle
 
-\cleardoublepage
-
 \pagenumbering{roman}
 
-\tableofcontents
+\tableofcontents	
 \listoffigures
 \listoftables
 
 \input{abstract.tex}
-\input{chapter1.tex}
-\input{chapter2.tex}
+
+\pagenumbering{arabic}
+
+\input{drone.tex}
+\input{uwb.tex}
+\input{raspberry.tex}
+\input{decawave.tex}
+\input{lipo.tex}
+
+\bibliographystyle{ieeetr}
+\bibliography{references}
 
 \end{document}
