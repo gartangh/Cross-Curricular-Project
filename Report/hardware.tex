@@ -1,27 +1,36 @@
 \chapter{Hardware}
-\section{Drone}
-Parrot AR drone 2.0 Elite Edition
 
-\section{Ultra Wide Band \& Location Anchors}
+\section{Ultra Wide Band Location Anchors}
 
 
 \section{Controller}
-\subsection{Decawave DWM 1001}
-\SI{100}{\mA}, \SI{2.8}{\V}-\SI{3.6}{\V}, \SI{0.36}{\W}\\
-\SI{0}{\g}
+\subsection{Decawave DWM1001}
+RX Peak Current: \SI{154}{\mA} RX Mean Current: \SI{134}{\mA} TX Peak Current \SI{111}{\mA} TX Mean Current \SI{82}{mA}, \SI{2.8}{\V}-\SI{3.6}{\V}, \SI{0.55}{\W}\\
+\SI{3}{\g}
 
 \subsection{Raspberry Pi Zero W}
-\SI{170}{\mA}, \SI{5.0}{\V}, \SI{0.85}{\W}\\
-+-\SI{9}{\g}
+\SI{150}{\mA}, \SI{5.0}{\V}, \SI{0.75}{\W}\\
+\SI{9}{\g}
 
+\subsection{Lithium-ion Polymeer Batterij en Power Supply}
+De Lithium-ion Polymeer Batterij (LiPo) moet de controller gedurende ongeveer een kwartier van stroom kunnen voorzien.\\
+Een batterij met \SI{150}{\mA\hour} kan gedurende \SI{15}{\minute} zo'n \SI{600}{\mA} aan de controller leveren, de controller heeft ongeveer \SI{350}{\mA} nodig.\\
+\SI{3.7}{\V}\\
+\[\frac{\SI{1.30}{\W}}{\SI{3.7}{\V}}=\SI{350}{\mA}\]
+\[\SI{350}{\mA}*\SI{0.25}{\hour}=\SI{87.5}{\mA\hour}\]
 
-\subsection{Lithium-ion Polymeer Batterij}
-Lithium-ion Polymeer Batterij (LiPo)\\
-\SI{0}{\mA\hour}\\
-\SI{0}{\g}
+\SI{5}{\g}\\
+\\
+LiPo SHIM
 
 \subsection{Totaal}
-Totaal verbruik: +-\SI{1.5}{\W}\\
-Totaal gewicht: +-\SI{50}{\g}
+Totaal verbruik: \SI{1.30}{\W}\\
+Totaal gewicht: \SI{25}{\g}
+
+\section{Drone}
+Parrot AR drone 2.0 Elite Edition
+
+\section{Server}
+
 
 \section{Hardware Setup}

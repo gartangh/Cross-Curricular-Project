@@ -1,6 +1,33 @@
 \chapter{Software}
+\section{Verbinding tussen de Ultra Wide Band Location Anchors en de Decawave}
+Ultra Wide Band (UWB) \cite{alarifi2016ultra}.
+
+\section{Verbinding tussen de Decawave en de Raspberry Pi}
+I\textsuperscript{2}C / TWI
+
+\section{Verbinding tussen de Raspberry Pi en de drone}
+De drone heeft een eigen wifi-netwerk met ESSID adrone2\_xxx en geeft zichzelf vaak het IP-adres 192.168.1.1.
+Als de Raspberry Pi Zero W verbindt met het netwerk van de drone, krijgen het een IP-adres tussen 192.168.1.2 en 192.168.1.5 (met de grenzen inbegrepen) toegekend.
+Indien de drone een ander IP-adres aan zichzelf toegekend heeft, zullen de gebruikers één van de 4 volgende adressen toegekend krijgen.
+Het besturen van de drone gebeurd door het versturen van \textit{AT commands} op UDP poort 5556.
+De frequentie waarmee de commando's moeten doorgestuurd worden ligt rond de \SI{30}{\Hz} of met een tussenperiode van ongeveer \SI{30}{\ms}, om de gebruiker een ervaring van voldoende hoge kwaliteit te voorzien.
+Wanneer er tussen 2 opeenvolgende commando's meer dan \SI{2}{\s} zitten, zal de AR Drone denken dat de verbinding verbroken is.\\
+Informatie over de drone (zoals status, positie, snelheid, snelheid van de rotoren, ...) wordt naar de gebruiker gestuurd op UDP poort 5554.
+De frequentie waarmee deze \textit{navdata} wordt verstuurd ligt tussen de \SI{15}{\Hz} (in demo mode) en \SI{200}{\Hz} in full (debug) mode.\\
+Om belangrijke data, zoals informatie voor de configuratie, te versturen maakt men geen gebruik van UDP, maar van TCP.
+Dit gebeurd via de \textit{control port} 5559.\\
+\\
+\textit{Syntax van AT commands en navdata is terug te vinden in hoofdstuk 6 van ARDrone\_Developer\_Guide.pdf (Project $\to$ ARDrone\_SDK\_2\_0\_1 $\to$ Docs)!}\\
+\textit{Configuratie van de drone is terug te vinden in hoofdstuk 8 van ARDrone\_Developer\_Guide.pdf (Project $\to$ ARDrone\_SDK\_2\_0\_1 $\to$ Docs)!}
+
+\section{Verbinding tussen de Raspberry Pi en de server}
+
+
 \section{Indoor-lokalisatie-algoritmes}
 \subsection{Indoor-lokalisatie-algoritme 1}
 
 
 \subsection{Indoor-lokalisatie-algoritme 2}
+
+
+\section{Full-mesh}

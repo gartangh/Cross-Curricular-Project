@@ -15,6 +15,9 @@
 \usepackage{listings}
 \usepackage{siunitx}
 \usepackage{cite}
+\usepackage{hyperref}
+\usepackage{tocbibind}
+
 
 \graphicspath{ {images/} }
 
@@ -36,7 +39,7 @@ Voorraadbeheer in magazijnen}
 
 \pagenumbering{roman}
 
-\tableofcontents	
+\tableofcontents
 \listoffigures
 \listoftables
 
@@ -44,9 +47,11 @@ Voorraadbeheer in magazijnen}
 
 \pagenumbering{arabic}
 
+\input{planning.tex}
 \input{hardware.tex}
 \input{software.tex}
 
+\renewcommand{\bibname}{Referenties}
 \bibliographystyle{ieeetr}
 \bibliography{references}
 
