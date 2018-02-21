@@ -1,11 +1,13 @@
 \chapter{Software}
-\section{Verbinding tussen de Ultra Wide Band Location Anchors en de Decawave}
+In wat volgt, wordt het ontwerpproces van de software uitvoerig besproken en wordt een verantwoording gegeven van de ontwerpskeuzes.
+
+\section{Verbinding tussen de Ultra Wide Band Location Anchors en de Decawave} \label{sec:uwb_decawave}
 Ultra Wide Band (UWB) \cite{alarifi2016ultra}.
 
-\section{Verbinding tussen de Decawave en de Raspberry Pi}
+\section{Verbinding tussen de Decawave en de Raspberry Pi} \label{sec:decawave_raspberry}
 I\textsuperscript{2}C / TWI
 
-\section{Verbinding tussen de Raspberry Pi en de drone}
+\section{Verbinding tussen de Raspberry Pi en de drone} \label{sec:raspberry_drone}
 De drone heeft een eigen wifi-netwerk met ESSID adrone2\_xxx en geeft zichzelf vaak het IP-adres 192.168.1.1.
 Als de Raspberry Pi Zero W verbindt met het netwerk van de drone, krijgen het een IP-adres tussen 192.168.1.2 en 192.168.1.5 (met de grenzen inbegrepen) toegekend.
 Indien de drone een ander IP-adres aan zichzelf toegekend heeft, zullen de gebruikers één van de 4 volgende adressen toegekend krijgen.
@@ -20,14 +22,14 @@ Dit gebeurd via de \textit{control port} 5559.\\
 \textit{Syntax van AT commands en navdata is terug te vinden in hoofdstuk 6 van ARDrone\_Developer\_Guide.pdf (Project $\to$ ARDrone\_SDK\_2\_0\_1 $\to$ Docs)!}\\
 \textit{Configuratie van de drone is terug te vinden in hoofdstuk 8 van ARDrone\_Developer\_Guide.pdf (Project $\to$ ARDrone\_SDK\_2\_0\_1 $\to$ Docs)!}
 
-\section{Verbinding tussen de Raspberry Pi en de server}
+\section{Verbinding tussen de Raspberry Pi en de server} \label{sec:raspberry_server}
 
 
-\section{Indoor-lokalisatie-algoritmes}
-\subsection{Indoor-lokalisatie-algoritme 1}
+\section{Indoor-lokalisatie-algoritmes} \label{sec:algoritmes}
+\subsection{Indoor-lokalisatie-algoritme 1} \label{sec:algoritme_1}
 
 
-\subsection{Indoor-lokalisatie-algoritme 2}
+\subsection{Indoor-lokalisatie-algoritme 2} \label{sec:algoritme_2}
 
 
-\section{Full-mesh}
+\section{Full-mesh} \label{sec:full_mesh}

@@ -10,3 +10,7 @@
 *.fot
 *.cb
 *.cb2
+*.fdb_latexmk
+*.blg
+
+Report/*.pdf

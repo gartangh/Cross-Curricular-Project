@@ -1,30 +1,25 @@
-\documentclass[a4paper,11pt]{report}
+\documentclass[a4paper,12pt]{report}
 
 \usepackage{a4wide}
 \usepackage[dutch]{babel}
-\usepackage{url}
 \usepackage[utf8]{inputenc}
-\usepackage{float}
-\usepackage[parfill]{parskip}
-\usepackage[small,bf,hang]{caption}
 \usepackage{graphicx}
-\usepackage{subcaption}
-\usepackage{xspace}
+\graphicspath{ {images/} }
+\usepackage[small,bf,hang]{caption}
 \usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{listings}
 \usepackage{siunitx}
 \usepackage{cite}
 \usepackage{hyperref}
 \usepackage{tocbibind}
-
-
-\graphicspath{ {images/} }
+\usepackage{pgfgantt}
 
 \begin{document}
 
-\title{Vakoverschrijdend project\large\\
-Voorraadbeheer in magazijnen}
+\title{
+	{Voorraadbeheer in magazijnen}\\
+	{\large Universiteit Gent}\\
+	{\includegraphics{UGent_Logo.png}}
+}	
 \author{Xavier Claerhoudt\\
 \texttt{Xavier.Claerhoudt@UGent.be}
 \and Bram De Smet\\
@@ -43,16 +38,17 @@ Voorraadbeheer in magazijnen}
 \listoffigures
 \listoftables
 
-\input{abstract.tex}
+\input{chapters/abstract.tex}
 
 \pagenumbering{arabic}
-
-\input{planning.tex}
-\input{hardware.tex}
-\input{software.tex}
+\input{chapters/probleemanalyse.tex}
+\input{chapters/planning.tex}
+\input{chapters/hardware.tex}
+\input{chapters/software.tex}
+\input{chapters/resultaten.tex}
 
 \renewcommand{\bibname}{Referenties}
 \bibliographystyle{ieeetr}
-\bibliography{references}
+\bibliography{chapters/references}
 
 \end{document}
