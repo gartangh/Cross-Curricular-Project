@@ -4,38 +4,33 @@
 De initi\"ele planning is terug te vinden op figuur \ref{fig:initiele_planning}.
 \begin{figure}[p]
 \centering
-\begin{ganttchart}[vgrid, y unit chart=0.75cm]{1}{13}
+\begin{ganttchart}[vgrid, y unit chart=0.75cm, bar/.append style={fill=White, rounded corners=2pt}, milestone/.append style={fill=White}]{1}{13}
 	\gantttitlelist{1,...,13}{1}\\
 
 	\ganttgroup{Hardware}{1}{5}\\
-	\ganttbar[name=uitzoeken_bestellen, bar/.append style={fill=black}]{Uitzoeken en bestellen}{1}{2}\\
-	\ganttlinkedbar[name=power_supply, bar/.append style={fill=blue}]{Power supply}{3}{3}\\
-	\ganttbar[name=raspberry_decawave]{Raspberry en Decawave verbinden}{5}{5}\\
-	\ganttbar[name=controller_drone]{Controller aan drone bevestigen}{5}{5}\\
+	\ganttbar[name=uitzoeken_bestellen]{Uitzoeken en bestellen}{1}{2}\\
+	\ganttbar[name=raspberry_decawave, bar/.append style={fill=JungleGreen}]{Raspberry en Decawave verbinden}{4}{4}\\
+	\ganttbar[name=power_supply, bar/.append style={fill=RedOrange}]{Power supply}{5}{5}\\
+	\ganttbar[name=controller_drone, bar/.append style={fill=RedOrange}]{Controller aan drone bevestigen}{5}{5}\\
 
 	\ganttgroup{Software}{3}{12}\\
-	\ganttbar[name=uwb]{UWB}{3}{4}\\
-	\ganttbar[name=aansturen_drone, bar/.append style={fill=blue}]{Aansturing drone}{4}{6}\\
-	\ganttbar[name=i2c_twi]{I\textsuperscript{2}C / TWI}{6}{9}\\
-	\ganttbar[name=connectie_server, bar/.append style={fill=blue}]{Connectie met server}{7}{9}\\
-	\ganttlinkedbar[name=full_mesh_collision_detection, bar/.append style={fill=black}]{Full-mesh en collision detection}{10}{12}\\
+	\ganttbar[name=uwb, bar/.append style={fill=Yellow}]{UWB}{3}{4}\\
+	\ganttlinkedbar[name=i2c_twi, bar/.append style={fill=Yellow}]{I\textsuperscript{2}C / TWI}{6}{8}\\
+	\ganttbar[name=aansturen_drone, bar/.append style={fill=Fuchsia}]{Aansturing drone}{3}{5}\\
+	\ganttlinkedbar[name=connectie_server, bar/.append style={fill=Fuchsia}]{Connectie met server}{6}{8}\\
+	\ganttbar[name=full_mesh, bar/.append style={fill=Sepia}]{Full-mesh}{9}{12}\\
+	\ganttbar[name=collision_detection, bar/.append style={fill=Salmon}]{Collision detection}{9}{12}\\
 
 	\ganttgroup{Presentaties en verslag}{1}{13}\\
-	\ganttmilestone[name=presentatie_1]{Presentatie 1}{4}\\
-	\ganttlinkedmilestone[name=presentatie_2]{Presentatie 2}{8}\\
-	\ganttlinkedmilestone[name=verslag]{Indienen verslag}{12}\\
+	\ganttmilestone[name=presentatie_1, milestone/.append style={fill=JungleGreen}]{Presentatie 1}{4}\\
+	\ganttlinkedmilestone[name=presentatie_2, milestone/.append style={fill=RedOrange}]{Presentatie 2}{8}\\
+	\ganttlinkedmilestone[name=verslag]{Verslag}{12}\\
 	\ganttlinkedmilestone[name=eindpresentatie]{Eindpresentatie}{13}
 
 	\ganttlink[link mid=.1]{uitzoeken_bestellen}{uwb}
-	\ganttlink[link mid=.1]{power_supply}{aansturen_drone}
-	\ganttlink[link mid=.167]{uwb}{raspberry_decawave}
-	\ganttlink[link mid=.25]{uwb}{controller_drone}
-	\ganttlink[link mid=.25]{aansturen_drone}{connectie_server}
-	\ganttlink[link mid=.3]{raspberry_decawave}{i2c_twi}
-	\ganttlink[link mid=.125]{controller_drone}{i2c_twi}
-	\ganttlink[link mid=.75]{i2c_twi}{full_mesh_collision_detection}
+	\ganttlink[link mid=.0714]{uitzoeken_bestellen}{aansturen_drone}
 \end{ganttchart}
-\caption[Gantt chart van de initi\"ele planning.]{Gantt chart van de initi\"ele planning. (Blauw staat voor Garben en Xavier, wit staat voor Bram en Robbe en zwart staat voor iedereen.)}
+\caption[Gantt chart van de initi\"ele planning.]{Gantt chart van de initi\"ele planning.}
 \label{fig:initiele_planning}
 \end{figure}
 
@@ -43,30 +38,24 @@ De initi\"ele planning is terug te vinden op figuur \ref{fig:initiele_planning}.
 Wie doet wat? Dit kun je terug vinden in tabel \ref{tab:taakverdeling}.
 \begin{table}[p]
 \centering
-\begin{tabular}{ |c|c| }
-\hline
-Wat? & Wie?\\ [.5ex]
-\hline\hline
-Uitzoeken en bestellen & Iedereen\\
-\hline
-Power supply & Garben en Xavier\\
-\hline
-Raspberry en Decawave verbinden & Bram en Robbe\\
-\hline
-Controller aan drone bevestigen & Bram en Robbe\\
-\hline
-UWB & Bram en Robbe\\
-\hline
-Aansturing drone & Garben en Xavier\\
-\hline
-I\textsuperscript{2}C / TWI & Bram en Robbe\\
-\hline
-Connectie met server & Garben en Xavier\\
-\hline
-Full-mesh en collision detection & Iedereen\\
-\hline
+\begin{tabular}{ |c|c| } \hline
+Wat? & Wie? \\ [.5ex] \hline\hline
+Uitzoeken en bestellen & Iedereen (WIT) \\ \hline
+Raspberry en Decawave verbinden & Bram en Garben (JUNGLEGROEN) \\ \hline
+Power supply & Robbe en Xavier (ROODORANJE) \\ \hline
+Controller aan drone bevestigen & Robbe en Xavier (ROODORANJE) \\ \hline
+UWB & Bram en Xavier (GEEL) \\ \hline
+I\textsuperscript{2}C / TWI & Bram en Xavier (GEEL) \\ \hline
+Aansturing drone & Garben en Robbe (FUCHSIA) \\ \hline
+Connectie met server & Garben en Robbe (FUCHSIA) \\ \hline
+Full-mesh &  Garben en Xavier (SEPIA) \\ \hline
+Collision detection &  Bram en Robbe (ZALM) \\ \hline
+Presentatie 1 & Bram en Garben (JUNGLEGROEN) \\ \hline
+Presentatie 2 & Robbe en Xavier (ROODORANJE) \\ \hline
+Verslag & Iedereen (WIT) \\ \hline
+Eindpresentatie & Iedereen (WIT) \\ \hline
 \end{tabular}
-\caption{Taakverdeling}
+\caption[Taakverdeling]{Taakverdeling.}
 \label{tab:taakverdeling}
 \end{table}
 
@@ -74,38 +63,12 @@ Full-mesh en collision detection & Iedereen\\
 De finale planning is terug te vinden op figuur \ref{fig:finale_planning}.
 \begin{figure}[p]
 \centering
-\begin{ganttchart}[vgrid, y unit chart=0.75cm]{1}{13}
+\begin{ganttchart}[vgrid, y unit chart=0.75cm, bar/.append style={fill=white, rounded corners=2pt}]{1}{13}
 	\gantttitlelist{1,...,13}{1}\\
 
-	\ganttgroup{Hardware}{1}{5}\\
-	\ganttbar[name=uitzoeken_bestellen, bar/.append style={fill=black}]{Uitzoeken en bestellen}{1}{2}\\
-	\ganttlinkedbar[name=power_supply, bar/.append style={fill=blue}]{Power supply}{3}{3}\\
-	\ganttbar[name=raspberry_decawave]{Raspberry en Decawave verbinden}{5}{5}\\
-	\ganttbar[name=controller_drone]{Controller aan drone bevestigen}{5}{5}\\
 
-	\ganttgroup{Software}{3}{12}\\
-	\ganttbar[name=uwb]{UWB}{3}{4}\\
-	\ganttbar[name=aansturen_drone, bar/.append style={fill=blue}]{Aansturing drone}{4}{6}\\
-	\ganttbar[name=i2c_twi]{I\textsuperscript{2}C / TWI}{6}{9}\\
-	\ganttbar[name=connectie_server, bar/.append style={fill=blue}]{Connectie met server}{7}{9}\\
-	\ganttlinkedbar[name=full_mesh_collision_detection, bar/.append style={fill=black}]{Full-mesh en collision detection}{10}{12}\\
-
-	\ganttgroup{Presentaties en verslag}{1}{13}\\
-	\ganttmilestone[name=presentatie_1]{Presentatie 1}{4}\\
-	\ganttlinkedmilestone[name=presentatie_2]{Presentatie 2}{8}\\
-	\ganttlinkedmilestone[name=verslag]{Indienen verslag}{12}\\
-	\ganttlinkedmilestone[name=eindpresentatie]{Eindpresentatie}{13}
-
-	\ganttlink[link mid=.1]{uitzoeken_bestellen}{uwb}
-	\ganttlink[link mid=.1]{power_supply}{aansturen_drone}
-	\ganttlink[link mid=.167]{uwb}{raspberry_decawave}
-	\ganttlink[link mid=.25]{uwb}{controller_drone}
-	\ganttlink[link mid=.25]{aansturen_drone}{connectie_server}
-	\ganttlink[link mid=.3]{raspberry_decawave}{i2c_twi}
-	\ganttlink[link mid=.125]{controller_drone}{i2c_twi}
-	\ganttlink[link mid=.75]{i2c_twi}{full_mesh_collision_detection}
 \end{ganttchart}
-\caption[Gantt chart van de finale planning.]{Gantt chart van de finale planning. (Blauw staat voor Garben en Xavier, wit staat voor Bram en Robbe en zwart staat voor iedereen.)}
+\caption[Gantt chart van de finale planning.]{Gantt chart van de finale planning.}
 \label{fig:finale_planning}
 \end{figure}\\
 De grootste verschillen tussen de initi\"ele planning en de finale planning zijn ...\\
