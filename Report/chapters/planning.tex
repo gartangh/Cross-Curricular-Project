@@ -8,27 +8,22 @@ De initi\"ele planning is terug te vinden op figuur \ref{fig:initiele_planning}.
 	\gantttitlelist{1,...,13}{1}\\
 
 	\ganttgroup{Hardware}{1}{5}\\
-	\ganttbar[name=uitzoeken_bestellen]{Uitzoeken en bestellen}{1}{2}\\
-	\ganttbar[name=raspberry_decawave, bar/.append style={fill=JungleGreen}]{Raspberry en Decawave verbinden}{4}{4}\\
-	\ganttbar[name=power_supply, bar/.append style={fill=RedOrange}]{Power supply}{5}{5}\\
-	\ganttbar[name=controller_drone, bar/.append style={fill=RedOrange}]{Controller aan drone bevestigen}{5}{5}\\
+	\ganttbar{Uitzoeken en bestellen}{1}{2}\\
+	\ganttbar[bar/.append style={fill=JungleGreen}]{Raspberry en DecaWave verbinden}{5}{5}\\
+	\ganttbar[bar/.append style={fill=RedOrange}]{Power supply}{5}{5}\\
+	\ganttbar[bar/.append style={fill=RedOrange}]{Controller aan drone bevestigen}{5}{5}\\
 
 	\ganttgroup{Software}{3}{12}\\
-	\ganttbar[name=uwb, bar/.append style={fill=Yellow}]{UWB}{3}{4}\\
-	\ganttlinkedbar[name=i2c_twi, bar/.append style={fill=Yellow}]{I\textsuperscript{2}C / TWI}{6}{8}\\
-	\ganttbar[name=aansturen_drone, bar/.append style={fill=Fuchsia}]{Aansturing drone}{3}{5}\\
-	\ganttlinkedbar[name=connectie_server, bar/.append style={fill=Fuchsia}]{Connectie met server}{6}{8}\\
-	\ganttbar[name=full_mesh, bar/.append style={fill=Sepia}]{Full-mesh}{9}{12}\\
-	\ganttbar[name=collision_detection, bar/.append style={fill=Salmon}]{Collision detection}{9}{12}\\
+	\ganttbar[bar/.append style={fill=Yellow}]{UWB}{3}{4}\\
+	\ganttbar[bar/.append style={fill=Fuchsia}]{Connectie met server}{5}{6}\\
+	\ganttbar[bar/.append style={fill=Fuchsia}]{Aansturing drone}{4}{9}\\
+	\ganttbar{Full-mesh}{10}{12}\\
 
 	\ganttgroup{Presentaties en verslag}{1}{13}\\
-	\ganttmilestone[name=presentatie_1, milestone/.append style={fill=JungleGreen}]{Presentatie 1}{4}\\
-	\ganttlinkedmilestone[name=presentatie_2, milestone/.append style={fill=RedOrange}]{Presentatie 2}{8}\\
-	\ganttlinkedmilestone[name=verslag]{Verslag}{12}\\
-	\ganttlinkedmilestone[name=eindpresentatie]{Eindpresentatie}{13}
-
-	\ganttlink[link mid=.1]{uitzoeken_bestellen}{uwb}
-	\ganttlink[link mid=.0714]{uitzoeken_bestellen}{aansturen_drone}
+	\ganttmilestone[milestone/.append style={fill=JungleGreen}]{Presentatie 1}{4}\\
+	\ganttlinkedmilestone[milestone/.append style={fill=RedOrange}]{Presentatie 2}{8}\\
+	\ganttlinkedmilestone{Verslag}{12}\\
+	\ganttlinkedmilestone{Eindpresentatie}{13}
 \end{ganttchart}
 \caption[Gantt chart van de initi\"ele planning.]{Gantt chart van de initi\"ele planning.}
 \label{fig:initiele_planning}
