@@ -1,0 +1,14 @@
+set up node.js:	
+	sudo apt-get remove nodered -y
+	sudo apt-get remove nodejs nodejs-legacy -y
+	
+	sudo curl -sL https://deb.nodesource.com/setup_5.x | sudo bash -
+	sudo apt-get install nodejs -y
+
+install AR.Drone package
+	cd Code/Drone_Control
+	sudo npm install git://github.com/felixge/node-ar-drone.git
+	sudo npm install ar-drone
+	
+run the script:
+	sudo node app.js

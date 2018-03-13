@@ -39,6 +39,10 @@ change the bottom of the file so it looks like this:
         psk="WelcomeATimec"
         key_mgmt=WPA-PSK
 	}
+	
+	network={
+		ssid="ardrone2_001407"
+	}
 confirm with CTRL+X.
 (you can add more networks yourself)
 

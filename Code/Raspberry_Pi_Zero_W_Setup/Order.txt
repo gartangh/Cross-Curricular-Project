@@ -4,3 +4,4 @@ Order of setup:
 
 	Internet
 	Git
+	Drone_Control
