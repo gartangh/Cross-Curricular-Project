@@ -9,6 +9,7 @@ install AR.Drone package
 	cd Code/Drone_Control
 	sudo npm install git://github.com/felixge/node-ar-drone.git
 	sudo npm install ar-drone
+	sudo npm install ardrone-autonomy
 	
 run the script:
 	sudo node app.js

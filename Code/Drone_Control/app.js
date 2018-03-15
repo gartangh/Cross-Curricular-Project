@@ -12,7 +12,8 @@ mission.run(function (err, result) {
         console.trace("Oops, something bad happened: %s", err.message);
         mission.client().stop();
         mission.client().land();
-    } else {
+    }
+    else {
         console.log("Mission success!");
         process.exit(0);
     }
