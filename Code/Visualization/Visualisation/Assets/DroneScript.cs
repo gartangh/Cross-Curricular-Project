@@ -1,12 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using uPLibrary.Networking.M2Mqtt;
 
 public class DroneScript : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
+    public MqttClient client;
+    // Use this for initialization
+    void Start() {
+        // port is default port dus moet niet specified worden
+        // 157.193.214.115 port 1883
+        client = new MqttClient("157.193.214.115");
+        client.Subscribe(new string[] { "vopposition" }, new byte[] { 0 });
+        client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
+         // dan loop starten (loop_start)
+         //
 	}
 	
 	// Update is called once per frame
@@ -36,4 +41,5 @@ public class DroneScript : MonoBehaviour {
         Vector3 coords = new Vector3(x, y, z);
         return coords;
     }
+
 }
