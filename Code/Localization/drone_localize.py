@@ -5,8 +5,6 @@ import syslog
 import time, sys, math
 import paho.mqtt.client as mqtt
 
-#from pypozyx import (PozyxSerial, POZYX_RANGE_PROTOCOL_FAST, POZYX_RANGE_PROTOCOL_PRECISION,
-#			SingleRegister, DeviceRange, POZYX_SUCCESS, POZYX_FAILURE, get_first_pozyx_serial_port)
 from pypozyx import *
 
 from mqtt_client import * 
@@ -56,13 +54,17 @@ if __name__ == "__main__":
                 ts = str(int(int(ts) + int(start)))
                 
                 mqttc.publish_range(id,ts,dist)
-            else:
-                error_code = SingleRegister()
-                status = pozyx.getErrorCode(error_code)
-                if status == POZYX_SUCCESS:
-                    print "ERROR Ranging, local %s" % pozyx.getErrorMessage(error_code)
-                else:
-                    print "ERROR Ranging, couldn't retrieve local error"    
+#            else:
+#                error_code = SingleRegister()
+#                status = pozyx.getErrorCode(error_code)
+#                if status == POZYX_SUCCESS:
+#                    print "ERROR Ranging, local %s" % pozyx.getErrorMessage(error_code)
+#                else:
+#                    print "ERROR Ranging, couldn't retrieve local error"
+
+        point = [2000, 3500, 1000]
+        optimus.fly(point)
+        
      except KeyboardInterrupt:
          mqttc.stop()
          sys.exit()
