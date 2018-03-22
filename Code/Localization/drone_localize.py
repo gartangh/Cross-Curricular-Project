@@ -29,6 +29,7 @@ if __name__ == "__main__":
 
     #destination_ids = [0x6038] #Test anker
     destination_ids = [0x6F10,0x6F2F,0x607B,0x6F2E] #Magazijn
+    point = [0,0,1000]
 
     while True:
      try:
@@ -62,8 +63,10 @@ if __name__ == "__main__":
 #                else:
 #                    print "ERROR Ranging, couldn't retrieve local error"
 
-        point = [2000, 3500, 1000]
-        optimus.fly(point)
+#	mqttc.publish("heading",str(optimus.euler.heading))
+	
+	if optimus.position.x != 0:
+	        optimus.fly(point)
         
      except KeyboardInterrupt:
          mqttc.stop()
