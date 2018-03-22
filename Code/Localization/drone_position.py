@@ -34,7 +34,7 @@ class DronePosition(object): #Container for the drone position and direction
                         Z = self.position.z
 
                         #bereken verschil van de richting van de drone en de richting van het volgende coordinaat
-                	angle_fly = self.euler.heading - self.angle(x,y,z)
+                	angle_fly = float(self.euler.heading) - self.angle(x,y,z)
         		distance_fly = self.distance_horizontal(x,y,z)
         		
         		#Draai dit verschil
@@ -44,15 +44,15 @@ class DronePosition(object): #Container for the drone position and direction
                         return str(angle_fly)+" "+str(distance_fly) #angle distance
 
 	def distance_horizontal(self,x,y,z):
-                X = self.position.x
-                Y = self.position.y
-		return math.sqrt((y-Y)**2 + (x-X)**2)
+                X = float(self.position.x)
+                Y = float(self.position.y)
+		return math.sqrt((float(y)-Y)**2 + (float(x)-X)**2)
 
 	def angle(self, x,y,z):
-                X = self.position.x
-                Y = self.position.y
+                X = float(self.position.x)
+                Y = float(self.position.y)
 
-                angle = float(math.atan2(x-X,Y-y)*180/math.pi)
+                angle = float(math.atan2(float(x)-X,Y-float(y))*180/math.pi)
 
                 if angle > 180:
                         angle = angle - 360
