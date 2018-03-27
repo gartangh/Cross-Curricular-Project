@@ -60,7 +60,9 @@ public class DroneScript : MonoBehaviour {
 
     Vector3 GetCoords (string position)
     {
+        // coords are seperated by a comma and decimals are indicated by a dot
         string[] coord = position.Split(',');
+        // unity uses comma's instead of dot's for decimals
         coord[0] = coord[0].Replace('.', ',');
         coord[1] = coord[1].Replace('.', ',');
         coord[2] = coord[2].Replace('.', ',');
