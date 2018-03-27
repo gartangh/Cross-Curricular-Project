@@ -19,6 +19,9 @@ if __name__ == "__main__":
         quit()
         
     pozyx = PozyxSerial(serial_port)
+    remote_id = None
+#    pozyx.remote_id = remote_id # Uses another tag to range
+
     mqttc = MyMQTTClass("vop-tag")
     mqttc.start()
 
@@ -27,13 +30,13 @@ if __name__ == "__main__":
     last_time = now
     first = 1    
 
-    #destination_ids = [0x6038] #Test anker
+    #destination_ids = [0x6038] #Test anker    
     destination_ids = [0x6F10,0x6F2F,0x607B,0x6F2E] #Magazijn
     point = [0,0,1000]
 
     while True:
      try:
-	pozyx.getEulerAngles_deg(optimus.euler)
+	pozyx.getEulerAngles_deg(optimus.euler,remote_id)
 	print str(optimus)
         for dest_id in destination_ids:
             now = time.time()
@@ -42,7 +45,7 @@ if __name__ == "__main__":
                 last_time = now
             
             device_range = DeviceRange()
-            status = pozyx.doRanging(dest_id,device_range)
+            status = pozyx.doRanging(dest_id,device_range,remote_id)
             
             if status == POZYX_SUCCESS:
                 id = str(hex(dest_id))[2:].upper()
