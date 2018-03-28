@@ -1433,7 +1433,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1567942479}
-        m_MethodName: addWayPoint
+        m_MethodName: addDynamicWayPoint
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1584,18 +1584,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1567942479}
-        m_MethodName: DrawAllLines
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1567942479}
-        m_MethodName: WriteWaypointsToFile
+        m_MethodName: takeoff
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2061,7 +2050,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1296038346}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 2.5, y: 3, z: -5.4}
+  m_LocalPosition: {x: 2.5, y: 5.85, z: -5.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2300,7 +2289,6 @@ MonoBehaviour:
   x: 0
   y: 0
   z: 0
-  coldetected: 0
   WayPoint: {fileID: 1021143657320656, guid: a2c72061f88c31b42a8194b142072300, type: 2}
   errorstyle:
     m_Name: 
