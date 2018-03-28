@@ -36,7 +36,7 @@ public class WayPointsFromFileScript : MonoBehaviour {
         // display error
         if (Mathf.FloorToInt(errordisplaytime)>0)
         {
-            GUI.Label(new Rect(50, 50, 100, 25), "Impossible!", errorstyle);
+            GUI.Label(new Rect(50, 50, 100, 25), "Drone can't fly there!", errorstyle);
         }
     }
 
@@ -137,7 +137,7 @@ public class WayPointsFromFileScript : MonoBehaviour {
         if (Physics.CheckSphere(coords, col.radius))
         {
             //if there is already something there
-            errordisplaytime = 5f;
+            errordisplaytime = 2f;
         }else
         {
             errordisplaytime = 0f;
