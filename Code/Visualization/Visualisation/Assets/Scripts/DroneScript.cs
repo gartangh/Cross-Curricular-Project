@@ -10,9 +10,9 @@ public class DroneScript : MonoBehaviour {
     //ip-address of mqtt server
     public static IPAddress ip = IPAddress.Parse("157.193.214.115");
     //placeholder for updated position, height & orientation
-    static string position = "0,0";
+    static string position = "29000,1000";
     static string height = "1000";
-    static string orientation = "0,0,0,0";
+    static string orientation = "0,0,0";
 
     // message handling code
     static void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
@@ -73,14 +73,14 @@ public class DroneScript : MonoBehaviour {
         return coords;
     }
 
+    /**takes angles sent by drone and changes the rotation of the drone in unity*/
     Quaternion GetOrientation()
     {
         string[] angles = orientation.Split(',');
-        float x = float.Parse(angles[0].Replace('.', ','));
-        float y = float.Parse(angles[1].Replace('.', ','));
-        float z = float.Parse(angles[2].Replace('.', ','));
-        float w = float.Parse(angles[3].Replace('.', ','));
-        Quaternion quat = new Quaternion(x, -y, z, w);
+        float heading = float.Parse(angles[0].Replace('.', ','));
+        float roll = float.Parse(angles[1].Replace('.', ','));
+        float pitch = float.Parse(angles[2].Replace('.', ','));
+        Quaternion quat = Quaternion.Euler(roll, heading, pitch);
         return quat;
     }
 }
