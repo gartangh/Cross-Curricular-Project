@@ -7,69 +7,80 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 
 public class DroneScript : MonoBehaviour {
     public MqttClient client;
+    //ip-address of mqtt server
     public static IPAddress ip = IPAddress.Parse("157.193.214.115");
-    static string position = "0,0,0";
+    //placeholder for updated position, height & orientation
+    static string position = "0,0";
+    static string height = "1000";
+    static string orientation = "0,0,0,0";
 
     // message handling code
     static void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
     {
-        position = Encoding.UTF8.GetString(e.Message);
+        if (e.Topic.Equals("vopposition"))
+        {
+            position = Encoding.UTF8.GetString(e.Message);
+        }
+        else if (e.Topic.Equals("vopheight"))
+        {
+            height = Encoding.UTF8.GetString(e.Message);
+        }
+        else if (e.Topic.Equals("voporientation"))
+        {
+            orientation = Encoding.UTF8.GetString(e.Message);
+        }
     }
 
     // Use this for initialization
     void Start() {
-        // port is default port dus moet niet specified worden
+        // port is default port so doesnt have to be specified
         // 157.193.214.115 port 1883
         client = new MqttClient(ip);
         //register to message received
         client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
         client.Connect(Guid.NewGuid().ToString());
-        // subscribe to vopposition topic
-        client.Subscribe(new string[] { "vopposition" }, new byte[] { 0 });
+        // subscribe to vopposition, vopheight and voporientation topic
+        client.Subscribe(new string[] { "vopposition", "vopheight", "voporientation" }, new byte[] { 0, 0, 0 });
     }
 
     // Update is called once per frame
     void Update () {
-        Vector3 coords = GetCoords(position);
-        Vector3 goodcoords = TransformCoordinates(coords);
-        goodcoords.y = 1;
-        transform.position = goodcoords;
+        Vector3 coords = GetCoords();
+        Vector3 unityCoordinates = TransformCoordinates(coords);
+        transform.position = unityCoordinates;
+        Quaternion rotation = GetOrientation();
+        transform.rotation = rotation;
 	}
 
-    // Transform coordinates to Unity coordinates
-    Vector3 TransformCoordinates (Vector3 coords)
+    /**Transforms coordinates from the MQTT coordinate system to unity coordinate system */
+    Vector3 TransformCoordinates(Vector3 coords)
     {
         float temp = coords.y;
-        coords.x /= 1000;
-        coords.y = coords.z / 1000;
-        coords.z = -temp / 1000;
+        coords.y = coords.z;
+        coords.z = -temp;
         return coords;
     }
 
-    //get coordinates from a file
-    Vector3 GetCoordsFromFile (string fileloc)
-    {
-        string position = System.IO.File.ReadAllText(fileloc);
-        string[] test = position.Split(',');
-        float x = float.Parse(test[0]);
-        float y = float.Parse(test[1]);
-        float z = float.Parse(test[2]);
-        Vector3 coords = new Vector3(x, y, z);
-        return coords;
-    }
-
-    Vector3 GetCoords (string position)
+    Vector3 GetCoords ()
     {
         // coords are seperated by a comma and decimals are indicated by a dot
         string[] coord = position.Split(',');
         // unity uses comma's instead of dot's for decimals
-        coord[0] = coord[0].Replace('.', ',');
-        coord[1] = coord[1].Replace('.', ',');
-        coord[2] = coord[2].Replace('.', ',');
-        float x = float.Parse(coord[0]);
-        float y = float.Parse(coord[1]);
-        long z = long.Parse(coord[2]);
+        float x = float.Parse(coord[0].Replace('.', ','));
+        float y = float.Parse(coord[1].Replace('.', ','));
+        float z = float.Parse(height.Replace('.',','));
         Vector3 coords = new Vector3(x, y, z);
         return coords;
+    }
+
+    Quaternion GetOrientation()
+    {
+        string[] angles = orientation.Split(',');
+        float x = float.Parse(angles[0].Replace('.', ','));
+        float y = float.Parse(angles[1].Replace('.', ','));
+        float z = float.Parse(angles[2].Replace('.', ','));
+        float w = float.Parse(angles[3].Replace('.', ','));
+        Quaternion quat = new Quaternion(x, -y, z, w);
+        return quat;
     }
 }

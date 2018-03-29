@@ -53,7 +53,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\CameraScript.cs" />
      <Compile Include="Assets\Scripts\DroneScript.cs" />
-     <Compile Include="Assets\Scripts\WayPointsFromFileScript.cs" />
+     <Compile Include="Assets\Scripts\WaypointsScript.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
