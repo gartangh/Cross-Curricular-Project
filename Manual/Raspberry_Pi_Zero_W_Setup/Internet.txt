@@ -1,0 +1,38 @@
+edit hostname with:
+	sudo nano /etc/hostname
+change raspberrypi to RaspberryPiZeroW and confirm with CTRL+X.
+	sudo nano /etc/hosts
+change raspberrypi to RaspberryPiZeroW and confirm with CTRL+X.
+
+edit interfaces with:
+	sudo nano /etc/network/interfaces
+change the bottom of the file so it looks like this:
+	source-directory /etc/network/interfaces.d
+
+	auto lo
+	iface lo inet loopback
+
+	allow-hotplug wlan0
+	iface wlan0 inet dhcp
+		wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+	allow-hotplug wlan1
+	iface wlan1 inet dhcp
+		wpa-ssid="ardrone2_001407"
+confirm with CTRL+X.
+	
+edit wireless connections:
+	sudo nano et/wpa_supplicant/wpa_supplicant.conf
+change the bottom of the file so it looks like this:
+	network={
+        ssid="iVisitor"
+        psk="WelcomeATimec"
+        key_mgmt=WPA-PSK
+	}
+confirm with CTRL+X.
+(you can add more networks yourself.)
+
+ESP8266 setup:
+	sudo nano /boot/cmdline.txt
+remove "console=serial0,115200".
+confirm with CTRL+X.
