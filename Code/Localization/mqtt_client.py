@@ -49,4 +49,6 @@ class MyMQTTClass(mqtt.Client):
 
         pub = (','.join(str(v) for v in msg))
         self.publish("vop",pub)
-#        print "Message published: " + pub
+
+    def publish_heading(self, heading):
+	self.publish("heading",heading)
