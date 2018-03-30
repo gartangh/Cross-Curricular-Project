@@ -1,28 +1,37 @@
 # VOP Voorraadbeheer
 
-TODO: write this in Enlish
-Het doel van dit project is om commercieel beschikbare drones te voorzien van een functionele on-board controller en gebruik te maken van een controlebord dat instaat voor de drone-aansturing en -lokalisatie.
-Daarnaast is de controller verantwoordelijk voor communicatie met een centraal controlepunt en met naburige toestellen.
-Tegen het eind van het project moeten drones in staat zijn om autonoom en probleemloos een vanuit het controlepunt verzonden route af te leggen.
+The goal of this project is to provide commercially available drones with a functional on-board controller and to use a control board that is responsible for drone control and localization.
+Beside that is the controller responsible for communication with a central control point.
+The drone is capable of flying autonomous and smoothly on a route, send from the control point.
 
 ## Getting Started
 
+### Hardware
+
+* 1 Raspberry Pi 3 B (with a power supply, a 16 GB microSD card and an Ethernet cable)
+* 1 Raspberry Pi Zero W (with a LiPo SHIM, a 3.7 V, 250 mAh LiPo battery and a 16 GB microSD card)
+* 1 Pozyx tag (with a Micro-USB to Micro-USB OTG cable)
+* 4 Pozyx anchors (with power supply)
+* 1 Parrot AR.Drone 2.0
+
+![The image of the setup could not be loaded.](https://github.ugent.be/gartangh/VOP_Voorraadbeheer/blob/master/Report/Setup.png)
+
 ### Prerequisites
 
-Clone this project where-ever you like - Source Code
-Install [Unity](https://store.unity.com/) - Visualization
-Download [NOOBS](https://www.raspberrypi.org/downloads/noobs/) - System image for Raspberry Pi 3 B and Raspberry Pi Zero W
-Install [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) - SSH Client
+* Clone this project wherever you like - Source Code
+* Install [Unity](https://store.unity.com/) - Visualization
+* Download [NOOBS](https://www.raspberrypi.org/downloads/noobs/) - System image for Raspberry Pi 3 B and Raspberry Pi Zero W
+* Install [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) - SSH Client
 
 ### Setting up the Raspberry Pi 3 B
 
-Copy the NOOBS system image to a formatted micro SD card.
-Copy Setup/wpa_supplicant.conf and Setup/ssh to the micro SD card.
+Copy the NOOBS system image to a formatted microSD card.
+Copy Setup/wpa_supplicant.conf and Setup/ssh to the microSD card.
 Change the network in Setup/wpa_supplicant.conf to the network you would like to use.
-Plug the SD card in the Raspberry Pi.
+Plug the microSD card in the Raspberry Pi.
 Power on the Raspberry Pi and let it install the system image.
 Connect to the Raspberry Pi via Putty.
-	
+
 Edit password
 
 ```
@@ -30,7 +39,7 @@ passwd
 ```
 
 Change the current password to the password of you like.
-	
+
 Edit hostname
 
 ```
@@ -44,7 +53,7 @@ sudo nano /etc/hosts
 ```
 
 Change raspberrypi to the same hostname and confirm with CTRL+X. (for example RaspberryPi3B again)
-	
+
 #### Set up node.js
 
 ```
@@ -69,28 +78,31 @@ sudo npm install ar-drone
 sudo npm install ardrone-autonomy
 ```
 
-#### Add git
+Add git
+
 ```
 sudo apt-get install git
 ```
-	
+
 #### Set up MQTT
+
 ```
 TODO
 ```
 
-#### Make a new directory for the project
+Make a new directory for the project
+
 ```
 mkdir VOP_Voorraadbeheer
 cd VOP_Voorraadbeheer
 ```
 
-#### Add the nesseccary files
+Add the nesseccary files
 ```
 TODO
 ```
 
-#### Reboot
+Reboot
 ```
 sudo reboot
 ```
@@ -103,7 +115,7 @@ Change the network in Setup/wpa_supplicant.conf to the network of the drone.
 Plug the SD card in the Raspberry Pi.
 Power on the Raspberry Pi and let it install the system image.
 Connect to the Raspberry Pi via Putty.
-	
+
 Edit password
 
 ```
@@ -125,7 +137,6 @@ sudo nano /etc/hosts
 ```
 
 Change raspberrypi to the same hostname and confirm with CTRL+X. (for example RaspberryPiZeroW again)
-	
 
 Update everything
 
@@ -134,7 +145,7 @@ sudo apt-get update
 sudo apt-get upgrade
 sudo reboot
 ```
-	
+
 Add git
 
 ```
@@ -142,27 +153,34 @@ sudo apt-get install git
 ```
 
 #### Set up MQTT
+
 ```
 TODO
 ```
 
-#### Make a new directory for the project
+Make a new directory for the project
+
 ```
 mkdir VOP_Voorraadbeheer
 cd VOP_Voorraadbeheer
 ```
 
-#### Add the nesseccary files
+Add the nesseccary files
+
 ```
 TODO
 ```
 
-#### Reboot
+Reboot
+
 ```
 sudo reboot
 ```
 
+## Test the setup
+
 ## Authors
+
 * Xavier Claerhoudt
 * Bram De Smet
 * Robbe De Vilder
