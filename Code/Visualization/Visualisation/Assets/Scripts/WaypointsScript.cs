@@ -1,9 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using System.Text;
 using UnityEngine;
+using uPLibrary.Networking.M2Mqtt;
 
-public class WayPointsFromFileScript : MonoBehaviour {
-    //int's to add waypoints
+public class WaypointsScript : MonoBehaviour {
+    //MQTT client used to publish waypoints to server
+    public MqttClient client;
+    //ip-address of mqtt server
+    public static IPAddress ip = IPAddress.Parse("157.193.214.115");
+    //int's to add waypoints (these are coordinates)
     public int x,y,z;
     //timers for error messages
     float waypointerrortimer;
@@ -22,15 +30,22 @@ public class WayPointsFromFileScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        //initialize error message timers
         waypointerrortimer = 0f;
         lineerrortimer = 0f;
+        //styling of error messages
         errorstyle.normal.textColor = Color.red;
         errorstyle.fontSize = 20;
         errorstyle.fontStyle = FontStyle.Italic;
+        //setup mqtt client
+        // port is default port so doesnt have to be specified
+        // 157.193.214.115 port 1883
+        client = new MqttClient(ip);
+        client.Connect(Guid.NewGuid().ToString());
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         // waypoint collides?
         if (waypointerrortimer > 0)
         {
@@ -58,53 +73,18 @@ public class WayPointsFromFileScript : MonoBehaviour {
         }
     }
 
-    /**Make waypoints from a file where they are specified as:
-     x1,y1,z1
-     x2,y2,z2
-        in MQTT coordinate system coordinates
-        doesn't check for collisions
-         */
-    GameObject[] MakeWaypointsFromFile(string fileloc)
-    {
-        // create an array of strings with each element being a line from the file representing 1 waypoint's coordinates
-        string[] positions = System.IO.File.ReadAllLines(fileloc);
-        // create array to contain all waypoints
-        GameObject[] waypoints = new GameObject[positions.Length];
-        // instantiate all waypoints
-        for (int i = 0; i < positions.Length; i++)
-        {
-            string[] position = positions[i].Split(',');
-            float x = float.Parse(position[0]);
-            float y = float.Parse(position[1]);
-            float z = float.Parse(position[2]);
-            // transform coordinates to unity coordinates
-            Vector3 coords = TransformCoordinates(new Vector3(x, y, z));
-            GameObject waypoint = Instantiate(WayPoint, coords, Quaternion.identity);
-            waypoints[i] = waypoint;
-        }
-        return waypoints;
-    }
-
     /**Writes locations of waypoints (in MQTT coordinates) to a file with location fileloc*/
     public void WriteWaypointsToFile(string fileloc)
     {
         // empty file if it should have existed before
         System.IO.File.Delete(fileloc);
-        string[] lines = new string[dynamicWaypoints.Count];
-        for(int i=0; i<dynamicWaypoints.Count; i++)
-        {
-            GameObject point = (GameObject)dynamicWaypoints[i];
-            Vector3 coords = InverseTransformCoordinates(point.transform.position);
-            string line = coords.x + "," + coords.y + "," + coords.z;
-            lines[i] = line;
-        }
-        System.IO.File.AppendAllLines(fileloc, lines);
+        string lines = waypointsToString();
+        System.IO.File.AppendAllText(fileloc, lines);
     }
 
     /**Transforms coordinates from the MQTT coordinate system to unity coordinate system */
     Vector3 TransformCoordinates(Vector3 coords)
     {
-        coords /= 1000;
         float temp = coords.y;
         coords.y = coords.z;
         coords.z = -temp;
@@ -114,15 +94,14 @@ public class WayPointsFromFileScript : MonoBehaviour {
     /**Transforms coordinates from the unity coordinate system to the MQTT coordinate system */
     Vector3 InverseTransformCoordinates(Vector3 coords)
     {
-        coords *= 1000;
         float temp = coords.y;
         coords.y = -coords.z;
         coords.z = temp;
         return coords;
     }
 
-    /**Draws a line between two points with a specific color */
-    void DrawLine(Vector3 start, Vector3 end, Color color)
+    /**Draws a line between two points: blue if no collisions red if collisions */
+    void DrawLine(Vector3 start, Vector3 end)
     {
         GameObject connection = new GameObject();
         connection.transform.position = start;
@@ -137,7 +116,7 @@ public class WayPointsFromFileScript : MonoBehaviour {
         {
             lr.material.color = Color.blue;
         }
-        lr.startWidth = 0.01f;
+        lr.startWidth = 10f;
         lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         lr.SetPosition(0, start);
         lr.SetPosition(1, end);
@@ -151,17 +130,44 @@ public class WayPointsFromFileScript : MonoBehaviour {
         {
             GameObject w1 = (GameObject)dynamicWaypoints[i];
             GameObject w2 = (GameObject)dynamicWaypoints[i + 1];
-            DrawLine(w1.transform.position, w2.transform.position, new Color(0, 0, 255));
+            DrawLine(w1.transform.position, w2.transform.position);
         }
     }
-    /**Draws lines to visualize trajectory and sends waypoint coordinates to a file if no collisions*/
-    public void takeoff(string fileloc)
+    /**Draws lines to visualize trajectory and sends waypoint coordinates to a MQTT server if no collisions*/
+    public void takeoff()
     {
         DrawAllLines();
         if (lineCollides == false)
         {
-            WriteWaypointsToFile(fileloc);
+            //publish waypoint coordinates to the mqtt server on topic waypoints
+            string waypointlocations = waypointsToString();
+            client.Publish("waypoints", Encoding.UTF8.GetBytes(waypointlocations));
         }
+    }
+
+    /**makes a JSON formatted string containing all waypoint locations and ID in order */
+    public string waypointsToString()
+    {
+        string locations = "{\n\t\"waypoints\": [\n";
+        for(int i=0; i<dynamicWaypoints.Count; i++)
+        {
+            GameObject wp = (GameObject)dynamicWaypoints[i];
+            Vector3 position = InverseTransformCoordinates(wp.transform.position);
+            locations += "\t\t{\n\t\t\t\"ID\": " + i + ",\n";
+            locations += "\t\t\t\"position\": {\n";
+            locations += "\t\t\t\t\"x\": " + position.x +",\n";
+            locations += "\t\t\t\t\"y\": " + position.y + ",\n";
+            locations += "\t\t\t\t\"z\": " + position.z + "\n";
+            locations += "\t\t\t}\n";
+            locations += "\t\t}";
+            if (i != dynamicWaypoints.Count - 1)
+            {
+                locations += ",";
+            }
+            locations += "\n";
+        }
+        locations += "\t]\n}";
+        return locations;
     }
 
     /**Adds a waypoint on specified coordinates (MQTT coordinates) */
