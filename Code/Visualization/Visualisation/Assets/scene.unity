@@ -618,6 +618,7 @@ GameObject:
   - component: {fileID: 258266659}
   - component: {fileID: 258266658}
   - component: {fileID: 258266662}
+  - component: {fileID: 258266663}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -700,6 +701,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  drone: {fileID: 1246775861}
+  xMargin: 1
+  zMargin: 1
+  xSmooth: 8
+  zSmooth: 8
+--- !u!114 &258266663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 258266657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9dfad760b6e9455593192a6d869f7ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xMargin: 1
+  yMargin: 1
+  xSmooth: 8
+  ySmooth: 8
+  maxXAndY: {x: 0, y: 0}
+  minXAndY: {x: 0, y: 0}
 --- !u!1 &380741058
 GameObject:
   m_ObjectHideFlags: 0
@@ -1597,6 +1620,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1567942479}
         m_MethodName: takeoff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 258266662}
+        m_MethodName: startFollowing
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

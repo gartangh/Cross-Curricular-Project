@@ -25,7 +25,7 @@ public class DroneScript : MonoBehaviour {
         {
             height = Encoding.UTF8.GetString(e.Message);
         }
-        else if (e.Topic.Equals("voporientation"))
+        else if (e.Topic.Equals("vopeulerangles"))
         {
             orientation = Encoding.UTF8.GetString(e.Message);
         }
@@ -40,7 +40,7 @@ public class DroneScript : MonoBehaviour {
         client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
         client.Connect(Guid.NewGuid().ToString());
         // subscribe to vopposition, vopheight and voporientation topic
-        client.Subscribe(new string[] { "vopposition", "vopheight", "voporientation" }, new byte[] { 0, 0, 0 });
+        client.Subscribe(new string[] { "vopposition", "vopheight", "vopeulerangles" }, new byte[] { 0, 0, 0 });
     }
 
     // Update is called once per frame
@@ -48,7 +48,7 @@ public class DroneScript : MonoBehaviour {
         Vector3 coords = GetCoords();
         Vector3 unityCoordinates = TransformCoordinates(coords);
         transform.position = unityCoordinates;
-        Quaternion rotation = GetOrientation();
+        Quaternion rotation = GetUnityOrientation();
         transform.rotation = rotation;
 	}
 
@@ -74,12 +74,12 @@ public class DroneScript : MonoBehaviour {
     }
 
     /**takes angles sent by drone and changes the rotation of the drone in unity*/
-    Quaternion GetOrientation()
+    Quaternion GetUnityOrientation()
     {
         string[] angles = orientation.Split(',');
-        float heading = float.Parse(angles[0].Replace('.', ','));
+        float heading = float.Parse(angles[0].Replace('.', ','))-90;
         float roll = float.Parse(angles[1].Replace('.', ','));
-        float pitch = float.Parse(angles[2].Replace('.', ','));
+        float pitch = -float.Parse(angles[2].Replace('.', ','));
         Quaternion quat = Quaternion.Euler(roll, heading, pitch);
         return quat;
     }
