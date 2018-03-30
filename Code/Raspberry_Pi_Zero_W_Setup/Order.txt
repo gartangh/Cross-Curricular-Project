@@ -1,7 +1,0 @@
-Order of setup:
-	sudo apt-get update
-	sudo apt-get upgrade
-
-	Internet
-	Git
-	Drone_Control
