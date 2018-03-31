@@ -821,7 +821,7 @@ GameObject:
   - component: {fileID: 487122366}
   - component: {fileID: 487122365}
   m_Layer: 0
-  m_Name: Kast 1
+  m_Name: Shelf 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1576,8 +1576,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -55, y: 20}
-  m_SizeDelta: {x: 100, y: 30}
+  m_AnchoredPosition: {x: -105, y: 20}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1096524130
 MonoBehaviour:
@@ -2336,7 +2336,7 @@ MonoBehaviour:
   y: 0
   z: 0
   WayPoint: {fileID: 1021143657320656, guid: a2c72061f88c31b42a8194b142072300, type: 2}
-  errorstyle:
+  errorStyle:
     m_Name: 
     m_Normal:
       m_Background: {fileID: 0}
@@ -2638,7 +2638,7 @@ GameObject:
   - component: {fileID: 1738573036}
   - component: {fileID: 1738573035}
   m_Layer: 0
-  m_Name: Kast 2
+  m_Name: Shelf 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2885,10 +2885,10 @@ RectTransform:
   m_Father: {fileID: 1096524129}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 300, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1977806210
 MonoBehaviour:
@@ -2922,7 +2922,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Takeoff!
+  m_Text: Autobots, transform & roll out!
 --- !u!222 &1977806211
 CanvasRenderer:
   m_ObjectHideFlags: 0

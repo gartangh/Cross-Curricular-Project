@@ -9,19 +9,19 @@ using uPLibrary.Networking.M2Mqtt;
 public class WaypointsScript : MonoBehaviour {
     //MQTT client used to publish waypoints to server
     public MqttClient client;
+    //topics on mqtt client to subscribe/publish to
+    string publishLocationsTopic = "waypoints";
     //ip-address of mqtt server
     public static IPAddress ip = IPAddress.Parse("157.193.214.115");
     //int's to add waypoints (these are coordinates)
     public int x,y,z;
     //timers for error messages
-    float waypointerrortimer;
-    float lineerrortimer;
-    //if line collides it should not push waypoints to drone
-    bool lineCollides;
+    float errorDisplayTime = 3f;
+    float waypointErrorTimer, lineErrorTimer;
     //Waypoint object to add to scene
     public GameObject WayPoint;
     //GUIStyle to style error messages
-    public GUIStyle errorstyle;
+    public GUIStyle errorStyle;
     //Contains all waypoints that are created through the "add waypoint" button
     ArrayList dynamicWaypoints = new ArrayList();
     //drone needs space to fly
@@ -30,56 +30,49 @@ public class WaypointsScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //initialize error message timers
-        waypointerrortimer = 0f;
-        lineerrortimer = 0f;
+        //initialize timers
+        waypointErrorTimer = 0f;
+        lineErrorTimer = 0f;
         //styling of error messages
-        errorstyle.normal.textColor = Color.red;
-        errorstyle.fontSize = 20;
-        errorstyle.fontStyle = FontStyle.Italic;
-        //setup mqtt client
-        // port is default port so doesnt have to be specified
-        // 157.193.214.115 port 1883
+        errorStyle.normal.textColor = Color.red;
+        errorStyle.fontSize = 20;
+        errorStyle.fontStyle = FontStyle.Italic;
+        /* setup mqtt client
+         * port is default port so doesnt have to be specified
+         * ip-address specified above on port 1883
+         */
         client = new MqttClient(ip);
         client.Connect(Guid.NewGuid().ToString());
     }
 
     // Update is called once per frame
     void Update () {
-        // waypoint collides?
-        if (waypointerrortimer > 0)
-        {
-            waypointerrortimer -= Time.deltaTime;
-        }
-        // line collides?
-        if (lineerrortimer > 0)
-        {
-            lineerrortimer -= Time.deltaTime;
-        }
 	}   
 
-    // displays error messages
+    /**Displays error messages */
     void OnGUI ()
     {
         // display waypoint error
-        if (Mathf.CeilToInt(waypointerrortimer)>0)
+        if (Mathf.CeilToInt(waypointErrorTimer) > 0)
         {
-            GUI.Label(new Rect(50, 50, 100, 25), "Waypoint too close to an obstacle!", errorstyle);
+            waypointErrorTimer -= Time.deltaTime;
+            GUI.Label(new Rect(50, 50, 100, 25), "Waypoint too close to an obstacle!", errorStyle);
         }
         // display line error
-        if (Mathf.CeilToInt(lineerrortimer) > 0)
+        if (Mathf.CeilToInt(lineErrorTimer) > 0)
         {
-            GUI.Label(new Rect(50, 50, 100, 25), "Impossible trajectory!", errorstyle);
+            lineErrorTimer -= Time.deltaTime;
+            GUI.Label(new Rect(50, 50, 100, 25), "Impossible trajectory!", errorStyle);
         }
     }
 
-    /**Writes locations of waypoints (in MQTT coordinates) to a file with location fileloc*/
+    /**Writes locations of waypoints (in MQTT coordinates and JSON format) to a file with location fileloc*/
     public void WriteWaypointsToFile(string fileloc)
     {
         // empty file if it should have existed before
         System.IO.File.Delete(fileloc);
-        string lines = waypointsToString();
-        System.IO.File.AppendAllText(fileloc, lines);
+        string waypointLocations = waypointsToString();
+        System.IO.File.AppendAllText(fileloc, waypointLocations);
     }
 
     /**Transforms coordinates from the MQTT coordinate system to unity coordinate system */
@@ -100,48 +93,60 @@ public class WaypointsScript : MonoBehaviour {
         return coords;
     }
 
-    /**Draws a line between two points: blue if no collisions red if collisions */
-    void DrawLine(Vector3 start, Vector3 end)
+    /**Draws a line between two points: blue if no collisions red if collisions
+     * returns true if no collisions detected
+     */
+    bool DrawLine(Vector3 start, Vector3 end)
     {
+        //boolean to indicate whether it's an ok trajectory
+        bool goodTrajectory = true;
+        //GameObject for line
         GameObject connection = new GameObject();
         connection.transform.position = start;
         connection.AddComponent<LineRenderer>();
         LineRenderer lr = connection.GetComponent<LineRenderer>();
+        //Check for collisions along the line
         if(Physics.CheckCapsule(start, end, flyRadius))
         {
+            //if collision detected indicate by line color
             lr.material.color = Color.red;
-            lineerrortimer = 1f;
-            lineCollides = true;
+            goodTrajectory = false;
         }else
         {
             lr.material.color = Color.blue;
         }
-        lr.startWidth = 10f;
+        lr.startWidth = 30f;
         lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         lr.SetPosition(0, start);
         lr.SetPosition(1, end);
+        return goodTrajectory;
     }
 
-    /** draws lines between dynamically created waypoints */
-    public void DrawAllLines()
+    /**Draws lines between dynamically created waypoints, returns true if no collisions */
+    public bool DrawAllLines()
     {
-        lineCollides = false;
+        bool goodTrajectory = true;
         for(int i=0; i<dynamicWaypoints.Count-1; i++)
         {
             GameObject w1 = (GameObject)dynamicWaypoints[i];
             GameObject w2 = (GameObject)dynamicWaypoints[i + 1];
-            DrawLine(w1.transform.position, w2.transform.position);
+            bool noCollision = DrawLine(w1.transform.position, w2.transform.position);
+            if (!noCollision) goodTrajectory = false;
         }
+        return goodTrajectory;
     }
-    /**Draws lines to visualize trajectory and sends waypoint coordinates to a MQTT server if no collisions*/
+
+    /**Draws lines to visualize trajectory and sends waypoint coordinates to a MQTT server if no collisions on path*/
     public void takeoff()
     {
-        DrawAllLines();
-        if (lineCollides == false)
+        if (DrawAllLines())
         {
-            //publish waypoint coordinates to the mqtt server on topic waypoints
-            string waypointlocations = waypointsToString();
-            client.Publish("waypoints", Encoding.UTF8.GetBytes(waypointlocations));
+            //publish waypoint coordinates to the mqtt server on topic specified above
+            string waypointLocations = waypointsToString();
+            client.Publish(publishLocationsTopic, Encoding.UTF8.GetBytes(waypointLocations));
+        }else
+        {
+            lineErrorTimer = errorDisplayTime;
         }
     }
 
@@ -170,21 +175,29 @@ public class WaypointsScript : MonoBehaviour {
         return locations;
     }
 
-    /**Adds a waypoint on specified coordinates (MQTT coordinates) */
+    /**Adds a waypoint on specified coordinates (MQTT coordinates)
+     * unless it's too close to an obstacle or it's the same location as previous waypoint
+     */
     public void addDynamicWayPoint()
     {
-        // position where it should go
-        Vector3 coords = TransformCoordinates(new Vector3(x, y, z));
-        //check if there already is something there
-        if (Physics.CheckSphere(coords, flyRadius))
+        // position where it should go in unity coordinates
+        Vector3 unityCoords = TransformCoordinates(new Vector3(x, y, z));
+        //check if not same location as previous waypoint
+        bool sameWaypoint = false;
+        if (dynamicWaypoints.Count > 0)
         {
-            //if there is already something there
-            waypointerrortimer = 1f;
-        }else
+            GameObject previousWaypoint = (GameObject)dynamicWaypoints[dynamicWaypoints.Count - 1];
+            if (previousWaypoint.transform.position == unityCoords) sameWaypoint = true;
+        }
+        //check if there is an obstacle at that position, display error if there is
+        if (Physics.CheckSphere(unityCoords, flyRadius))
         {
-            waypointerrortimer = 0f;
-            // if nothing there: put waypoint there
-            GameObject waypoint = Instantiate(WayPoint, coords, Quaternion.identity);
+            waypointErrorTimer = errorDisplayTime;
+        }else if (!sameWaypoint)
+        {
+            // if no obstacle and not the same waypoint as the previous: put waypoint there
+            waypointErrorTimer = 0f;
+            GameObject waypoint = Instantiate(WayPoint, unityCoords, Quaternion.identity);
             dynamicWaypoints.Add(waypoint);
         }
     }

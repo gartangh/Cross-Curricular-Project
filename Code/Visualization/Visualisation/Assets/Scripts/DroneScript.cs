@@ -9,29 +9,33 @@ public class DroneScript : MonoBehaviour {
     public MqttClient client;
     //ip-address of mqtt server
     public static IPAddress ip = IPAddress.Parse("157.193.214.115");
+    //Topics to subscribe to
+    static string positionTopic = "vopposition";
+    static string heightTopic = "vopheight";
+    static string orientationTopic = "vopeulerangles";
     //placeholder for updated position, height & orientation
     static string position = "29000,1000";
     static string height = "1000";
     static string orientation = "0,0,0";
 
-    // message handling code
+    /**Message handling code */
     static void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
     {
-        if (e.Topic.Equals("vopposition"))
+        if (e.Topic.Equals(positionTopic))
         {
             position = Encoding.UTF8.GetString(e.Message);
         }
-        else if (e.Topic.Equals("vopheight"))
+        else if (e.Topic.Equals(heightTopic))
         {
             height = Encoding.UTF8.GetString(e.Message);
         }
-        else if (e.Topic.Equals("vopeulerangles"))
+        else if (e.Topic.Equals(orientationTopic))
         {
             orientation = Encoding.UTF8.GetString(e.Message);
         }
     }
 
-    // Use this for initialization
+    /** Use this for initialization */
     void Start() {
         // port is default port so doesnt have to be specified
         // 157.193.214.115 port 1883
@@ -40,14 +44,16 @@ public class DroneScript : MonoBehaviour {
         client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
         client.Connect(Guid.NewGuid().ToString());
         // subscribe to vopposition, vopheight and voporientation topic
-        client.Subscribe(new string[] { "vopposition", "vopheight", "vopeulerangles" }, new byte[] { 0, 0, 0 });
+        client.Subscribe(new string[] { positionTopic, heightTopic, orientationTopic }, new byte[] { 0, 0, 0 });
     }
 
-    // Update is called once per frame
+    /** Update is called once per frame */
     void Update () {
+        //update location
         Vector3 coords = GetCoords();
         Vector3 unityCoordinates = TransformCoordinates(coords);
         transform.position = unityCoordinates;
+        //update orientation
         Quaternion rotation = GetUnityOrientation();
         transform.rotation = rotation;
 	}
@@ -61,6 +67,9 @@ public class DroneScript : MonoBehaviour {
         return coords;
     }
 
+    /**Gets coordinates from a string where they are as follows: "x,y,z"
+     * and each decimal is indicated by a dot
+     */
     Vector3 GetCoords ()
     {
         // coords are seperated by a comma and decimals are indicated by a dot

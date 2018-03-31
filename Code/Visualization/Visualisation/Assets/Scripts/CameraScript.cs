@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraScript : MonoBehaviour {
-    public float speed = 5.0f;
+    public float speed = 50.0f;
     private bool follow;
     public GameObject drone;
     private Transform trans;
@@ -23,7 +23,8 @@ public class CameraScript : MonoBehaviour {
     {
         if (follow)
         {
-            TrackPlayer();
+            //TrackPlayer();
+            ArrowControl();
         }else
         {
             ArrowControl();
