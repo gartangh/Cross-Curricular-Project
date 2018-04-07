@@ -27,32 +27,10 @@ The drone is capable of flying autonomous and smoothly on a route, send from the
 
 Copy the NOOBS system image to a formatted microSD card.
 Copy Setup/wpa_supplicant.conf and Setup/ssh to the microSD card.
-Change the network in Setup/wpa_supplicant.conf to the network you would like to use.
+Change the network in wpa_supplicant.conf (on the microSD card) to the network you would like to use.
 Plug the microSD card in the Raspberry Pi.
 Power on the Raspberry Pi and let it install the system image.
 Connect to the Raspberry Pi via Putty.
-
-Edit password
-
-```
-passwd
-```
-
-Change the current password to the password of you like.
-
-Edit hostname
-
-```
-sudo nano /etc/hostname
-```
-
-Change raspberrypi to the hostname you would like to give to the Raspberry Pi and confirm with CTRL+X. (for example RaspberryPi3B)
-
-```
-sudo nano /etc/hosts
-```
-
-Change raspberrypi to the same hostname and confirm with CTRL+X. (for example RaspberryPi3B again)
 
 #### Set up node.js
 
@@ -97,12 +75,14 @@ mkdir VOP_Voorraadbeheer
 cd VOP_Voorraadbeheer
 ```
 
-Add the nesseccary files
+Add the necessary files
+
 ```
 TODO
 ```
 
 Reboot
+
 ```
 sudo reboot
 ```
@@ -111,32 +91,10 @@ sudo reboot
 
 Copy the NOOBS system image to a formatted micro SD card.
 Copy Setup/wpa_supplicant.conf and Setup/ssh to the micro SD card.
-Change the network in Setup/wpa_supplicant.conf to the network of the drone.
+Change the network in wpa_supplicant.conf (on the microSD card) to the network of the drone.
 Plug the SD card in the Raspberry Pi.
 Power on the Raspberry Pi and let it install the system image.
 Connect to the Raspberry Pi via Putty.
-
-Edit password
-
-```
-passwd
-```
-
-Change the current password to the password of you like.
-	
-Edit hostname
-
-```
-sudo nano /etc/hostname
-```
-
-Change raspberrypi to the hostname you would like to give to the Raspberry Pi and confirm with CTRL+X. (for example RaspberryPiZeroW)
-
-```
-sudo nano /etc/hosts
-```
-
-Change raspberrypi to the same hostname and confirm with CTRL+X. (for example RaspberryPiZeroW again)
 
 Update everything
 
@@ -165,7 +123,7 @@ mkdir VOP_Voorraadbeheer
 cd VOP_Voorraadbeheer
 ```
 
-Add the nesseccary files
+Add the necessary files
 
 ```
 TODO
@@ -186,3 +144,10 @@ sudo reboot
 * Robbe De Vilder
 * Garben Tanghe
 
+## Supervisors
+* Prof. D. Colle
+* Prof. E. De Poorter
+* Prof. M. Pickavet
+* Ir. J. Rossey
+* Ir. P. Stroobant
+* Ir. J. Vanhie-Van Gerwen
