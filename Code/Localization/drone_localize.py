@@ -29,8 +29,8 @@ if __name__ == "__main__":
     last_time = now
     first = 1    
 
-    destination_ids = [0x6008] #Test anker    
-    #destination_ids = [0x6F10,0x6F2F,0x607B,0x6F2E] #Magazijn
+    #destination_ids = [0x6008] #Test anker    
+    destination_ids = [0x6F10,0x6F2F,0x607B,0x6F2E] #Magazijn
 
     # Containers for information of the tag
     euler = EulerAngles()
@@ -66,7 +66,7 @@ if __name__ == "__main__":
                     start = start - int(ts)
                     first = 0
                 ts = str(int(int(ts) + int(start)))
-                
+		print "publish"                
                 mqttc.publish_range(id,ts,dist)
 
      except KeyboardInterrupt:
