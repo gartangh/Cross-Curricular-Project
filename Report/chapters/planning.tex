@@ -36,15 +36,13 @@ Wie doet wat? Dit kun je terug vinden in tabel \ref{tab:taakverdeling}.
 \begin{tabular}{ |c|c|c| } \hline
 Wat? & Wie? & Kleur \\ [.5ex] \hline\hline
 Uitzoeken en bestellen & Iedereen & WIT \\ \hline
-Raspberry en DecaWave verbinden & Bram en Garben & JUNGLEGROEN \\ \hline
-Power supply & Robbe en Xavier & ROODORANJE \\ \hline
-Controller aan drone bevestigen & Robbe en Xavier & ROODORANJE \\ \hline
-UWB & Bram en Xavier & GEEL \\ \hline
-Connectie met server & Garben en Robbe & FUCHSIA \\ \hline
-Aansturing drone & Garben en Robbe & FUCHSIA \\ \hline
-Full-mesh &  Garben en Xavier & SEPIA \\ \hline
+Power supply & Garben & ROODORANJE \\ \hline
+UWB & Bram & GEEL \\ \hline
+Visualisatie & Xavier & SEPIA \\ \hline
+Connectie met server & Iedereen & WIT \\ \hline
+Aansturing drone & Robbe & FUCHSIA \\ \hline
 Presentatie 1 & Bram en Garben & JUNGLEGROEN \\ \hline
-Presentatie 2 & Robbe en Xavier & ROODORANJE \\ \hline
+Presentatie 2 & Robbe en Xavier & BLAUW \\ \hline
 Verslag & Iedereen & WIT \\ \hline
 Eindpresentatie & Iedereen & WIT \\ \hline
 \end{tabular}
@@ -59,7 +57,21 @@ De finale planning is terug te vinden op figuur \ref{fig:finale_planning}.
 \begin{ganttchart}[vgrid, y unit chart=0.75cm, bar/.append style={fill=white, rounded corners=2pt}]{1}{13}
 	\gantttitlelist{1,...,13}{1}\\
 
-
+	\ganttgroup{Hardware}{1}{8}\\
+	\ganttbar{Uitzoeken en bestellen}{1}{2}{6}{8}\\
+	\ganttbar[bar/.append style={fill=RedOrange}]{Power supply}{8}{8}\\
+	
+	\ganttgroup{Software}{3}{12}\\
+	\ganttbar[bar/.append style={fill=Yellow}]{UWB}{3}{4}\\
+	\ganttbar[bar/.append style={fill=White}]{Connectie met server}{5}{6}\\
+	\ganttbar[bar/.append style={fill=Fuchsia}]{Aansturing drone}{4}{10}\\
+	\ganttbar[bar/.append style={fill=Sepia}]{Visualisatie}{4}{7}\\
+	
+	\ganttgroup{Presentaties en verslag}{1}{13}\\
+	\ganttmilestone[milestone/.append style={fill=JungleGreen}]{Presentatie 1}{4}\\
+	\ganttlinkedmilestone[milestone/.append style={fill=Blue}]{Presentatie 2}{8}\\
+	\ganttlinkedmilestone{Verslag}{12}\\
+	\ganttlinkedmilestone{Eindpresentatie}{13}
 \end{ganttchart}
 \caption[Gantt chart van de finale planning.]{Gantt chart van de finale planning.}
 \label{fig:finale_planning}
