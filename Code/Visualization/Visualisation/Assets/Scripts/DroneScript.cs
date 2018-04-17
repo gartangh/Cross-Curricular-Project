@@ -7,18 +7,18 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 
 public class DroneScript : MonoBehaviour {
     public MqttClient client;
-    //ip-address of mqtt server
+    // ip-address of mqtt server
     public static IPAddress ip = IPAddress.Parse("157.193.214.115");
-    //Topics to subscribe to
+    // Topics to subscribe to
     static string positionTopic = "vopposition";
     static string heightTopic = "vopheight";
     static string orientationTopic = "vopeulerangles";
-    //placeholder for updated position, height & orientation
+    // Placeholder for updated position, height & orientation
     static string position = "29000,1000";
     static string height = "1000";
     static string orientation = "0,0,0";
 
-    /**Message handling code */
+    /** Message handling code */
     static void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
     {
         if (e.Topic.Equals(positionTopic))
@@ -37,59 +37,59 @@ public class DroneScript : MonoBehaviour {
 
     /** Use this for initialization */
     void Start() {
-        // port is default port so doesnt have to be specified
+        // Port is default port so doesnt have to be specified
         // 157.193.214.115 port 1883
         client = new MqttClient(ip);
-        //register to message received
+        // Register to message received
         client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
         client.Connect(Guid.NewGuid().ToString());
-        // subscribe to vopposition, vopheight and voporientation topic
+        // Subscribe to vopposition, vopheight and voporientation topic
         client.Subscribe(new string[] { positionTopic, heightTopic, orientationTopic }, new byte[] { 0, 0, 0 });
     }
 
     /** Update is called once per frame */
     void Update () {
-        //update location
-        Vector3 coords = GetCoords();
-        Vector3 unityCoordinates = TransformCoordinates(coords);
-        transform.position = unityCoordinates;
-        //update orientation
-        Quaternion rotation = GetUnityOrientation();
-        transform.rotation = rotation;
+        // Update location
+		transform.position = TransformCoordinates (GetCoords ());
+        // Update orientation
+		transform.rotation = GetUnityOrientation();
 	}
 
-    /**Transforms coordinates from the MQTT coordinate system to unity coordinate system */
+    /** Transforms coordinates from the MQTT coordinate system to unity coordinate system */
     Vector3 TransformCoordinates(Vector3 coords)
     {
         float temp = coords.y;
         coords.y = coords.z;
         coords.z = -temp;
+
         return coords;
     }
 
-    /**Gets coordinates from a string where they are as follows: "x,y,z"
+    /** Gets coordinates from a string where they are as follows: "x,y,z"
      * and each decimal is indicated by a dot
      */
     Vector3 GetCoords ()
     {
-        // coords are seperated by a comma and decimals are indicated by a dot
+        // Coords are seperated by a comma and decimals are indicated by a dot
         string[] coord = position.Split(',');
-        // unity uses comma's instead of dot's for decimals
+        // Unity uses comma's instead of dot's for decimals
         float x = float.Parse(coord[0].Replace('.', ','));
         float y = float.Parse(coord[1].Replace('.', ','));
         float z = float.Parse(height.Replace('.',','));
-        Vector3 coords = new Vector3(x, y, z);
-        return coords;
+
+		return new Vector3(x, y, z);
     }
 
-    /**takes angles sent by drone and changes the rotation of the drone in unity*/
+    /** Takes angles sent by drone and changes the rotation of the drone in unity*/
     Quaternion GetUnityOrientation()
     {
+		// Angles are seperated by a comma and decimals are indicated by a dot
         string[] angles = orientation.Split(',');
+		// Unity uses comma's instead of dot's for decimals
         float heading = float.Parse(angles[0].Replace('.', ','))-90;
         float roll = float.Parse(angles[1].Replace('.', ','));
         float pitch = -float.Parse(angles[2].Replace('.', ','));
-        Quaternion quat = Quaternion.Euler(roll, heading, pitch);
-        return quat;
+
+		return Quaternion.Euler(roll, heading, pitch);
     }
 }
