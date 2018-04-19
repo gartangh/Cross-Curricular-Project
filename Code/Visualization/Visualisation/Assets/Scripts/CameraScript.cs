@@ -23,9 +23,10 @@ public class CameraScript : MonoBehaviour {
     {
         if (follow)
         {
-            //TrackPlayer();
+            // TrackPlayer();
             ArrowControl();
-        }else
+        }
+		else
         {
             ArrowControl();
         }
