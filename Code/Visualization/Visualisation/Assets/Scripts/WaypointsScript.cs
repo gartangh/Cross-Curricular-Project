@@ -10,7 +10,7 @@ public class WaypointsScript : MonoBehaviour {
     // MQTT client used to publish waypoints to server
     public MqttClient client;
     // Topics on mqtt client to subscribe/publish to
-    string publishLocationsTopic = "waypoints";
+    string publishLocationsTopic = "vopwaypoints";
     // ip-address of mqtt server
     public static IPAddress ip = IPAddress.Parse("157.193.214.115");
     // Int's to add waypoints (these are coordinates)
@@ -146,6 +146,8 @@ public class WaypointsScript : MonoBehaviour {
         {
             // Publish waypoint coordinates to the mqtt server on topic specified above
 			client.Publish(publishLocationsTopic, Encoding.UTF8.GetBytes(waypointsToString()));
+			// Write waypoints to a file in JSON format
+			WriteWaypointsToFile(Application.dataPath + "/Waypoints/Waypoints.json");
         }
 		else
         {
