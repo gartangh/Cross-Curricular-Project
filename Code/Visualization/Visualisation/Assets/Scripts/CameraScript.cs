@@ -12,10 +12,18 @@ public class CameraScript : MonoBehaviour {
     public float xSmooth = 8f; // How smoothly the camera catches up with it's target movement in the x axis.
     public float zSmooth = 8f; // How smoothly the camera catches up with it's target movement in the y axis.
 
+    // Camera rotations (according to unity axis system)
+    public Vector3 lookDown = new Vector3(90, 0, 0);
+    public Vector3 lookXplus = new Vector3(0, 90, 0);
+    public Vector3 lookXmin = new Vector3(0, 270, 0);
+    public Vector3 lookZplus = new Vector3(0, 0, 0);
+    public Vector3 lookZmin = new Vector3(0, 180, 0);
+
     // Use this for initialization
     void Start () {
         follow = false;
         trans = drone.transform;
+        Camera.main.transform.position = new Vector3(15000, 10000, -5000);
 	}
 
     // Update is called once per frame
@@ -54,6 +62,31 @@ public class CameraScript : MonoBehaviour {
         if (Input.GetKey(KeyCode.UpArrow))
         {
             transform.Translate(new Vector3(0, speed * Time.deltaTime * 1000, 0));
+        }
+        if (Input.GetKey(KeyCode.M))
+        {
+            if (transform.rotation.eulerAngles == lookDown)
+            {
+                Camera.main.transform.rotation = Quaternion.Euler(lookXplus);
+                Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, 3000, Camera.main.transform.position.z);
+            }
+            else if (transform.rotation.eulerAngles == lookXplus)
+            {
+                Camera.main.transform.rotation = Quaternion.Euler(lookZplus);
+            }
+            else if (transform.rotation.eulerAngles == lookZplus)
+            {
+                Camera.main.transform.rotation = Quaternion.Euler(lookXmin);
+            }
+            else if (transform.rotation.eulerAngles == lookXmin)
+            {
+                Camera.main.transform.rotation = Quaternion.Euler(lookZmin);
+            }
+            else if (transform.rotation.eulerAngles == lookZmin)
+            {
+                Camera.main.transform.rotation = Quaternion.Euler(lookDown);
+                Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, 10000, Camera.main.transform.position.z);
+            }
         }
     }
 

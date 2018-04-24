@@ -24,6 +24,7 @@ public class WaypointsScript : MonoBehaviour {
     public GUIStyle errorStyle;
     // Contains all waypoints that are created through the "add waypoint" button
     ArrayList dynamicWaypoints = new ArrayList();
+    ArrayList lines = new ArrayList();
     // Drone needs space to fly
     float flyRadius = 0.1f;
 
@@ -120,7 +121,7 @@ public class WaypointsScript : MonoBehaviour {
         lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         lr.SetPosition(0, start);
         lr.SetPosition(1, end);
-
+        lines.Add(connection);
         return goodTrajectory;
     }
 
@@ -128,6 +129,7 @@ public class WaypointsScript : MonoBehaviour {
     public bool DrawAllLines()
     {
         bool goodTrajectory = true;
+        RemoveColliders();
         for (int i=0; i<dynamicWaypoints.Count-1; i++)
         {
             GameObject w1 = (GameObject)dynamicWaypoints[i];
@@ -135,13 +137,43 @@ public class WaypointsScript : MonoBehaviour {
             bool noCollision = DrawLine(w1.transform.position, w2.transform.position);
             if (!noCollision) goodTrajectory = false;
         }
-
+        addColliders();
         return goodTrajectory;
     }
 
+    /** Destroys all lines */
+    public void deleteAllLines()
+    {
+        for(int i=0; i<lines.Count; i++)
+        {
+            GameObject line = (GameObject)lines[i];
+            Destroy(line);
+        }
+    }
+
+    /** Removes colliders from waypoints */
+    public void RemoveColliders()
+    {
+        for(int i=0; i<dynamicWaypoints.Count; i++)
+        {
+            GameObject waypoint = (GameObject)dynamicWaypoints[i];
+            waypoint.GetComponent<SphereCollider>().enabled = false;
+        }
+    }
+
+    /** Adds colliders to waypoints */
+    public void addColliders()
+    {
+        for (int i = 0; i < dynamicWaypoints.Count; i++)
+        {
+            GameObject waypoint = (GameObject)dynamicWaypoints[i];
+            waypoint.GetComponent<SphereCollider>().enabled = true;
+        }
+    }
     /** Draws lines to visualize trajectory and sends waypoint coordinates to a MQTT server if no collisions on path*/
     public void takeoff()
     {
+        deleteAllLines();
         if (DrawAllLines())
         {
             // Publish waypoint coordinates to the mqtt server on topic specified above
@@ -205,6 +237,9 @@ public class WaypointsScript : MonoBehaviour {
             // If no obstacle and not the same waypoint as the previous: put waypoint there
             waypointErrorTimer = 0f;
             GameObject waypoint = Instantiate(WayPoint, unityCoords, Quaternion.identity);
+            // Add script to make waypoint dragable
+            waypoint.AddComponent<DragScript>();
+            waypoint.AddComponent<SphereCollider>();
             dynamicWaypoints.Add(waypoint);
         }
     }
