@@ -1,0 +1,71 @@
+\documentclass[a4paper,12pt]{report}
+
+\usepackage{a4wide}
+\usepackage[dutch]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage[small,bf,hang]{caption}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{tocbibind}
+\usepackage{pgfgantt}
+\usepackage[gen]{eurosym}	
+
+\begin{document}
+	
+\begin{titlepage}
+	\centering
+	\vfill
+	
+	{\Huge \textbf{Voorraadbeheer in magazijnen}}\\
+	\includegraphics{UGent_Logo.png}\\
+	{\large \textbf{Groep BC10}}\\
+	\vspace{4mm}
+	Xavier Claerhoudt\\
+	\vspace{2mm}
+	Bram De Smet\\
+	\vspace{2mm}
+	Robbe De Vilder\\
+	\vspace{2mm}
+	Garben Tanghe\\
+	\vspace{8mm}
+	{\large \textbf{Begeleiders}}\\
+	\vspace{4mm}
+	Prof. D. Colle\\
+	Prof. E. De Poorter\\
+	Prof. M. Pickavet\\
+	Ir. J. Rossey\\
+	Ir. P. Stroobant\\
+	Ir. J. Vanhie-Van Gerwen\\
+	\includegraphics{UGent_FEA_Logo.png}\\
+	{\footnotesize Project in het kader van het Vakoverschrijdend Projectvak in de Bachelor Computerwetenschappen}\\
+	\vspace{4mm}
+	2017 - 2018
+	
+	\vfill
+\end{titlepage}
+
+\pagenumbering{roman}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\input{chapters/abstract.tex}
+
+\pagenumbering{arabic}
+\input{chapters/probleemanalyse.tex}
+\input{chapters/planning.tex}
+\input{chapters/hardware.tex}
+\input{chapters/software.tex}
+\input{chapters/resultaten.tex}
+
+\renewcommand{\bibname}{Referenties}
+\bibliographystyle{ieeetr}
+\bibliography{chapters/references}
+
+\end{document}

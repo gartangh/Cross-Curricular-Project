@@ -1,0 +1,85 @@
+\chapter{Planning}
+
+\section{Initi\"ele planning} \label{sec:initiele_planning}
+De initi\"ele planning is terug te vinden op figuur \ref{fig:initiele_planning}.
+\begin{figure}[p]
+\centering
+\begin{ganttchart}[vgrid, y unit chart=0.75cm, bar/.append style={fill=White, rounded corners=2pt}, milestone/.append style={fill=White}]{1}{13}
+	\gantttitlelist{1,...,13}{1}\\
+
+	\ganttgroup{Hardware}{1}{5}\\
+	\ganttbar{Uitzoeken en bestellen}{1}{2}\\
+	\ganttbar[bar/.append style={fill=JungleGreen}]{Raspberry en DecaWave verbinden}{5}{5}\\
+	\ganttbar[bar/.append style={fill=RedOrange}]{Power supply}{5}{5}\\
+	\ganttbar[bar/.append style={fill=RedOrange}]{Controller aan drone bevestigen}{5}{5}\\
+
+	\ganttgroup{Software}{3}{12}\\
+	\ganttbar[bar/.append style={fill=Yellow}]{UWB}{3}{4}\\
+	\ganttbar[bar/.append style={fill=Fuchsia}]{Connectie met server}{5}{6}\\
+	\ganttbar[bar/.append style={fill=Fuchsia}]{Aansturing drone}{4}{9}\\
+	\ganttbar{Full-mesh}{10}{12}\\
+
+	\ganttgroup{Presentaties en verslag}{1}{13}\\
+	\ganttmilestone[milestone/.append style={fill=JungleGreen}]{Presentatie 1}{4}\\
+	\ganttlinkedmilestone[milestone/.append style={fill=RedOrange}]{Presentatie 2}{8}\\
+	\ganttlinkedmilestone{Verslag}{12}\\
+	\ganttlinkedmilestone{Eindpresentatie}{13}
+\end{ganttchart}
+\caption[Gantt chart van de initi\"ele planning.]{Gantt chart van de initi\"ele planning.}
+\label{fig:initiele_planning}
+\end{figure}
+
+\section{Taakverdeling} \label{sec:taakverdeling}
+Wie doet wat? Dit kun je terug vinden in tabel \ref{tab:taakverdeling}.
+\begin{table}[p]
+\centering
+\begin{tabular}{ |c|c|c| } \hline
+Wat? & Wie? & Kleur \\ [.5ex] \hline\hline
+Uitzoeken en bestellen & Iedereen & WIT \\ \hline
+Power supply & Garben & ROODORANJE \\ \hline
+UWB & Bram & GEEL \\ \hline
+Visualisatie & Xavier & SEPIA \\ \hline
+Connectie met server & Iedereen & WIT \\ \hline
+Aansturing drone & Robbe & FUCHSIA \\ \hline
+Presentatie 1 & Bram en Garben & JUNGLEGROEN \\ \hline
+Presentatie 2 & Robbe en Xavier & BLAUW \\ \hline
+Verslag & Iedereen & WIT \\ \hline
+Eindpresentatie & Iedereen & WIT \\ \hline
+\end{tabular}
+\caption[Taakverdeling]{Taakverdeling.}
+\label{tab:taakverdeling}
+\end{table}
+
+\section{Finale planning} \label{sec:finale_planning}
+De finale planning is terug te vinden op figuur \ref{fig:finale_planning}.
+\begin{figure}[p]
+\centering
+\begin{ganttchart}[vgrid, y unit chart=0.75cm, bar/.append style={fill=White, rounded corners=2pt}, milestone/.append style={fill=White}]{1}{13}
+	\gantttitlelist{1,...,13}{1}\\
+	
+	\ganttgroup{Hardware}{1}{5}\\
+	\ganttbar{Uitzoeken en bestellen}{1}{2}\\
+	\ganttbar[bar/.append style={fill=JungleGreen}]{Raspberry en DecaWave verbinden}{5}{5}\\
+	\ganttbar[bar/.append style={fill=RedOrange}]{Power supply}{5}{5}\\
+	\ganttbar[bar/.append style={fill=RedOrange}]{Controller aan drone bevestigen}{5}{5}\\
+	
+	\ganttgroup{Software}{3}{12}\\
+	\ganttbar[bar/.append style={fill=Yellow}]{UWB}{3}{4}\\
+	\ganttbar[bar/.append style={fill=Fuchsia}]{Connectie met server}{5}{6}\\
+	\ganttbar[bar/.append style={fill=Fuchsia}]{Aansturing drone}{4}{9}\\
+	\ganttbar{Full-mesh}{10}{12}\\
+	
+	\ganttgroup{Presentaties en verslag}{1}{13}\\
+	\ganttmilestone[milestone/.append style={fill=JungleGreen}]{Presentatie 1}{4}\\
+	\ganttlinkedmilestone[milestone/.append style={fill=RedOrange}]{Presentatie 2}{8}\\
+
+	\ganttlinkedmilestone{Verslag}{12}\\
+	\ganttlinkedmilestone{Eindpresentatie}{13}
+\end{ganttchart}
+\caption[Gantt chart van de finale planning.]{Gantt chart van de finale planning.}
+\label{fig:finale_planning}
+\end{figure}\\
+
+De grootste verschillen tussen de initi\"ele planning en de finale planning zijn ...\\
+
+De motivatie van de belangrijkste wijzigingen zijn ...
