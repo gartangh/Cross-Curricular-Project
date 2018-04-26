@@ -13,8 +13,8 @@ public class WaypointsScript : MonoBehaviour {
     string publishLocationsTopic = "vopwaypoints";
     // ip-address of mqtt server
     public static IPAddress ip = IPAddress.Parse("157.193.214.115");
-    // Int's to add waypoints (these are coordinates)
-    public int x,y,z;
+    // Int's to add waypoints (these are coordinates) and int to specify target drone
+    public int x,y,z,target;
     // Timers for error messages
     float errorDisplayTime = 3f;
     float waypointErrorTimer, lineErrorTimer;
@@ -22,8 +22,9 @@ public class WaypointsScript : MonoBehaviour {
     public GameObject WayPoint;
     // GUIStyle to style error messages
     public GUIStyle errorStyle;
-    // Contains all waypoints that are created through the "add waypoint" button
+    // Contains all waypoints for current route that are created through the "add waypoint" button
     ArrayList dynamicWaypoints = new ArrayList();
+    // Contains connection lines between waypoints
     ArrayList lines = new ArrayList();
     // Drone needs space to fly
     float flyRadius = 0.1f;
@@ -94,6 +95,13 @@ public class WaypointsScript : MonoBehaviour {
         return coords;
     }
 
+    /** Prepares everything to be able to start a new route */
+    public void newRoute()
+    {
+        deleteAllLines();
+        deleteAllWaypoints();
+    }
+
     /** Draws a line between two points: blue if no collisions red if collisions
      * returns true if no collisions detected
      */
@@ -141,6 +149,16 @@ public class WaypointsScript : MonoBehaviour {
         return goodTrajectory;
     }
 
+    public void deleteAllWaypoints()
+    {
+        for(int i=0; i<dynamicWaypoints.Count; i++)
+        {
+            GameObject waypoint = (GameObject)dynamicWaypoints[i];
+            Destroy(waypoint);
+        }
+        dynamicWaypoints.Clear();
+    }
+
     /** Destroys all lines */
     public void deleteAllLines()
     {
@@ -149,6 +167,7 @@ public class WaypointsScript : MonoBehaviour {
             GameObject line = (GameObject)lines[i];
             Destroy(line);
         }
+        lines.Clear();
     }
 
     /** Removes colliders from waypoints */
@@ -260,5 +279,11 @@ public class WaypointsScript : MonoBehaviour {
     public void changeZ(string z)
     {
         this.z = int.Parse(z);
+    }
+
+    /** Changes target drone for route */
+    public void changeTarget(string target)
+    {
+        this.target = int.Parse(target);
     }
 }
