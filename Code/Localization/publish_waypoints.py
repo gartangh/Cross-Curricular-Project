@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-import json		
+import json
 
 # Make a connection to the MQTT server
 mqttc = mqtt.Client("vopwaypoints")
