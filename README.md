@@ -1,4 +1,4 @@
-# VOP Voorraadbeheer
+# Inventory management by drones
 
 The goal of this project is to provide commercially available drones with a functional on-board controller and to use a control board that is responsible for drone control and localization.
 Beside that is the controller responsible for communication with a central control point.
@@ -9,7 +9,7 @@ The drone is capable of flying autonomous and smoothly on a route, send from the
 ### Hardware
 
 * 1 Raspberry Pi 3 B (with a power supply, a 16 GB microSD card and an Ethernet cable)
-* 1 Raspberry Pi Zero W (with a LiPo SHIM, a 3.7 V, 250 mAh LiPo battery and a 16 GB microSD card)
+* 1 Raspberry Pi Zero W (with a LiPo SHIM, a 3.7 V, 500 mAh LiPo battery and a 16 GB microSD card)
 * 1 Pozyx tag (with a Micro-USB to Micro-USB OTG cable)
 * 4 Pozyx anchors (with power supply)
 * 1 Parrot AR.Drone 2.0
@@ -56,7 +56,7 @@ sudo npm install ar-drone
 sudo npm install ardrone-autonomy
 ```
 
-Add git
+#### Add git
 
 ```
 sudo apt-get install git
@@ -68,20 +68,15 @@ sudo apt-get install git
 TODO
 ```
 
-Make a new directory for the project
+#### Add the necessary files
 
 ```
 mkdir VOP_Voorraadbeheer
 cd VOP_Voorraadbeheer
-```
-
-Add the necessary files
-
-```
 TODO
 ```
 
-Reboot
+#### Reboot
 
 ```
 sudo reboot
@@ -96,7 +91,7 @@ Plug the SD card in the Raspberry Pi.
 Power on the Raspberry Pi and let it install the system image.
 Connect to the Raspberry Pi via Putty.
 
-Update everything
+#### Update everything
 
 ```
 sudo apt-get update
@@ -104,7 +99,7 @@ sudo apt-get upgrade
 sudo reboot
 ```
 
-Add git
+#### Add git
 
 ```
 sudo apt-get install git
@@ -116,26 +111,23 @@ sudo apt-get install git
 TODO
 ```
 
-Make a new directory for the project
+#### Add the necessary files
 
 ```
 mkdir VOP_Voorraadbeheer
 cd VOP_Voorraadbeheer
-```
-
-Add the necessary files
-
-```
 TODO
 ```
 
-Reboot
+#### Reboot
 
 ```
 sudo reboot
 ```
 
-## Test the setup
+## More information
+
+More information about all sorts of topics can be found in the [wiki](https://github.ugent.be/gartangh/VOP_Voorraadbeheer/wiki).
 
 ## Authors
 
@@ -145,6 +137,7 @@ sudo reboot
 * Garben Tanghe
 
 ## Supervisors
+
 * Prof. D. Colle
 * Prof. E. De Poorter
 * Prof. M. Pickavet
