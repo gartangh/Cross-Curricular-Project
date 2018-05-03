@@ -1,5 +1,0 @@
-vopanchors # The anchors in JSON format
-
-vopposition[ID] # The position of a drone
-vopeulerangles[ID] # The euler angles of a drone
-vopwaypoints[ID] # The wayoints for a drone in JSON format
