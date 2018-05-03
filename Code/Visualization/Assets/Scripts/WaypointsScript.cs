@@ -286,4 +286,10 @@ public class WaypointsScript : MonoBehaviour {
     {
         this.target = int.Parse(target);
     }
+
+    /** Setup all variables from config JSON file */
+    public void Setup()
+    {
+        //TODO
+    }
 }
