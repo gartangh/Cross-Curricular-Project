@@ -1,0 +1,14 @@
+{
+  "ip": "157.193.214.115",
+  "dronescale": "100",
+  "Drones": [
+      {
+        "id": "1",
+        "color": "yellow"
+      },
+      {
+        "id": "2",
+        "color": "blue"
+      }
+  ]
+}
