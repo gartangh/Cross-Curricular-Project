@@ -216,9 +216,9 @@ public class WaypointsScript : MonoBehaviour {
             Vector3 position = InverseTransformCoordinates(wp.transform.position);
             locations += "\t\t{\n\t\t\t\"ID\": " + i + ",\n";
             locations += "\t\t\t\"position\": {\n";
-            locations += "\t\t\t\t\"x\": " + position.x +",\n";
-            locations += "\t\t\t\t\"y\": " + position.y + ",\n";
-            locations += "\t\t\t\t\"z\": " + position.z + "\n";
+            locations += "\t\t\t\t\"x\": " + (int) position.x +",\n";
+            locations += "\t\t\t\t\"y\": " + (int) position.y + ",\n";
+            locations += "\t\t\t\t\"z\": " + (int) position.z + "\n";
             locations += "\t\t\t}\n";
             locations += "\t\t}";
             if (i != dynamicWaypoints.Count - 1)
