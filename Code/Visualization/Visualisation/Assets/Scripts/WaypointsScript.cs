@@ -12,12 +12,14 @@ public class WaypointsScript : MonoBehaviour {
     // Topics on mqtt client to subscribe/publish to
     string publishLocationsTopic = "vopwaypoints";
     // ip-address of mqtt server
-    public static IPAddress ip = IPAddress.Parse("157.193.214.115");
+    public static IPAddress ip;
+    // list of all available drones
+    ArrayList droneIDs = new ArrayList();
     // Int's to add waypoints (these are coordinates) and int to specify target drone
     public int x,y,z,target;
     // Timers for error messages
     float errorDisplayTime = 3f;
-    float waypointErrorTimer, lineErrorTimer;
+    float waypointErrorTimer, lineErrorTimer, targetErrorTimer;
     // Waypoint object to add to scene
     public GameObject WayPoint;
     // GUIStyle to style error messages
@@ -31,6 +33,8 @@ public class WaypointsScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        // Read variables from config file
+        Setup();
         // Initialize timers
         waypointErrorTimer = 0f;
         lineErrorTimer = 0f;
@@ -57,14 +61,20 @@ public class WaypointsScript : MonoBehaviour {
         if (Mathf.CeilToInt(waypointErrorTimer) > 0)
         {
             waypointErrorTimer -= Time.deltaTime;
-            GUI.Label(new Rect(50, 50, 100, 25), "Waypoint too close to an obstacle!", errorStyle);
+            GUI.Label(new Rect(50, 20, 100, 25), "Waypoint too close to an obstacle!", errorStyle);
         }
         // Display line error
         if (Mathf.CeilToInt(lineErrorTimer) > 0)
         {
             lineErrorTimer -= Time.deltaTime;
-            GUI.Label(new Rect(50, 50, 100, 25), "Impossible trajectory!", errorStyle);
+            GUI.Label(new Rect(50, 40, 100, 25), "Impossible trajectory!", errorStyle);
         }
+        // Display invalid target error
+        if (Mathf.CeilToInt(targetErrorTimer) > 0)
+        {
+            targetErrorTimer -= Time.deltaTime;
+            GUI.Label(new Rect(50, 60, 100, 25), "Target drone doesn't exist!", errorStyle);
+        } 
     }
 
     /** Writes locations of waypoints (in MQTT coordinates and JSON format) to a file with location fileloc*/
@@ -193,23 +203,29 @@ public class WaypointsScript : MonoBehaviour {
     public void takeoff()
     {
         deleteAllLines();
-        if (DrawAllLines())
+        bool okRoute = DrawAllLines();
+        bool validTarget = droneIDs.Contains(target);
+        if (okRoute && validTarget)
         {
             // Publish waypoint coordinates to the mqtt server on topic specified above
 			client.Publish(publishLocationsTopic, Encoding.UTF8.GetBytes(waypointsToString()));
 			// Write waypoints to a file in JSON format
 			WriteWaypointsToFile(Application.dataPath + "/Waypoints/Waypoints.json");
         }
-		else
+		else if(!okRoute)
         {
             lineErrorTimer = errorDisplayTime;
+        }else if (!validTarget)
+        {
+            targetErrorTimer = errorDisplayTime;
         }
     }
 
     /** Makes a JSON formatted string containing all waypoint locations and ID in order */
     public string waypointsToString()
     {
-        string locations = "{\n\t\"waypoints\": [\n";
+        string locations = "{\n\t\"target\": "+ target+ ",\n";
+        locations+= "\t\"waypoints\": [\n";
         for(int i=0; i<dynamicWaypoints.Count; i++)
         {
             GameObject wp = (GameObject)dynamicWaypoints[i];
@@ -290,6 +306,26 @@ public class WaypointsScript : MonoBehaviour {
     /** Setup all variables from config JSON file */
     public void Setup()
     {
-        //TODO
+        string[] config = System.IO.File.ReadAllLines(Application.dataPath + "/Config/Config.json");
+        foreach(string line in config)
+        {
+            if (line.Contains("ip"))
+            {
+                string ipaddress = line.Split(':')[1].Split('"')[1];
+                ip = IPAddress.Parse(ipaddress);
+            }
+            else if (line.Contains("flyradius"))
+            {
+                float radius = float.Parse(line.Split(':')[1].Split('"')[1]);
+                flyRadius = radius;
+            }else if (line.Contains("waypointstopic"))
+            {
+                publishLocationsTopic = line.Split(':')[1].Split('"')[1];
+            }else if (line.Contains("id"))
+            {
+                int id = Int32.Parse(line.Split(':')[1].Split('"')[1]);
+                droneIDs.Add(id);
+            }
+        }
     }
 }

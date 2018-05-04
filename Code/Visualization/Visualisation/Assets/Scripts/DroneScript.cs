@@ -12,7 +12,7 @@ public class DroneScript : MonoBehaviour {
     // ip-address of mqtt server
     public static IPAddress ip;
     public GameObject Drone;
-    static Dictionary<int, GameObject> droneDictionary = new Dictionary<int, GameObject>();
+    public static Dictionary<int, GameObject> droneDictionary = new Dictionary<int, GameObject>();
     // Topics to subscribe to
     static string positionTopic = "vopposition";
     static string heightTopic = "vopheight";

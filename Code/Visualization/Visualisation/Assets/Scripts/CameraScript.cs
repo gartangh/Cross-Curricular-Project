@@ -5,8 +5,8 @@ using UnityEngine;
 public class CameraScript : MonoBehaviour {
     public float speed = 50.0f;
     private bool follow;
-    public GameObject drone;
-    private Transform trans;
+    private int currentDrone;
+    Dictionary<int, GameObject> droneDictionary;
     public float xMargin = 1f; // Distance in the x axis the player can move before the camera follows.
     public float zMargin = 1f; // Distance in the y axis the player can move before the camera follows.
     public float xSmooth = 8f; // How smoothly the camera catches up with it's target movement in the x axis.
@@ -22,17 +22,16 @@ public class CameraScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
         follow = false;
-        trans = drone.transform;
         Camera.main.transform.position = new Vector3(15000, 10000, -5000);
 	}
 
     // Update is called once per frame
     void Update()
     {
+        droneDictionary = DroneScript.droneDictionary;
         if (follow)
         {
-            // TrackPlayer();
-            ArrowControl();
+            TrackPlayer();
         }
 		else
         {
@@ -43,6 +42,8 @@ public class CameraScript : MonoBehaviour {
     public void startFollowing()
     {
         follow = true;
+        List<int> ids = new List<int>(droneDictionary.Keys);
+        currentDrone = ids[0];
     }
 
     public void ArrowControl()
@@ -63,7 +64,7 @@ public class CameraScript : MonoBehaviour {
         {
             transform.Translate(new Vector3(0, speed * Time.deltaTime * 1000, 0));
         }
-        if (Input.GetKey(KeyCode.M))
+        if (Input.GetKeyUp(KeyCode.Tab))
         {
             if (transform.rotation.eulerAngles == lookDown)
             {
@@ -93,19 +94,35 @@ public class CameraScript : MonoBehaviour {
     private bool CheckXMargin()
     {
         // Returns true if the distance between the camera and the player in the x axis is greater than the x margin.
-        return Mathf.Abs(transform.position.x - trans.position.x) > xMargin;
+        return Mathf.Abs(transform.position.x - droneDictionary[currentDrone].transform.position.x) > xMargin;
     }
 
 
     private bool CheckZMargin()
     {
         // Returns true if the distance between the camera and the player in the y axis is greater than the y margin.
-        return Mathf.Abs(transform.position.z - trans.position.z) > zMargin;
+        return Mathf.Abs(transform.position.z - droneDictionary[currentDrone].transform.position.z) > zMargin;
     }
 
 
     private void TrackPlayer()
     {
+        if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            List<int> ids = new List<int>(droneDictionary.Keys);
+            bool found = false;
+            for(int i=0; i<ids.Count; i++)
+            {
+                if (found == true)
+                {
+                    found = false;
+                    currentDrone = ids[i];
+                }
+                if (currentDrone == ids[i]) found = true;
+            }
+            // if it was the last one out of the list
+            if (found == true) currentDrone = ids[0];
+        }
         // By default the target x and y coordinates of the camera are it's current x and y coordinates.
         float targetX = transform.position.x;
         float targetZ = transform.position.z;
@@ -114,14 +131,14 @@ public class CameraScript : MonoBehaviour {
         if (CheckXMargin())
         {
             // ... the target x coordinate should be a Lerp between the camera's current x position and the player's current x position.
-            targetX = Mathf.Lerp(transform.position.x, trans.position.x, xSmooth * Time.deltaTime);
+            targetX = Mathf.Lerp(transform.position.x, droneDictionary[currentDrone].transform.position.x, xSmooth * Time.deltaTime);
         }
 
         // If the player has moved beyond the y margin...
         if (CheckZMargin())
         {
             // ... the target y coordinate should be a Lerp between the camera's current y position and the player's current y position.
-            targetZ = Mathf.Lerp(transform.position.z, trans.position.z, zSmooth * Time.deltaTime);
+            targetZ = Mathf.Lerp(transform.position.z, droneDictionary[currentDrone].transform.position.z, zSmooth * Time.deltaTime);
         }
 
         // Set the camera's position to the target position with the same y component.

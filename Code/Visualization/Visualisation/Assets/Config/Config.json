@@ -1,6 +1,8 @@
 {
   "ip": "157.193.214.115",
   "dronescale": "100",
+  "flyradius": "100",
+  "waypointstopic": "vopwaypoints",
   "Drones": [
       {
         "id": "1",
