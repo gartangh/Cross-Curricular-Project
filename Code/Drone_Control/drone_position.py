@@ -9,14 +9,10 @@ import numpy as np
 maxspeed = MAX_SPEED
 maxrotation = MAX_ROTATION_SPEED
 
-
-
 print maxspeed
 print maxrotation
 
-
 class DronePosition(object):  # Container for the drone position and direction
-
     def __init__(self):
         self.position = Coordinates()
         self.euler = EulerAngles()
@@ -25,7 +21,6 @@ class DronePosition(object):  # Container for the drone position and direction
         c = self.position
         e = self.euler
         return "X= " + str(c.x) + "; Y= " + str(c.y) + "; Z= " + str(c.z) + "; HEADING: " + str(e.heading)
-
 
     def update_position(self, data):
         self.position.load(data)
@@ -45,13 +40,10 @@ class DronePosition(object):  # Container for the drone position and direction
 
             # bereken verschil van de richting van de drone en de richting van
             # het volgende coordinaat
-            
-
             print('test')
             print 'euler: ' + str(self.euler.heading)
             # print 'afstand: ' + str(distance_fly)
             # print 'hoek: ' + str(angle_fly)
-
 
             vlieg = self.algo2(coords)
             if(sum(vlieg))==0:
@@ -69,9 +61,7 @@ class DronePosition(object):  # Container for the drone position and direction
 
             print 'vlieg: ' + str(vlieg)
 
-            
-
-        # Draai dit verschil
+        	# Draai dit verschil
             #print("fly to: " + str(x)+", "+str(y)+", "+str(z))
             print("roro " + str(float(vlieg[0]) * float(maxrotation)) +
                   " degrees and fly " + str(float(vlieg[1]) * float(maxspeed)) + " mm.")
@@ -82,6 +72,7 @@ class DronePosition(object):  # Container for the drone position and direction
     def distance_horizontal(self, x, y, z):
         X = float(self.position.x)
         Y = float(self.position.y)
+
         return math.sqrt((float(y) - Y)**2 + (float(x) - X)**2)
 
     def angle(self, x, y, z):
@@ -101,11 +92,9 @@ class DronePosition(object):  # Container for the drone position and direction
         return angle
 
     def algo1(self, coors):
-
         x = coords[0]
         y = coords[1]
         z = coords[2]
-
 
         angle_fly = self.angle(x, y, z)
         distance_fly = self.distance_horizontal(x, y, z)
@@ -127,6 +116,7 @@ class DronePosition(object):  # Container for the drone position and direction
 
         if angle_t > TURN_THRESHOLD:
             speed_t = 0
+        
         return [angle_t, speed_t,   0, 0, 0]
 
     # stuur coordinaten: [clockwise, front, back, left, right]
@@ -176,6 +166,4 @@ class DronePosition(object):  # Container for the drone position and direction
             else:
                 angular_speed = -0.2
 
-
-
-        return [angular_speed, speed_forward, speed_backward, speed_right, speed_left]
+return [angular_speed, speed_forward, speed_backward, speed_right, speed_left]

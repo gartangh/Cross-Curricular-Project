@@ -1,6 +1,6 @@
 import json
 
-with open('Anchors_Example.json') as json_file:
+with open('example_anchors.json') as json_file:
     json_data = json.load(json_file)
 
     for anchors in json_data['anchors']:

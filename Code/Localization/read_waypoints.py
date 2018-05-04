@@ -1,6 +1,6 @@
 import json
 
-with open('Waypoints_Example.json') as json_file:
+with open('example_waypoints.json') as json_file:
     json_data = json.load(json_file)
 
     for waypoint in json_data['waypoints']:
