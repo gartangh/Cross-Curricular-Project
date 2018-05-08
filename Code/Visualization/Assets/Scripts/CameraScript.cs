@@ -46,6 +46,11 @@ public class CameraScript : MonoBehaviour {
         currentDrone = ids[0];
     }
 
+    public void stopFollowing()
+    {
+        follow = false;
+    }
+
     public void ArrowControl()
     {
         if (Input.GetKey(KeyCode.RightArrow))
