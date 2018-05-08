@@ -56,12 +56,6 @@ sudo npm install ar-drone
 sudo npm install ardrone-autonomy
 ```
 
-#### Add git
-
-```
-sudo apt-get install git
-```
-
 #### Set up MQTT
 
 ```
@@ -97,12 +91,6 @@ Connect to the Raspberry Pi via Putty.
 sudo apt-get update
 sudo apt-get upgrade
 sudo reboot
-```
-
-#### Add git
-
-```
-sudo apt-get install git
 ```
 
 #### Set up MQTT
