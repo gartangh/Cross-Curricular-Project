@@ -49,7 +49,7 @@ sudo apt-get upgrade
 sudo apt-get install build-essential
 ```
 
-#### Install AR.Drone package
+#### Install AR.Drone packages
 
 ```
 cd Code/Drone_Control
@@ -58,9 +58,16 @@ sudo npm install ar-drone
 sudo npm install ardrone-autonomy
 ```
 
+#### Install Pozyx packages
+
+```
+pip install pypozyx
+```
+
 #### Set up MQTT
 
 ```
+pip install paho-mqtt
 TODO
 ```
 
@@ -95,9 +102,16 @@ sudo apt-get upgrade
 sudo reboot
 ```
 
+#### Install Pozyx packages
+
+```
+pip install pypozyx
+```
+
 #### Set up MQTT
 
 ```
+pip instsall paho-mqtt
 TODO
 ```
 
