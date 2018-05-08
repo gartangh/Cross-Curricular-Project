@@ -4,6 +4,8 @@ The goal of this project is to provide commercially available drones with a func
 Beside that is the controller responsible for communication with a central control point.
 The drone is capable of flying autonomous and smoothly on a route, send from the control point.
 
+Click [here](https://github.ugent.be/pages/gartangh/VOP_Voorraadbeheer) to visit the website!
+
 ## Getting Started
 
 ### Hardware
