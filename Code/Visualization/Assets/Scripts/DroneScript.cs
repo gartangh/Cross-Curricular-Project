@@ -14,14 +14,14 @@ public class DroneScript : MonoBehaviour {
     public GameObject Drone;
     public static Dictionary<int, GameObject> droneDictionary = new Dictionary<int, GameObject>();
     // Topics to subscribe to
-    static string positionTopic = "vopposition";
-    static string heightTopic = "vopheight";
-    static string orientationTopic = "vopeulerangles";
+    static Dictionary<int, string> positionTopics = new Dictionary<int, string>();
+    static Dictionary<int, string> heightTopics = new Dictionary<int, string>();
+    static Dictionary<int, string> orientationTopics = new Dictionary<int, string>();
     // Placeholder for updated position, height & orientation
     static Dictionary<int, string> positions = new Dictionary<int, string>();
     static Dictionary<int, string> heights = new Dictionary<int, string>();
     static Dictionary<int, string> orientations = new Dictionary<int, string>();
-    // Scale of the drone
+    // Scale of the drone (default value)
     static int dronescale = 100;
 
     /** Message handling code */
@@ -30,15 +30,15 @@ public class DroneScript : MonoBehaviour {
         List<int> ids = new List<int>(droneDictionary.Keys);
         foreach(int id in ids)
         {
-            if (e.Topic.Equals(positionTopic+id.ToString()))
+            if (e.Topic.Equals(positionTopics[id]))
             {
                 positions[id] = Encoding.UTF8.GetString(e.Message);
             }
-            else if (e.Topic.Equals(heightTopic+id.ToString()))
+            else if (e.Topic.Equals(heightTopics[id]))
             {
                 heights[id] = Encoding.UTF8.GetString(e.Message);
             }
-            else if (e.Topic.Equals(orientationTopic+id.ToString()))
+            else if (e.Topic.Equals(orientationTopics[id]))
             {
                 orientations[id] = Encoding.UTF8.GetString(e.Message);
             }
@@ -59,7 +59,7 @@ public class DroneScript : MonoBehaviour {
         List<int> ids = new List<int>(droneDictionary.Keys);
         foreach (int id in ids)
         {
-            client.Subscribe(new string[] { positionTopic+id.ToString(), heightTopic+id.ToString(), orientationTopic+id.ToString() }, new byte[] { 0, 0, 0 });
+            client.Subscribe(new string[] { positionTopics[id], heightTopics[id], orientationTopics[id] }, new byte[] { 0, 0, 0 });
         }
     }
 
@@ -106,9 +106,9 @@ public class DroneScript : MonoBehaviour {
 		// Angles are seperated by a comma and decimals are indicated by a dot
         string[] angles = orientations[id].Split(',');
 		// Unity uses comma's instead of dot's for decimals
-        float heading = float.Parse(angles[0].Replace('.', ','))-90;
-        float roll = float.Parse(angles[1].Replace('.', ','));
-        float pitch = -float.Parse(angles[2].Replace('.', ','));
+        float heading = float.Parse(angles[0].Replace('.', ','))+90;
+        float roll = -float.Parse(angles[1].Replace('.', ','));
+        float pitch = float.Parse(angles[2].Replace('.', ','))+90;
 
 		return Quaternion.Euler(roll, heading, pitch);
     }
@@ -158,6 +158,21 @@ public class DroneScript : MonoBehaviour {
                         // set it's color
                         Renderer rend = drone.GetComponentInChildren<Renderer>();
                         rend.material.SetColor("_Color", desiredColor);
+                    }
+                    else if (config[i].Contains("positiontopic"))
+                    {
+                        string positiontopic = config[i].Split(':')[1].Split('"')[1].Trim();
+                        positionTopics.Add(id, positiontopic);
+                    }
+                    else if (config[i].Contains("heighttopic"))
+                    {
+                        string heighttopic = config[i].Split(':')[1].Split('"')[1].Trim();
+                        heightTopics.Add(id, heighttopic);
+                    }
+                    else if (config[i].Contains("orientationtopic"))
+                    {
+                        string orientationtopic = config[i].Split(':')[1].Split('"')[1].Trim();
+                        orientationTopics.Add(id, orientationtopic);
                     }
                     i++;
                 }
