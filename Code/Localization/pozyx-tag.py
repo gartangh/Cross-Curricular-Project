@@ -1,15 +1,7 @@
-import math
 import time
 import serial
 import json
-import sys
-import syslog
-import os
-import matplotlib
-matplotlib.use('Agg')
 
-import numpy as np
-import matplotlib.pyplot as plt
 import paho.mqtt.client as mqtt
 
 from pypozyx import *
