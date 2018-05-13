@@ -40,7 +40,7 @@ Power supply & Garben & ROODORANJE \\ \hline
 UWB & Bram & GEEL \\ \hline
 Visualisatie & Xavier & SEPIA \\ \hline
 Connectie met server & Iedereen & WIT \\ \hline
-Aansturing drone & Robbe & FUCHSIA \\ \hline
+Aansturing drone & Robbe en Garben & FUCHSIA \\ \hline
 Presentatie 1 & Bram en Garben & JUNGLEGROEN \\ \hline
 Presentatie 2 & Robbe en Xavier & BLAUW \\ \hline
 Verslag & Iedereen & WIT \\ \hline
@@ -57,17 +57,17 @@ De finale planning is terug te vinden op figuur \ref{fig:finale_planning}.
 \begin{ganttchart}[vgrid, y unit chart=0.75cm, bar/.append style={fill=White, rounded corners=2pt}, milestone/.append style={fill=White}]{1}{13}
 	\gantttitlelist{1,...,13}{1}\\
 	
-	\ganttgroup{Hardware}{1}{5}\\
-	\ganttbar{Uitzoeken en bestellen}{1}{2}\\
-	\ganttbar[bar/.append style={fill=JungleGreen}]{Raspberry en DecaWave verbinden}{5}{5}\\
-	\ganttbar[bar/.append style={fill=RedOrange}]{Power supply}{5}{5}\\
-	\ganttbar[bar/.append style={fill=RedOrange}]{Controller aan drone bevestigen}{5}{5}\\
+	\ganttgroup{Hardware}{1}{8}\\
+	\ganttbar{Uitzoeken en bestellen}{1}{3}\\
+	\ganttbar[bar/.append style={fill=JungleGreen}]{Raspberry en Pozyx verbinden}{5}{5}\\
+	\ganttbar[bar/.append style={fill=RedOrange}]{Power supply}{8}{8}\\
+	\ganttbar[bar/.append style={fill=RedOrange}]{Controller houder}{10}{11}\\
 	
 	\ganttgroup{Software}{3}{12}\\
-	\ganttbar[bar/.append style={fill=Yellow}]{UWB}{3}{4}\\
-	\ganttbar[bar/.append style={fill=Fuchsia}]{Connectie met server}{5}{6}\\
-	\ganttbar[bar/.append style={fill=Fuchsia}]{Aansturing drone}{4}{9}\\
-	\ganttbar{Full-mesh}{10}{12}\\
+	\ganttbar[bar/.append style={fill=Yellow}]{UWB}{3}{7}\\
+	\ganttbar[bar/.append style={fill=White}]{Connectie met server}{5}{8}\\
+	\ganttbar[bar/.append style={fill=Fuchsia}]{Aansturing drone}{4}{12}\\
+	\ganttbar[bar./append style={fill=White}]{Visualizatie}{6}{10}\\
 	
 	\ganttgroup{Presentaties en verslag}{1}{13}\\
 	\ganttmilestone[milestone/.append style={fill=JungleGreen}]{Presentatie 1}{4}\\
@@ -80,11 +80,11 @@ De finale planning is terug te vinden op figuur \ref{fig:finale_planning}.
 \label{fig:finale_planning}
 \end{figure}\\
 
-De grootste verschillen tussen de initi\"ele planning en de finale planning zijn dat de visualisatie meer tijd in neemt op de tijdlijn en dat het hardware gedeelte later ge\"eindigd is.
+De grootste verschillen tussen de initi\"ele planning en de finale planning zijn dat de visualisatie er bij is gekomen en dat het hardware gedeelte later ge\"eindigd is.
 De houder voor de controller werd ook pas in de laatste 3 weken in 3D getekend en geprint.\\
 
 De motivatie van de belangrijkste wijzigingen zijn dat het visuele gedeelte enorm uitgebreid is ten opzichte van wat initi\"eel gepland werd. Zo worden nu meerdere drones live ondersteund in Unity en kun je die volgen met verscheidene camera's. Ook de paden kunnen aangemaakt en bewerkt worden vanuit Unity. \\
 De reden waarom het hardware gedeelte langer duurde dan oorspronkelijk ingepland werd, is vrij simpel te verklaren.
-In het begin werden enkele afwegingen gemaakt (vb. tussen verschillende drones en de DecaWave tegenover de Raspberrry Pi Zero W), die pas na enkele weken vastgelegd werden.
+In het begin werden enkele afwegingen gemaakt (vb. tussen verschillende drones en de DecaWave tegenover de Pozyx tag), die pas na enkele weken vastgelegd werden.
 Om de kosten te drukken werden kabels, batterijen, ... besteld uit China. Het nadeel daarvan is dat onderdelen enkele weken onderweg kunnen zijn, waardoor die pas laat voorhanden waren. De code kon ondertussen al geschreven worden, maar nog niet uitgetest op de hardware.\\
 De reden waarom er pas in de laatste weken voor de controller houder gekeken werd is dat de prioriteit op andere delen lag. Indien er tijd over zou zijn, kon er gekeken worden om een esthetischere houder te cre\"eren.

@@ -185,7 +185,7 @@ class DronePosition:
 			# Overwrite speed forward
 			speed_forward = 0
 
-		speed_forward * MAX_SPEED, speed_backward * MAX_SPEED, speed_right * MAX_SPEED, speed_left * MAX_SPEED, speed_up * MAX_SPEED, speed_down * MAX_SPEED, rotate_counterclockwise * MAX_ROTATION, rotate_clockwise * MAX_ROTATION
+		return speed_forward * MAX_SPEED, speed_backward * MAX_SPEED, speed_right * MAX_SPEED, speed_left * MAX_SPEED, speed_up * MAX_SPEED, speed_down * MAX_SPEED, rotate_counterclockwise * MAX_ROTATION, rotate_clockwise * MAX_ROTATION
 
 	# Positive axes: forward, left, up and counterclockwise
 	def algo2(self, waypoint_x, waypoint_y, waypoint_z):

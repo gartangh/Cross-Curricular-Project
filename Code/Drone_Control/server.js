@@ -32,7 +32,7 @@ const server = net.createServer((client) => {
 		console.log(instructions)
 
 		// Take off the drone
-		/*if (!takeoff) {
+		if (!takeoff) {
 			drone.takeoff(function(err) {
 				if (err)
 					console.log(err);
@@ -44,7 +44,7 @@ const server = net.createServer((client) => {
 			});
 
 			return;
-		}*/
+		}
 
 		if (instructions[8] == 1)
 			// Hover in place
@@ -61,9 +61,9 @@ const server = net.createServer((client) => {
 		}
 		
 		// Return height in mm
-		//var heightmm = 1000 * height | 0;
+		var heightmm = 1000 * height | 0;
 		//var heightmm = Math.floor(Math.random() * (2200 - 900 + 1)) + 900;
-		heightmm = 2000;
+		//heightmm = 2000;
 		client.write(heightmm.toString());
 	});
 
