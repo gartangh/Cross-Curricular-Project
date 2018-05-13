@@ -91,7 +91,11 @@ Copy Setup/wpa_supplicant.conf and Setup/ssh to the micro SD card.
 Change the network in wpa_supplicant.conf (on the microSD card) to the network you would like to use.
 Plug the SD card in the Raspberry Pi.
 Power on the Raspberry Pi and let it install the system image.
-Connect to the Raspberry Pi via Putty.
+Connect to the Raspberry Pi via Putty or terminal.
+
+```
+ssh pi@<ip>
+```
 
 #### Update everything
 
@@ -101,31 +105,29 @@ sudo apt-get upgrade
 sudo reboot
 ```
 
-#### Install Pozyx packages
-
-```
-pip install pypozyx
-```
-
-#### Set up MQTT
-
-```
-pip instsall paho-mqtt
-TODO
-```
-
 #### Add the necessary files
 
 ```
-mkdir VOP_Voorraadbeheer
-cd VOP_Voorraadbeheer
-TODO
+cd Desktop
+git clone https://github.ugent.be/gartangh/VOP_Voorraadbeheer.git
+```
+
+#### Install packages
+```
+sudo pip install pypozyx
+sudo pip install paho-mqtt
+sudo pip install pyserial
 ```
 
 #### Reboot
-
 ```
 sudo reboot
+```
+
+### Run the program
+```
+ssh pi@<ip>
+python /home/pi/Desktop/VOP_Voorraadbeheer/Code/Localization/pozyx-tag.py 
 ```
 
 ## More information
