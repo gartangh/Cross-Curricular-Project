@@ -242,4 +242,3 @@ if __name__ == "__main__":
 			print "Interrupt received, stopping..."
 			mqttc.stop()
 			quit()
-

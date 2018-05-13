@@ -53,7 +53,6 @@ sudo apt-get install build-essential
 
 ```
 cd Code/Drone_Control
-sudo npm install git://github.com/felixge/node-ar-drone.git
 sudo npm install ar-drone
 sudo npm install ardrone-autonomy
 ```
