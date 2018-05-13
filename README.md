@@ -1,7 +1,7 @@
 # Inventory management by drones
 
 The goal of this project is to provide commercially available drones with a functional on-board controller and to use a control board that is responsible for drone control and localization.
-Beside that is the controller responsible for communication with a central control point.
+Beside that, the controller is responsible for communication with a central control point.
 The drone is capable of flying autonomous and smoothly on a route, send from the control point.
 
 Click [here](https://github.ugent.be/pages/gartangh/VOP_Voorraadbeheer) to visit the website!
@@ -23,7 +23,8 @@ Click [here](https://github.ugent.be/pages/gartangh/VOP_Voorraadbeheer) to visit
 * Clone this project wherever you like - Source Code
 * Install [Unity](https://store.unity.com/) - Visualization
 * Download [NOOBS](https://www.raspberrypi.org/downloads/noobs/) - System image for Raspberry Pi 3 B and Raspberry Pi Zero W
-* Install [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) - SSH Client
+* Install [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) - SSH Client (Optional)
+* Install [WinSCP](https://winscp.net/eng/download.php) - (S)FTP Client (Windows)
 
 ### Setting up the Raspberry Pi 3 B
 
@@ -32,7 +33,13 @@ Copy Setup/wpa_supplicant.conf and Setup/ssh to the microSD card.
 Change the network in wpa_supplicant.conf (on the microSD card) to the network of the drone.
 Plug the microSD card in the Raspberry Pi.
 Power on the Raspberry Pi and let it install the system image.
-Connect to the Raspberry Pi via Putty.
+Connect to the Raspberry Pi via Putty or terminal and WinSCP.
+
+#### Add the necessary files
+
+Copy all files from Code\Drone_Control in a directory of your choosing with WinSCP.
+
+The rest of the commands can be send via Putty or terminal.
 
 #### Set up node.js
 
@@ -49,39 +56,26 @@ sudo apt-get upgrade
 sudo apt-get install build-essential
 ```
 
-#### Install AR.Drone packages
+#### Install packages
 
 ```
-cd Code/Drone_Control
 sudo npm install ar-drone
 sudo npm install ardrone-autonomy
-```
-
-#### Install Pozyx packages
-
-```
-pip install pypozyx
-```
-
-#### Set up MQTT
-
-```
-pip install paho-mqtt
-TODO
-```
-
-#### Add the necessary files
-
-```
-mkdir VOP_Voorraadbeheer
-cd VOP_Voorraadbeheer
-TODO
+sudo pip install pypozyx
+sudo pip install paho-mqtt
 ```
 
 #### Reboot
 
 ```
 sudo reboot
+```
+
+#### Run the program
+
+```
+node server.js
+python2 client.py
 ```
 
 ### Setting up the Raspberry Pi Zero W:
@@ -91,7 +85,7 @@ Copy Setup/wpa_supplicant.conf and Setup/ssh to the micro SD card.
 Change the network in wpa_supplicant.conf (on the microSD card) to the network you would like to use.
 Plug the SD card in the Raspberry Pi.
 Power on the Raspberry Pi and let it install the system image.
-Connect to the Raspberry Pi via Putty.
+Connect to the Raspberry Pi via Putty or terminal and WinSCP.
 
 #### Update everything
 
@@ -101,31 +95,30 @@ sudo apt-get upgrade
 sudo reboot
 ```
 
-#### Install Pozyx packages
-
-```
-pip install pypozyx
-```
-
-#### Set up MQTT
-
-```
-pip instsall paho-mqtt
-TODO
-```
-
 #### Add the necessary files
 
+Copy all files from Code\Localization in a directory of your choosing with WinSCP.
+
+The rest of the commands can be send via Putty or terminal.
+
+#### Install packages
+
 ```
-mkdir VOP_Voorraadbeheer
-cd VOP_Voorraadbeheer
-TODO
+sudo pip install pypozyx
+sudo pip install paho-mqtt
+sudo pip install pyserial
 ```
 
 #### Reboot
 
 ```
 sudo reboot
+```
+
+#### Run the program
+
+```
+python2 pozyx-tag.py 
 ```
 
 ## More information
