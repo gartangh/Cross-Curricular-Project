@@ -4,6 +4,7 @@ import serial
 import sys
 import socket
 import json
+import os
 
 import numpy as np
 import paho.mqtt.client as mqtt
@@ -11,29 +12,48 @@ import paho.mqtt.client as mqtt
 from pypozyx import *
 
 # MQTT-topics
-topic_waypoints = "vopwaypoints1"
 topic_position = "vopposition1"
+topic_euler = "vopeulerangles1"
+topic_waypoints = "vopwaypoints1"
 topic_height = "vopheight1"
 
 # Global variables
-waypoints = []
+# Dictionary of waypoints
+waypoints = None
+# Coordinates in mm
 x = None
 y = None
 z = None
-currentTime = time.time()
+heading = None
+# Current time, not set yet
+currentTime = None
+# Boolean time set, set on false
 timeSet = False
+
+# Configuration parameters
+TIME_INTERVAL = None
+POSITION_THRESHOLD = None
+MAX_SPEED = None
+MAX_ROTATION = None
+ROTATION_THRESHOLD = None
+heading_ref = None
 
 # Load configuration parameters
 def config():
 	with open("config.json") as json_file:
 		json_data = json.load(json_file)
 
+		global TIME_INTERVAL
+		global POSITION_THRESHOLD
+		global MAX_SPEED
+		global MAX_ROTATION
+		global ROTATION_THRESHOLD
+
 		TIME_INTERVAL = json_data["TIME_INTERVAL"]
 		POSITION_THRESHOLD = json_data["POSITION_THRESHOLD"]
 		MAX_SPEED = json_data["MAX_SPEED"]
 		MAX_ROTATION = json_data["MAX_ROTATION"]
 		ROTATION_THRESHOLD = json_data["ROTATION_THRESHOLD"]
-		OWN_ANGLE = json_data["OWN_ANGLE"]
 
 		json_file.close()
 
@@ -45,39 +65,49 @@ def getWaypoints():
 # Update waypoints
 def updateWaypoints(data):
 	global waypoints
-	waypoints = json.loads(data)["waypoints"]
+	waypoints = json.loads(data)
 	print "Updated waypoints!"
 
 # Container for the drone position and Euler angles
-class DronePosition(object):
+class DronePosition:
 
 	# Constructor
 	def __init__(self):
+		global z
+		global heading_ref
+
 		self.position = Coordinates()
 		self.euler = EulerAngles()
 
-	# Update position
-	def update_position(self, data):
-		self.position.load(data)
-
-	# Update position angles
-	def update_euler(self, data):
-		self.euler.load(data, False)
+		self.position.z = z
+		self.euler.heading = heading_ref
 
 	# Fly the drone
-	def fly(self, waypoint):
+	def fly(self, waypoint_x, waypoint_y, waypoint_z, wait):
+		global x
+		global y
+		global z
+		global heading
 		global currentTime
 		global timeSet
+
+		# Update own orientation
+		self.position.x = x
+		self.position.y = y
+		self.position.z = z
+		self.euler.heading = heading
 
 		done = False
 		hover = False
 
-		speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise = self.algo2([waypoint[0], waypoint[1], waypoint[2]])
+		# Execute algorithm here
+		#speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise = self.algo1(waypoint[0], waypoint[1], waypoint[2])
+		speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise = self.algo2(waypoint_x, waypoint_y, waypoint_z)
 		
 		if sum([speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise]) == 0:
 			done = True
 		
-		if waypoint[3] > 0:
+		if done and wait > 0:
 			# Wait for a while
 			if not timeSet:
 				# Time was not set yet
@@ -87,7 +117,7 @@ class DronePosition(object):
 				hover = True
 			else:
 				# Time was already set
-				if time.time() - currentTime >= waypoint[3]:
+				if time.time() - currentTime >= wait:
 					done = True
 					timeSet = False
 				else:
@@ -96,54 +126,80 @@ class DronePosition(object):
 
 		return speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise, hover, done
 
-	def distance_horizontal(self, x, y, z):
-		return math.sqrt((float(x) - self.position.x)**2 + (float(y) - self.position.y)**2)
+	# Return distance from current position to waypoint in mm
+	def distance_horizontal(self, waypoint_x, waypoint_y, waypoint_z):
+		return math.sqrt((waypoint_x - self.position.x)**2 + (waypoint_y - self.position.y)**2)
 
-	def angle(self, x, y, z):
-		angle = math.atan2(float(y) - self.position.y, float(x) - self.position.x) * 180 / math.pi - self.euler.heading + 90
-		if angle > 180:
-			angle = angle - 360
-		elif angle < -180:
-			angle = angle + 360
+	# Return arctan from current position to waypoint in degrees
+	def angle(self, waypoint_x, waypoint_y, waypoint_z):
+		# Error of 90 degrees
+		return math.atan2(waypoint_y - self.position.y, waypoint_x - self.position.x) * 180 / math.pi + 90
 
-		return angle
-
-	# TODO Document algorithm 1
-	def algo1(self, waypoint):
-		x = waypoint[0]
-		y = waypoint[1]
-		z = waypoint[2]
-
-		angle_fly = self.angle(x, y, z)
-		distance_fly = self.distance_horizontal(x, y, z)
-
-		if abs(angle_fly) > 180:
-			angle_t = 100 * angle_fly / abs(angle_fly)
-		elif abs(angle_fly) < 5:
-			angle_t = 0
-		else:
-			angle_t = angle_fly / 180
-
-		if distance_fly > 10000:
-			speed_t = 100
-		elif distance_fly < POSITION_THRESHOLD:
-			speed_t = 0
-			angle_t = 0
-		else:
-			speed_t = distance_fly / 10000
-
-		if angle_t > TURN_THRESHOLD:
-			speed_t = 0
-
-		return [angle_t, speed_t, 0, 0, 0]
-
-	# TODO Document algorithm 2
 	# Positive axes: forward, left, up and counterclockwise
-	def algo2(self, waypoint):
-		delta_x = waypoint["x"] - self.position.x
-		delta_y = waypoint["y"] - self.position.y
-		delta_z = waypoint["z"] - self.position.z
-		delta_angle = OWN_ANGLE - self.euler.heading
+	def algo1(self, waypoint_x, waypoint_y, waypoint_z):
+		global TIME_INTERVAL
+		global POSITION_THRESHOLD
+		global MAX_SPEED
+		global MAX_ROTATION
+		global ROTATION_THRESHOLD
+		global heading_ref
+
+		# Default in this algorithm
+		speed_backward = 0
+		speed_left = 0
+		speed_right = 0
+
+		delta_distance = self.distance_horizontal(waypoint_x,waypoint_y, waypoint_z)
+		delta_z = waypoint_z - self.position.z
+		delta_angle = self.angle(waypoint_x, waypoint_y, waypoint_z) - self.euler.heading
+
+		# Distance
+		if abs(delta_distance) <= POSITION_THRESHOLD:
+			speed_forward = 0
+		else:
+			speed_forward = 1
+
+		# Z-axis
+		if abs(delta_z) <= POSITION_THRESHOLD:
+			speed_up = 0
+			speed_down = 0
+		elif delta_z > 0:
+			speed_up = 1
+			speed_down = 0
+		else:
+			speed_up = 0
+			speed_down = 1
+
+		# Heading
+		if abs(delta_angle) <= ROTATION_THRESHOLD:
+			rotate_counterclockwise = 0
+			rotate_clockwise = 0
+		elif delta_angle > ROTATION_THRESHOLD:
+			rotate_counterclockwise = 1
+			rotate_clockwise = 0
+			# Overwrite speed forward
+			speed_forward = 0
+		else:
+			rotate_counterclockwise = 0
+			rotate_clockwise = 1
+			# Overwrite speed forward
+			speed_forward = 0
+
+		speed_forward * MAX_SPEED, speed_backward * MAX_SPEED, speed_right * MAX_SPEED, speed_left * MAX_SPEED, speed_up * MAX_SPEED, speed_down * MAX_SPEED, rotate_counterclockwise * MAX_ROTATION, rotate_clockwise * MAX_ROTATION
+
+	# Positive axes: forward, left, up and counterclockwise
+	def algo2(self, waypoint_x, waypoint_y, waypoint_z):
+		global TIME_INTERVAL
+		global POSITION_THRESHOLD
+		global MAX_SPEED
+		global MAX_ROTATION
+		global ROTATION_THRESHOLD
+		global heading_ref
+
+		delta_x = waypoint_x - self.position.x
+		delta_y = waypoint_y - self.position.y
+		delta_z = waypoint_z - self.position.z
+		delta_angle = heading_ref - self.euler.heading
 
 		# X-axis
 		if abs(delta_x) <= POSITION_THRESHOLD:
@@ -179,15 +235,25 @@ class DronePosition(object):
 			speed_down = 1
 
 		# Heading
-		if abs(delta_angle) > ROTATION_THRESHOLD:
+		if abs(delta_angle) <= ROTATION_THRESHOLD:
 			rotate_counterclockwise = 0
 			rotate_clockwise = 0
-		elif angle_disortion > 0:
+		elif delta_angle > ROTATION_THRESHOLD:
 			rotate_counterclockwise = 1
 			rotate_clockwise = 0
+			# Overwrite horizontal speeds
+			speed_forward =0
+			speed_backward = 0
+			speed_left = 0
+			speed_right = 0
 		else:
 			rotate_counterclockwise = 0
 			rotate_clockwise = 1
+			# Overwrite horizontal speeds
+			speed_forward =0
+			speed_backward = 0
+			speed_left = 0
+			speed_right = 0
 
 		return speed_forward * MAX_SPEED, speed_backward * MAX_SPEED, speed_right * MAX_SPEED, speed_left * MAX_SPEED, speed_up * MAX_SPEED, speed_down * MAX_SPEED, rotate_counterclockwise * MAX_ROTATION, rotate_clockwise * MAX_ROTATION
 
@@ -199,19 +265,33 @@ class MyMQTTClass(mqtt.Client):
 		return
 
 	def on_message_waypoints(self, userdate, message):
-
 		updateWaypoints(message.payload)
 
 		return
 
 	def on_message_position(self, userdate, message):
-		# Collect the coordinates
 		global x
 		global y
-
+		
+		# Collect x and y coordinates
 		coords = message.payload.split(',')
-		x = float(coords[0])
-		y = float(coords[1])
+		#print coords[0] + "," + coords[1]
+		x = int(coords[0])
+		y = int(coords[1])
+		# z = float(coords[2]) is to innacurate, the height from the drone sensors will be used
+
+		return
+
+	def on_message_euler(self, userdate, message):
+		global heading_ref
+		global heading
+
+		if heading_ref == None:
+			heading_ref = int(message.payload)
+
+		# Collect heading
+		#print message.payload
+		heading = int(message.payload)
 
 		return
 
@@ -233,11 +313,13 @@ class MyMQTTClass(mqtt.Client):
 
 	def start(self):
 		# Connect to the MQTT server
-		self.connect("157.193.214.115",1883)
+		self.connect("157.193.214.115", 1883)
 
 		# Subscribe to the topics
 		self.subscribe(topic_position)
 		self.message_callback_add(topic_position, MyMQTTClass.on_message_position)
+		self.subscribe(topic_euler)
+		self.message_callback_add(topic_euler, MyMQTTClass.on_message_euler)
 		self.subscribe(topic_waypoints)
 		self.message_callback_add(topic_waypoints, MyMQTTClass.on_message_waypoints)
 		self.on_message = MyMQTTClass.on_message
@@ -251,9 +333,12 @@ class MyMQTTClass(mqtt.Client):
 		self.disconnect()
 
 	def publish_height(self, height):
-		self.publish(height, str(height))
+		self.publish(topic_height, str(height))
 
 if __name__ == "__main__":
+	# Default height
+	z = 1000
+
 	# Load configuration parameters
 	config()
 
@@ -268,41 +353,59 @@ if __name__ == "__main__":
 	clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	clientsocket.connect(("localhost", 8124))
 
-	if len(getWaypoints()) == 0:
+	# Create drone optimus
+	optimus = DronePosition()
+
+	# Wait for waypoints
+	if getWaypoints() == None:
 		print "Waiting for waypoints ..."
 		
-		while (len(getWaypoints()) == 0):
+		while getWaypoints() == None:
 			# Poll every second
 			time.sleep(1)
 
 		print "Got waypoints!"
 
-	# Create drone optimus
-	optimus = DronePostition()
-
 	# Fly the drone
-	for waypoint in getWaypoints():
-		print "Next waypoint:\t" + str(waypoint["x"]) + ",\t" + str(waypoint["y"]) +  ",\t" + str(waypoint["z"])
+	waypoints = getWaypoints()["waypoints"]
+	for waypoint in waypoints:
+		ID = waypoint["ID"]
+		waypoint_x = waypoint["position"]["x"]
+		waypoint_y = waypoint["position"]["y"]
+		waypoint_z = waypoint["position"]["z"]
+
+		print "Next waypoint: [" + str(ID) + "] " + str(waypoint_x) + "," + str(waypoint_y) +  "," + str(waypoint_z)
 
 		while 1:
-			print "x: " + str(optimus.position.x) + "\t-> " + str(waypoints["x"])
-			print "y: " + str(optimus.position.y) + "\t-> " + str(waypoints["y"])
-			print "z: " + str(optimus.position.z) + "\t-> " + str(waypoints["z"])
+			# On Windows
+			os.system("cls")
+			# On Linux
+			#os.system("clear")
 
-			# Calculate instructions
-			speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise, hover, done = optimus.fly([waypoint["x"], waypoint["y"], waypoint["z"], 5])
+			print "ID: " + str(ID)
+			print "{:>6}\t->\t{:>6}".format(optimus.position.x, waypoint_x)
+			print "{:>6}\t->\t{:>6}".format(optimus.position.y, waypoint_y)
+			print "{:>6}\t->\t{:>6}".format(optimus.position.z, waypoint_z)
+
+			# Calculate instructions and hover 5 s over the waypoint
+			speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise, hover, done = optimus.fly(waypoint_x, waypoint_y, waypoint_z, 5)
 			
 			if done:
 				# Reached waypoint
 				break;
 
+			# Waypoint not yet reached
 			# Send instructions
-			clientsocket.send([speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise, hover])
-			# Get height back
-			height = clientsocket.recv(16)
+			if hover:
+				hover_send = "1"
+			else:
+				hover_send = "0"
 
-			print "height: " + str(height)
-			mqttc.publish_height(height)
+			clientsocket.send(str(speed_forward) + "," + str(speed_backward) + "," + str(speed_left) + "," + str(speed_right) + "," + str(speed_up) + "," + str(speed_down) + "," + str(rotate_counterclockwise) + "," + str(rotate_clockwise) + "," + hover_send)
+
+			# Get height in mm back (read maximum 16 bytes)
+			z = int(clientsocket.recv(16))
+			mqttc.publish_height(z)
 			
 			# Wait some time
 			time.sleep(TIME_INTERVAL)

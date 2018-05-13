@@ -4,9 +4,9 @@ var height = 0.0;
 var takeoff = false;
 
 // Create a drone
-var arDrone = require('ar-drone');
+var arDrone = require("ar-drone");
 var drone  = arDrone.createClient();
-drone.animateLeds('blinkRed', 5, 2);
+drone.animateLeds("blinkRed", 5, 2);
 
 // Get height from drone
 drone.on("navdata", function(navdata) {
@@ -18,47 +18,53 @@ drone.on("navdata", function(navdata) {
 });
 
 // Create a server
-const net = require('net');
+const net = require("net");
 const server = net.createServer((client) => {
 	// On client connected
 	console.log("Client connected!");
 
-	// Set data encoding (either 'ascii', 'utf8', or 'base64')
+	// Set data encoding to UFT-8
 	client.setEncoding("utf8");
 
 	// On data received
-	client.on('data', function(data) {
+	client.on("data", function(data) {
+		instructions = data.split(",")
+		console.log(instructions)
+
 		// Take off the drone
-		if (!takeoff) {
+		/*if (!takeoff) {
 			drone.takeoff(function(err) {
 				if (err)
 					console.log(err);
 				else {
 					takeoff = true;
-					drone.animateLeds('blinkGreen', 5, 2);
+					drone.animateLeds("blinkGreen", 5, 2);
 					console.log("Drone toke off!");
 				}
 			});
 
 			return;
-		}
+		}*/
 
-		if (data[8])
+		if (instructions[8] == 1)
 			// Hover in place
 			drone.stop();
 		else {
-			drone.front(data[0]);
-			drone.back(data[1]);
-			drone.left(data[2]);
-			drone.right(data[3]);
-			drone.up(data[4]);
-			drone.down(data[5]);
-			drone.counterclockwise(data[6])
-			drone.clockwise(data[7]);
+			drone.front(instructions[0]);
+			drone.back(instructions[1]);
+			drone.left(instructions[2]);
+			drone.right(instructions[3]);
+			drone.up(instructions[4]);
+			drone.down(instructions[5]);
+			drone.counterClockwise(instructions[6])
+			drone.clockwise(instructions[7]);
 		}
 		
-		// Return height
-		client.write(height);
+		// Return height in mm
+		//var heightmm = 1000 * height | 0;
+		//var heightmm = Math.floor(Math.random() * (2200 - 900 + 1)) + 900;
+		heightmm = 2000;
+		client.write(heightmm.toString());
 	});
 
 	// On client disconnected
@@ -72,7 +78,7 @@ const server = net.createServer((client) => {
 					console.log(err);
 				else {
 					takeoff = false;
-					drone.animateLeds('blinkRed', 5, 2);
+					drone.animateLeds("blinkRed", 5, 2);
 					console.log("Drone landed!")
 				}
 			});
