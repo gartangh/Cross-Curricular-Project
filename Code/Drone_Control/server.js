@@ -32,6 +32,7 @@ const server = net.createServer((client) => {
 		console.log(instructions)
 
 		// Take off the drone
+		/*
 		if (!takeoff) {
 			drone.takeoff(function(err) {
 				if (err)
@@ -45,6 +46,7 @@ const server = net.createServer((client) => {
 
 			return;
 		}
+		*/
 
 		if (instructions[8] == 1)
 			// Hover in place

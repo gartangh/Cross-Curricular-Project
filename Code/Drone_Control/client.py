@@ -11,43 +11,67 @@ import paho.mqtt.client as mqtt
 
 from pypozyx import *
 
-# MQTT-topics
-topic_position = "vopposition1"
-topic_euler = "vopeulerangles1"
-topic_waypoints = "vopwaypoints1"
-topic_height = "vopheight1"
-
 # Global variables
 # Dictionary of waypoints
 waypoints = None
+
 # Coordinates in mm
 x = None
 y = None
 z = None
+
+# Heading and its reference in degrees
 heading = None
-# Current time, not set yet
+heading_ref = None
+
+# Current time, not yet set
 currentTime = None
-# Boolean time set, set on false
 timeSet = False
 
 # Configuration parameters
+ID = None
+IP = None
+PORT = None
+
+topic_waypoints = None
+topic_position = None
+topic_orientation = None
+topic_height = None
+
 TIME_INTERVAL = None
 POSITION_THRESHOLD = None
 MAX_SPEED = None
 MAX_ROTATION = None
 ROTATION_THRESHOLD = None
-heading_ref = None
 
 # Load configuration parameters
 def config():
 	with open("config.json") as json_file:
 		json_data = json.load(json_file)
 
+		global ID
+		global IP
+		global PORT
+
+		global topic_waypoints
+		global topic_position
+		global topic_orientation
+		global topic_height
+
 		global TIME_INTERVAL
 		global POSITION_THRESHOLD
 		global MAX_SPEED
 		global MAX_ROTATION
 		global ROTATION_THRESHOLD
+
+		ID = json_data["ID"]
+		IP = json_data["IP"]
+		PORT = json_data["PORT"]
+
+		topic_waypoints = json_data["topic_waypoints"] + str(ID)
+		topic_position = json_data["topic_position"] + str(ID)
+		topic_orientation = json_data["topic_orientation"] + str(ID)
+		topic_height = json_data["topic_height"] + str(ID)
 
 		TIME_INTERVAL = json_data["TIME_INTERVAL"]
 		POSITION_THRESHOLD = json_data["POSITION_THRESHOLD"]
@@ -274,11 +298,10 @@ class MyMQTTClass(mqtt.Client):
 		global y
 		
 		# Collect x and y coordinates
-		coords = message.payload.split(',')
-		#print coords[0] + "," + coords[1]
+		coords = message.payload.split(",")
 		x = int(coords[0])
 		y = int(coords[1])
-		# z = float(coords[2]) is to innacurate, the height from the drone sensors will be used
+		# z = int(coords[2]) is to innacurate, the height from the drone sensors will be used
 
 		return
 
@@ -286,12 +309,14 @@ class MyMQTTClass(mqtt.Client):
 		global heading_ref
 		global heading
 
-		if heading_ref == None:
-			heading_ref = int(message.payload)
-
 		# Collect heading
-		#print message.payload
-		heading = int(message.payload)
+		orientation = message.payload.split(",")
+		heading = int(orientation[0])
+		# pitch = int(orientation[1]) will not be used here
+		# roll = int(orientation[2]) will not be used here
+
+		if heading_ref == None:
+			heading_ref = int(heading)
 
 		return
 
@@ -313,15 +338,15 @@ class MyMQTTClass(mqtt.Client):
 
 	def start(self):
 		# Connect to the MQTT server
-		self.connect("157.193.214.115", 1883)
+		self.connect(IP, PORT)
 
 		# Subscribe to the topics
-		self.subscribe(topic_position)
-		self.message_callback_add(topic_position, MyMQTTClass.on_message_position)
-		self.subscribe(topic_euler)
-		self.message_callback_add(topic_euler, MyMQTTClass.on_message_euler)
 		self.subscribe(topic_waypoints)
 		self.message_callback_add(topic_waypoints, MyMQTTClass.on_message_waypoints)
+		self.subscribe(topic_position)
+		self.message_callback_add(topic_position, MyMQTTClass.on_message_position)
+		self.subscribe(topic_orientation)
+		self.message_callback_add(topic_orientation, MyMQTTClass.on_message_euler)
 		self.on_message = MyMQTTClass.on_message
 
 		# Start MQTT-loop
@@ -369,12 +394,12 @@ if __name__ == "__main__":
 	# Fly the drone
 	waypoints = getWaypoints()["waypoints"]
 	for waypoint in waypoints:
-		ID = waypoint["ID"]
+		waypoint_ID = waypoint["ID"]
 		waypoint_x = waypoint["position"]["x"]
 		waypoint_y = waypoint["position"]["y"]
 		waypoint_z = waypoint["position"]["z"]
 
-		print "Next waypoint: [" + str(ID) + "] " + str(waypoint_x) + "," + str(waypoint_y) +  "," + str(waypoint_z)
+		print "Next waypoint: [" + str(waypoint_ID) + "] " + str(waypoint_x) + "," + str(waypoint_y) +  "," + str(waypoint_z)
 
 		while 1:
 			# On Windows
@@ -382,7 +407,7 @@ if __name__ == "__main__":
 			# On Linux
 			#os.system("clear")
 
-			print "ID: " + str(ID)
+			print "ID: " + str(waypoint_ID)
 			print "{:>6}\t->\t{:>6}".format(optimus.position.x, waypoint_x)
 			print "{:>6}\t->\t{:>6}".format(optimus.position.y, waypoint_y)
 			print "{:>6}\t->\t{:>6}".format(optimus.position.z, waypoint_z)
