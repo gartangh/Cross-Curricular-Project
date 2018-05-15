@@ -1,16 +1,8 @@
-#!/usr/bin/env python
-
 import time
-import numpy as np
-import paho.mqtt.client as mqtt
 import serial
-import syslog
-import time, sys, math
-import os
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 import json
+
+import paho.mqtt.client as mqtt
 
 from pypozyx import *
 
@@ -21,233 +13,232 @@ pos_x = None
 pos_y = None
 
 # MQTT-topics
-angles = "vopeulerangles"
+angles = "vopeulerangles1"
 ranges = "vop"
 position = "vopposition"
-setup = "vopsetup"
+setup = "vopsetup1"
 identify = "identify"
-room = "vopanchors"
+room = "vopanchors1"
 
 class MyMQTTClass(mqtt.Client):
 
-    def on_message(self, userdate, message):
-        
-        return
+	def on_message(self, userdate, message):
+		
+		return
 
-    def on_message_eulerangles(self, userdate, message):
-        
-        return
+	def on_message_eulerangles(self, userdate, message):
+		
+		return
 
-    def on_message_quaternion(self, userdate, message):
-        
-        return
+	def on_message_quaternion(self, userdate, message):
+		
+		return
 
-    def on_message_vopposition(self, userdate, message):
-        # Collect the coordinates
-        global pos_x
-        global pos_y
+	def on_message_vopposition(self, userdate, message):
+		# Collect the coordinates
+		global pos_x
+		global pos_y
 
-        coords = message.payload.split(',')
-        pos_x = float(coords[0])
-        pos_y = float(coords[1])
+		coords = message.payload.split(',')
+		pos_x = float(coords[0])
+		pos_y = float(coords[1])
 
-        return
+		return
 
-    def on_message_room(self, userdate, message):
-        global room
+	def on_message_room(self, userdate, message):
+		global room
 
-        print "Anchors received"
-        room = Room(message.payload)
+		print "Anchors received"
+		room = Room(message.payload)
 
-        return
+		return
 
 
-    def on_message_setup(self, userdate, message):
-        global mayPublish
-        global room
+	def on_message_setup(self, userdate, message):
+		global mayPublish
+		global room
 
-        # Get action
-        msg = str(message.payload).split('\n')
+		# Get action
+		msg = str(message.payload).split('\n')
 
-        action = str(msg[0])
-        msg = msg[1:]
+		action = str(msg[0])
+		msg = msg[1:]
 
-        # Start sending data
-        if action == "start":
-            mayPublish = True
-            print "Start sending data"
-        # Stop sending data
-        elif action == "stop":
-            mayPublish = False
-            print "Stop sending data"
-        # Update the MQTT-topic names
-        elif action == "setup":
-            for line in msg:
-                line = line.split(' ')
-                if line[0] == "angles":
-                    angles = str(line[1])
-                elif line[0] == "ranges":
-                    ranges = str(line[1])
-                elif line[0] == "position":
-                    position = str(line[1])
-                elif line[0] == "setup":
-                    setup = str(line[1])
-                elif line[0] == "identify":
-                    identify = str(line[1])
-            print "MQTT-topic names set"
-        elif action == "Tag is online!":
-            print "Tag is online!"
-        # Wrong message
-        else:
-            print "Could not understand the message!"
-        return
+		# Start sending data
+		if action == "start":
+			mayPublish = True
+			print "Start sending data"
+		# Stop sending data
+		elif action == "stop":
+			mayPublish = False
+			print "Stop sending data"
+		# Update the MQTT-topic names
+		elif action == "setup":
+			for line in msg:
+				line = line.split(' ')
+				if line[0] == "angles":
+					angles = str(line[1])
+				elif line[0] == "ranges":
+					ranges = str(line[1])
+				elif line[0] == "position":
+					position = str(line[1])
+				elif line[0] == "setup":
+					setup = str(line[1])
+				elif line[0] == "identify":
+					identify = str(line[1])
+			print "MQTT-topic names set"
+		elif action == "Tag is online!":
+			print "Tag is online!"
+		# Wrong message
+		else:
+			print "Could not understand the message!"
+		return
 
-    def on_connect(self, client,userdata,flags,rc):
-        #print "Connection returned result: " + str(rc)
-        return
+	def on_connect(self, client,userdata,flags,rc):
+		#print "Connection returned result: " + str(rc)
+		return
 
-    def on_publish(self, mqttc, obj, mid):
-        #print "mid: " + str(mid)
-        return
+	def on_publish(self, mqttc, obj, mid):
+		#print "mid: " + str(mid)
+		return
 
-    def on_subscribe(self, mqttc, obj, mid, granted_qos):
-        #print "Subscribed: " + str(mid) + " " + str(granted_qos)
-        return
+	def on_subscribe(self, mqttc, obj, mid, granted_qos):
+		#print "Subscribed: " + str(mid) + " " + str(granted_qos)
+		return
 
-    def on_log(self, client, userdate, level, buf):
-        #print "log: " + buf
-        return
+	def on_log(self, client, userdate, level, buf):
+		#print "log: " + buf
+		return
 
-    def start(self):
-        # Connect to the MQTT server
-        self.connect("157.193.214.115",1883)
+	def start(self):
+		# Connect to the MQTT server
+		self.connect("157.193.214.115",1883)
 
-        # Subscribe to the topics
-        self.subscribe(setup)
-        self.message_callback_add(setup, MyMQTTClass.on_message_setup)
-        self.subscribe(room)
-        self.message_callback_add(room, MyMQTTClass.on_message_room)
-        self.on_message = MyMQTTClass.on_message
+		# Subscribe to the topics
+		self.subscribe(setup)
+		self.message_callback_add(setup, MyMQTTClass.on_message_setup)
+		self.subscribe(room)
+		self.message_callback_add(room, MyMQTTClass.on_message_room)
+		self.on_message = MyMQTTClass.on_message
 
-        # Start MQTT-loop
-        self.loop_start()
+		# Start MQTT-loop
+		self.loop_start()
 
-    def stop(self):
-        # Stop MQTT-loop
-        self.loop_stop()
-        self.disconnect()
+	def stop(self):
+		# Stop MQTT-loop
+		self.loop_stop()
+		self.disconnect()
 
-    def publish_range(self, id, timestamp, distance):
-        # range = [id, timestamp, distance]
-        msg = [id]
-        msg.append(timestamp)
-        msg.append(distance)
+	def publish_range(self, id, timestamp, distance):
+		# range = [id, timestamp, distance]
+		msg = [id]
+		msg.append(timestamp)
+		msg.append(distance)
 
-        pub = (','.join(str(v) for v in msg))
-        # Publish the range to the ranges-topic
-        self.publish(ranges,pub)
+		pub = (','.join(str(v) for v in msg))
+		# Publish the range to the ranges-topic
+		self.publish(ranges,pub)
 
-    def publish_eulerAngles(self, euler):
-        # euler = [heading, roll, pitch]
-        # Publish the eulerAngles to the angle-topic
-	    self.publish(angles,','.join(str(v) for v in euler))
+	def publish_eulerAngles(self, euler):
+		# euler = [heading, roll, pitch]
+		# Publish the eulerAngles to the angle-topic
+		self.publish(angles,','.join(str(v) for v in euler))
 
 class Anchor():
-    # Containerclass for anchor
-    def __init__(self,id,coordinates):
-        self.id = id
-        self.coordinates = Coordinates()
-        self.coordinates.load(coordinates)
+	# Containerclass for anchor
+	def __init__(self,id,coordinates):
+		self.id = id
+		self.coordinates = Coordinates()
+		self.coordinates.load(coordinates)
 
 class Room():
-    # Container for the room
-    def __init__(self, setup):
-        
-        json_data = json.loads(setup)
+	# Container for the room
+	def __init__(self, setup):
+		
+		json_data = json.loads(setup)
 
-        self.anchors = []
-        for anchor in json_data['anchors']:
+		self.anchors = []
+		for anchor in json_data['anchors']:
 
-            id = int("0x"+anchor['ID'],16)
-            x = int(anchor['position']['x'])
-            y = int(anchor['position']['y'])
-            z = int(anchor['position']['z'])
-            self.anchors.append(Anchor(id,[x,y,z]))
+			id = int("0x"+anchor['ID'],16)
+			x = int(anchor['position']['x'])
+			y = int(anchor['position']['y'])
+			z = int(anchor['position']['z'])
+			self.anchors.append(Anchor(id,[x,y,z]))
 
 if __name__ == "__main__":
 
-    # Assign a serial port of the Pozyx
-    serial_port = get_first_pozyx_serial_port()
-    if serial_port is None:
-        print "No Pozyx connected. Check your USB cable or your driver!" 
-        quit()
-    
-    # Assign the pozyx tag
-    pozyx = PozyxSerial(serial_port)
+	# Assign a serial port of the Pozyx
+	serial_port = get_first_pozyx_serial_port()
+	if serial_port is None:
+		print "No Pozyx connected. Check your USB cable or your driver!" 
+		quit()
+	
+	# Assign the pozyx tag
+	pozyx = PozyxSerial(serial_port)
 
-    # Make a connection to the MQTT server
-    mqttc = MyMQTTClass("vop-tag")
-    if mqttc is None:
-        print "Could not create an mqtt-client!"
-        quit()
-    mqttc.start()
+	# Make a connection to the MQTT server
+	mqttc = MyMQTTClass("vop-tag")
+	if mqttc is None:
+		print "Could not create an mqtt-client!"
+		quit()
+	mqttc.start()
 
-    # Time information for publishing 
-    start = time.time()*1000
-    now = time.time()
-    last_time = now
-    first = 1
-    
-    # Containers for information of the tag
-    euler = EulerAngles()
-    device_range = DeviceRange()
+	# Time information for publishing 
+	start = time.time()*1000
+	now = time.time()
+	last_time = now
+	first = 1
+	
+	# Containers for information of the tag
+	euler = EulerAngles()
+	device_range = DeviceRange()
 
-    mqttc.publish(identify,"vop")
-    mqttc.publish(setup,"Tag is online!")
+	mqttc.publish(identify,"vop")
+	mqttc.publish(setup,"Tag is online!")
 
-    # Continuous want to receive input from the server
-    while True:
-        try:
-            # Identificate every 15 seconds to the server
-            now = time.time()
-            if now - last_time > 15:
-                mqttc.publish(identify,"vop")
-                mqttc.publish(setup,"Tag is online!")
-                last_time = now
+	# Continuous want to receive input from the server
+	while True:
+		try:
+			# Identificate every 15 seconds to the server
+			now = time.time()
+			if now - last_time > 15:
+				mqttc.publish(identify,"vop")
+				mqttc.publish(setup,"Tag is online!")
+				last_time = now
 
-            # Ready to collect 
+			# Ready to collect 
 
-            if (mayPublish == True and room != None):
-                # Calculate the Euler angles
-                pozyx.getEulerAngles_deg(euler)
-                mqttc.publish_eulerAngles(euler.data)
+			if (mayPublish == True and room != None):
+				# Calculate the Euler angles
+				pozyx.getEulerAngles_deg(euler)
+				mqttc.publish_eulerAngles(euler.data)
 
-                # Choose anchors to range with
-                anchors = room.anchors
-                ###################################
-                ### TO DO - Select some anchors ###
-                # When you don't know the position
+				# Choose anchors to range with
+				anchors = room.anchors
+				###################################
+				### TO DO - Select some anchors ###
+				# When you don't know the position
 
-                ###################################
+				###################################
 
-                # Calculate the Ranges
-                for a in anchors:
-                    status = pozyx.doRanging(a.id ,device_range)
-                    
-                    if status == POZYX_SUCCESS:
-                        id = str(hex(a.id))[2:].upper()
-                        ts = device_range.timestamp
-                        dist = device_range.distance
+				# Calculate the Ranges
+				for a in anchors:
+					status = pozyx.doRanging(a.id ,device_range)
+					
+					if status == POZYX_SUCCESS:
+						id = str(hex(a.id))[2:].upper()
+						ts = device_range.timestamp
+						dist = device_range.distance
 
-                        if first == 1:
-                            start = start - int(ts)
-                            first = 0
-                        ts = str(int(int(ts) + int(start)))
-                                      
-                        mqttc.publish_range(id,ts,dist)
+						if first == 1:
+							start = start - int(ts)
+							first = 0
+						ts = str(int(int(ts) + int(start)))
+									  
+						mqttc.publish_range(id,ts,dist)
 
-        except KeyboardInterrupt:
-            print "Interrupt received, stopping..."
-            mqttc.stop()
-            quit()
-
+		except KeyboardInterrupt:
+			print "Interrupt received, stopping..."
+			mqttc.stop()
+			quit()

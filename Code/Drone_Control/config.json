@@ -1,0 +1,14 @@
+{
+	"ID": 1,
+	"IP": "157.193.214.115",
+	"PORT": 1883,
+	"topic_waypoints": "vopwaypoints",
+	"topic_position": "vopposition",
+	"topic_orientation": "vopeulerangles",
+	"topic_height": "vopheight",
+	"TIME_INTERVAL": 0.2,
+	"MAX_SPEED": 0.125,
+	"POSITION_THRESHOLD": 250,
+	"MAX_ROTATION": 0.250,
+	"ROTATION_THRESHOLD": 5
+}

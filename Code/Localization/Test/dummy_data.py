@@ -11,8 +11,8 @@ import json
 
 position = "testP"
 waypoints = "testW"
-setup = "vopsetup"
-anchors = "vopanchors"
+setup = "vopsetup1"
+anchors = "vopanchors1"
 
 class MyMQTTClass(mqtt.Client):
 
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     time.sleep(2)
 
     # Publish waypoints
-    if True:
+    if False:
         data = str(os.path.join("..","Resources","Waypoints.json"))
         with open(data) as json_file:
             mqttc.publish(waypoints, json.dumps(json.load(json_file)))
