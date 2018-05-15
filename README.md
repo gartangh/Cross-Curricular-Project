@@ -30,7 +30,7 @@ Click [here](https://github.ugent.be/pages/gartangh/VOP_Voorraadbeheer) to visit
 
 Copy the NOOBS system image to a formatted microSD card.
 Copy Setup/wpa_supplicant.conf and Setup/ssh to the microSD card.
-Change the network in wpa_supplicant.conf (on the microSD card) to the network of the drone.
+Change the network in wpa_supplicant.conf (on the microSD card) to the network of the drone (ardrone2-XXXXXX).
 Plug the microSD card in the Raspberry Pi.
 Power on the Raspberry Pi and let it install the system image.
 Connect to the Raspberry Pi via Putty or terminal and WinSCP.

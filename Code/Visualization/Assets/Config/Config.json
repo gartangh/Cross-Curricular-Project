@@ -1,6 +1,7 @@
 {
 	"IP": "157.193.214.115",
 	"PORT": 1883,
+	"topic_anchors": "vopanchors",
 	"topic_waypoints": "vopwaypoints",
 	"topic_position": "vopposition",
 	"topic_orientation": "vopeulerangles",
