@@ -208,7 +208,7 @@ public class WaypointsScript : MonoBehaviour {
         if (okRoute && validTarget)
         {
             // Publish waypoint coordinates to the mqtt server on topic specified above
-			client.Publish(publishLocationsTopic, Encoding.UTF8.GetBytes(waypointsToString()));
+			client.Publish(publishLocationsTopic + target, Encoding.UTF8.GetBytes(waypointsToString()));
 			// Write waypoints to a file in JSON format
 			WriteWaypointsToFile(Application.dataPath + "/Waypoints/Waypoints.json");
         }
@@ -309,21 +309,21 @@ public class WaypointsScript : MonoBehaviour {
         string[] config = System.IO.File.ReadAllLines(Application.dataPath + "/Config/Config.json");
         foreach(string line in config)
         {
-            if (line.Contains("ip"))
+            if (line.Contains("IP"))
             {
                 string ipaddress = line.Split(':')[1].Split('"')[1];
                 ip = IPAddress.Parse(ipaddress);
             }
-            else if (line.Contains("flyradius"))
+            else if (line.Contains("FLYRADIUS"))
             {
-                float radius = float.Parse(line.Split(':')[1].Split('"')[1]);
+                float radius = float.Parse(line.Split(':')[1].Split(',')[0].Trim());
                 flyRadius = radius;
-            }else if (line.Contains("waypointstopic"))
+            }else if (line.Contains("topic_waypoints"))
             {
                 publishLocationsTopic = line.Split(':')[1].Split('"')[1];
-            }else if (line.Contains("id"))
+            }else if (line.Contains("\"ID\""))
             {
-                int id = Int32.Parse(line.Split(':')[1].Split('"')[1]);
+                int id = Int32.Parse(line.Split(':')[1].Split(',')[0].Trim());
                 droneIDs.Add(id);
             }
         }

@@ -13,12 +13,12 @@ pos_x = None
 pos_y = None
 
 # MQTT-topics
-angles = "vopeulerangles"
+angles = "vopeulerangles1"
 ranges = "vop"
 position = "vopposition"
-setup = "vopsetup"
+setup = "vopsetup1"
 identify = "identify"
-room = "vopanchors"
+room = "vopanchors1"
 
 class MyMQTTClass(mqtt.Client):
 
