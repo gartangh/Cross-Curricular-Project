@@ -16,7 +16,7 @@ Click [here](https://github.ugent.be/pages/gartangh/VOP_Voorraadbeheer) to visit
 * 4 Pozyx anchors (with power supply)
 * 1 Parrot AR.Drone 2.0
 
-![The image of the setup could not be loaded.](https://github.ugent.be/gartangh/VOP_Voorraadbeheer/blob/master/Report/Setup.png)
+![The image of the setup could not be loaded.](https://github.ugent.be/gartangh/VOP_Voorraadbeheer/blob/master/Report/images/Setup_Software.png)
 
 ### Prerequisites
 

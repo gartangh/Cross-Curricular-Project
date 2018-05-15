@@ -1,0 +1,9 @@
+{
+	"ID": 1,
+	"IP": "157.193.214.115",
+	"PORT": 1883,
+	"topic_setup": "vopsetup",
+	"topic_ranges": "vop",
+	"topic_position": "vopposition",
+	"topic_orientation": "vopeulerangles"
+}
