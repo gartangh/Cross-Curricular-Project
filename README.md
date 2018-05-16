@@ -125,6 +125,8 @@ python2 pozyx-tag.py
 
 More information about all sorts of topics can be found in the [wiki](https://github.ugent.be/gartangh/VOP_Voorraadbeheer/wiki).
 
+**If a bug would occur to you, it's probably an undocumented feature!**
+
 ## Authors
 
 * Xavier Claerhoudt
