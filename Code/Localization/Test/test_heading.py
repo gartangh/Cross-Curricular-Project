@@ -20,6 +20,8 @@ start_y = 0
 stop_x = 100
 stop_y = 100
 
+
+
 calibration = heading - math.atan2(stop_y-start_y,stop_x-start_x)*180/math.pi # get from 2 coordinates
 print "calibration = " + str(calibration)
 # angle to the reference angle

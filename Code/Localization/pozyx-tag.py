@@ -58,11 +58,13 @@ class MyMQTTClass(mqtt.Client):
 		global mayPublish
 		global room
 
-		# Get action
-		msg = str(message.payload).split('\n')
+		global setup 
+		global ranges
+		global angles
+		global position
 
-		action = str(msg[0])
-		msg = msg[1:]
+		# Get action
+		action = str(message.payload)
 
 		# Start sending data
 		if action == "start":
@@ -73,25 +75,36 @@ class MyMQTTClass(mqtt.Client):
 			mayPublish = False
 			print "Stop sending data"
 		# Update the MQTT-topic names
-		elif action == "setup":
-			for line in msg:
-				line = line.split(' ')
-				if line[0] == "angles":
-					angles = str(line[1])
-				elif line[0] == "ranges":
-					ranges = str(line[1])
-				elif line[0] == "position":
-					position = str(line[1])
-				elif line[0] == "setup":
-					setup = str(line[1])
-				elif line[0] == "identify":
-					identify = str(line[1])
-			print "MQTT-topic names set"
+		# elif action == "setup":
+		# 	for line in msg:
+		# 		line = line.split(' ')
+		# 		if line[0] == "angles":
+		# 			angles = str(line[1])
+		# 		elif line[0] == "ranges":
+		# 			ranges = str(line[1])
+		# 		elif line[0] == "position":
+		# 			position = str(line[1])
+		# 		elif line[0] == "setup":
+		# 			setup = str(line[1])
+		# 		elif line[0] == "identify":
+		# 			identify = str(line[1])
+		# 	print "MQTT-topic names set"
 		elif action == "Tag is online!":
 			print "Tag is online!"
 		# Wrong message
 		else:
-			print "Could not understand the message!"
+			json_data = json.loads(message.payload)
+
+			setup = str(json_data["topic_setup"])
+			ranges = str(json_data["topic_ranges"])
+			angles = str(json_data["topic_orientation"])
+			position = str(json_data["topic_position"])
+
+			print "MQTT-topic names set"
+			
+
+		
+
 		return
 
 	def on_connect(self, client,userdata,flags,rc):
