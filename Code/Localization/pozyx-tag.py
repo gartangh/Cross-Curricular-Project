@@ -74,21 +74,6 @@ class MyMQTTClass(mqtt.Client):
 		elif action == "stop":
 			mayPublish = False
 			print "Stop sending data"
-		# Update the MQTT-topic names
-		# elif action == "setup":
-		# 	for line in msg:
-		# 		line = line.split(' ')
-		# 		if line[0] == "angles":
-		# 			angles = str(line[1])
-		# 		elif line[0] == "ranges":
-		# 			ranges = str(line[1])
-		# 		elif line[0] == "position":
-		# 			position = str(line[1])
-		# 		elif line[0] == "setup":
-		# 			setup = str(line[1])
-		# 		elif line[0] == "identify":
-		# 			identify = str(line[1])
-		# 	print "MQTT-topic names set"
 		elif action == "Tag is online!":
 			print "Tag is online!"
 		# Wrong message
@@ -101,9 +86,6 @@ class MyMQTTClass(mqtt.Client):
 			position = str(json_data["topic_position"])
 
 			print "MQTT-topic names set"
-			
-
-		
 
 		return
 
@@ -206,6 +188,14 @@ if __name__ == "__main__":
 	# Containers for information of the tag
 	euler = EulerAngles()
 	device_range = DeviceRange()
+
+	# Anchors
+	data = str(os.path.join("Resources","Waypoints2.json"))
+    with open(data) as json_file:
+        room = Room(json.dumps(json.load(json_file)))
+        json_file.close
+
+    mayPublish = True
 
 	mqttc.publish(identify,"vop")
 	mqttc.publish(setup,"Tag is online!")
