@@ -5,6 +5,7 @@ import sys
 import socket
 import json
 import os
+#import platform
 
 import numpy as np
 import paho.mqtt.client as mqtt
@@ -69,7 +70,7 @@ def config():
 		PORT = json_data["PORT"]
 
 		topic_waypoints = json_data["topic_waypoints"] + str(ID)
-		topic_position = json_data["topic_position"] + str(ID)
+		topic_position = json_data["topic_position"]# + str(ID) TODO Uncomment
 		topic_orientation = json_data["topic_orientation"] + str(ID)
 		topic_height = json_data["topic_height"] + str(ID)
 
@@ -266,7 +267,7 @@ class DronePosition:
 			rotate_counterclockwise = 1
 			rotate_clockwise = 0
 			# Overwrite horizontal speeds
-			speed_forward =0
+			speed_forward = 0
 			speed_backward = 0
 			speed_left = 0
 			speed_right = 0
@@ -274,7 +275,7 @@ class DronePosition:
 			rotate_counterclockwise = 0
 			rotate_clockwise = 1
 			# Overwrite horizontal speeds
-			speed_forward =0
+			speed_forward = 0
 			speed_backward = 0
 			speed_left = 0
 			speed_right = 0
@@ -283,10 +284,6 @@ class DronePosition:
 
 # MQTT class
 class MyMQTTClass(mqtt.Client):
-
-	def on_message(self, userdate, message):
-		
-		return
 
 	def on_message_waypoints(self, userdate, message):
 		updateWaypoints(message.payload)
@@ -299,8 +296,8 @@ class MyMQTTClass(mqtt.Client):
 		
 		# Collect x and y coordinates
 		coords = message.payload.split(",")
-		x = int(coords[0])
-		y = int(coords[1])
+		x = int(float(coords[0]))
+		y = int(float(coords[1]))
 		# z = int(coords[2]) is to innacurate, the height from the drone sensors will be used
 
 		return
@@ -311,7 +308,7 @@ class MyMQTTClass(mqtt.Client):
 
 		# Collect heading
 		orientation = message.payload.split(",")
-		heading = int(orientation[0])
+		heading = int(float(orientation[0]))
 		# pitch = int(orientation[1]) will not be used here
 		# roll = int(orientation[2]) will not be used here
 
@@ -320,25 +317,10 @@ class MyMQTTClass(mqtt.Client):
 
 		return
 
-	def on_connect(self, client, userdata, flags, rc):
-		#print "Connection returned result: " + str(rc)
-		return
-
-	def on_publish(self, mqttc, obj, mid):
-		#print "mid: " + str(mid)
-		return
-
-	def on_subscribe(self, mqttc, obj, mid, granted_qos):
-		#print "Subscribed: " + str(mid) + " " + str(granted_qos)
-		return
-
-	def on_log(self, client, userdate, level, buf):
-		#print "log: " + buf
-		return
-
 	def start(self):
 		# Connect to the MQTT server
-		self.connect(IP, PORT)
+		# TODO Connect via IP address of the correct interface
+		self.connect(IP, port=PORT)#, bind_address="10.10.131.110")
 
 		# Subscribe to the topics
 		self.subscribe(topic_waypoints)
@@ -347,7 +329,6 @@ class MyMQTTClass(mqtt.Client):
 		self.message_callback_add(topic_position, MyMQTTClass.on_message_position)
 		self.subscribe(topic_orientation)
 		self.message_callback_add(topic_orientation, MyMQTTClass.on_message_euler)
-		self.on_message = MyMQTTClass.on_message
 
 		# Start MQTT-loop
 		self.loop_start()
@@ -361,7 +342,6 @@ class MyMQTTClass(mqtt.Client):
 		self.publish(topic_height, str(height))
 
 if __name__ == "__main__":
-	# Default height
 	z = 1000
 
 	# Load configuration parameters
@@ -392,6 +372,7 @@ if __name__ == "__main__":
 		print "Got waypoints!"
 
 	# Fly the drone
+	takoff = False
 	waypoints = getWaypoints()["waypoints"]
 	for waypoint in waypoints:
 		waypoint_ID = waypoint["ID"]
@@ -401,23 +382,23 @@ if __name__ == "__main__":
 
 		print "Next waypoint: [" + str(waypoint_ID) + "] " + str(waypoint_x) + "," + str(waypoint_y) +  "," + str(waypoint_z)
 
-		while 1:
-			# On Windows
+		while True:
+			#if platform.system == "Windows":
 			os.system("cls")
-			# On Linux
-			#os.system("clear")
+			#elif platform.system == "Linux":
+			#	os.system("clear")
 
 			print "ID: " + str(waypoint_ID)
-			print "{:>6}\t->\t{:>6}".format(optimus.position.x, waypoint_x)
-			print "{:>6}\t->\t{:>6}".format(optimus.position.y, waypoint_y)
-			print "{:>6}\t->\t{:>6}".format(optimus.position.z, waypoint_z)
+			print "{:>6}\t->\t{:>6}".format(x, waypoint_x)
+			print "{:>6}\t->\t{:>6}".format(y, waypoint_y)
+			print "{:>6}\t->\t{:>6}".format(z, waypoint_z)
 
 			# Calculate instructions and hover 5 s over the waypoint
 			speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise, hover, done = optimus.fly(waypoint_x, waypoint_y, waypoint_z, 5)
 			
 			if done:
 				# Reached waypoint
-				break;
+				break
 
 			# Waypoint not yet reached
 			# Send instructions
@@ -428,11 +409,15 @@ if __name__ == "__main__":
 
 			clientsocket.send(str(speed_forward) + "," + str(speed_backward) + "," + str(speed_left) + "," + str(speed_right) + "," + str(speed_up) + "," + str(speed_down) + "," + str(rotate_counterclockwise) + "," + str(rotate_clockwise) + "," + hover_send)
 
-			# Get height in mm back (read maximum 16 bytes)
-			z = int(clientsocket.recv(16))
-			mqttc.publish_height(z)
-			
-			# Wait some time
-			time.sleep(TIME_INTERVAL)
+			if not takoff:
+				time.sleep(5)
+				takoff = True
+			else:
+				# Get height in mm back (read maximum 16 bytes)
+				z = int(clientsocket.recv(16))
+				mqttc.publish_height(z)
+				
+				# Wait some time before sending next instructions
+				time.sleep(TIME_INTERVAL)
 
 	print "Flight ended!"

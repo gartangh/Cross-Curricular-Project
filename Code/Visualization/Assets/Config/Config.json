@@ -1,8 +1,6 @@
 {
 	"IP": "157.193.214.115",
-	"PORT": 1883,
 	"topic_waypoints": "vopwaypoints",
-	"topic_position": "vopposition",
 	"topic_orientation": "vopeulerangles",
 	"topic_height": "vopheight",
 	"DRONESCALE": 100,
@@ -10,11 +8,8 @@
 	"Drones": [
 		{
 			"ID": 1,
+			"tagID": "vop",
 			"COLOR": "yellow"
-		},
-		{
-			"ID": 2,
-			"COLOR": "blue"
 		}
 	]
 }

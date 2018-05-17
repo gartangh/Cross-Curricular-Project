@@ -1,0 +1,15 @@
+{
+	"IP": "157.193.214.115",
+	"topic_waypoints": "vopwaypoints",
+	"topic_orientation": "vopeulerangles",
+	"topic_height": "vopheight",
+	"DRONESCALE": 100,
+	"FLYRADIUS": 100,
+	"Drones": [
+		{
+			"ID": 1,
+			"tagID": "vop",
+			"COLOR": "yellow"
+		}
+	]
+}

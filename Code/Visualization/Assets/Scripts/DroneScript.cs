@@ -14,6 +14,8 @@ public class DroneScript : MonoBehaviour {
     public GameObject Drone;
     public static Dictionary<int, GameObject> droneDictionary = new Dictionary<int, GameObject>();
     // Topics to subscribe to
+    static string topic_height = "vopheight";
+    static string topic_orientation = "voporientation";
     static Dictionary<int, string> positionTopics = new Dictionary<int, string>();
     static Dictionary<int, string> heightTopics = new Dictionary<int, string>();
     static Dictionary<int, string> orientationTopics = new Dictionary<int, string>();
@@ -119,15 +121,23 @@ public class DroneScript : MonoBehaviour {
         string[] config = System.IO.File.ReadAllLines(Application.dataPath + "/Config/Config.json");
         for(int i=0; i<config.Length; i++)
         {
-            if (config[i].Contains("ip"))
+            if (config[i].Contains("IP"))
             {
                 string ipaddress = config[i].Split(':')[1].Split(',')[0].Split('"')[1];
                 ip = IPAddress.Parse(ipaddress);
 
             }
-            else if (config[i].Contains("dronescale"))
+            else if (config[i].Contains("DRONESCALE"))
             {
-                dronescale = Int32.Parse(config[i].Split(':')[1].Split('"')[1]);
+                dronescale = Int32.Parse(config[i].Split(':')[1].Split(',')[0].Trim());
+            }
+            else if (config[i].Contains("topic_height"))
+            {
+                topic_height = config[i].Split(':')[1].Split('"')[1].Trim();
+            }
+            else if (config[i].Contains("topic_orientation"))
+            {
+                topic_orientation = config[i].Split(':')[1].Split('"')[1].Trim();
             }
             else if (config[i].Contains("Drones"))
             {
@@ -136,17 +146,23 @@ public class DroneScript : MonoBehaviour {
                 int id = 0;
                 while (!config[i].Contains("]"))
                 {
-                    if (config[i].Contains("id"))
+                    if (config[i].Contains("\"ID\""))
                     {
                         GameObject drone = Instantiate(Drone, new Vector3(0, i * 1000, 0), Quaternion.identity);
                         drone.transform.localScale = new Vector3(dronescale, dronescale, dronescale);
-                        id = Int32.Parse(config[i].Split(':')[1].Split(',')[0].Split('"')[1]);
+                        id = Int32.Parse(config[i].Split(':')[1].Split(',')[0].Trim());
                         droneDictionary.Add(id, drone);
                         positions.Add(id, "0,0");
                         heights.Add(id,(id * 1000).ToString());
                         orientations.Add(id, "0,0,0");
+                        heightTopics.Add(id, topic_height + id);
+                        orientationTopics.Add(id, topic_orientation + id);
                     }
-                    else if (config[i].Contains("color"))
+                    else if (config[i].Contains("tagID"))
+                    {
+                        positionTopics.Add(id, config[i].Split(':')[1].Split('"')[1].Trim() + "position");
+                    }
+                    else if (config[i].Contains("COLOR"))
                     {
                         string color = config[i].Split(':')[1].Split(',')[0].Split('"')[1].Trim();
                         Color desiredColor = Color.black;
@@ -158,21 +174,6 @@ public class DroneScript : MonoBehaviour {
                         // set it's color
                         Renderer rend = drone.GetComponentInChildren<Renderer>();
                         rend.material.SetColor("_Color", desiredColor);
-                    }
-                    else if (config[i].Contains("positiontopic"))
-                    {
-                        string positiontopic = config[i].Split(':')[1].Split('"')[1].Trim();
-                        positionTopics.Add(id, positiontopic);
-                    }
-                    else if (config[i].Contains("heighttopic"))
-                    {
-                        string heighttopic = config[i].Split(':')[1].Split('"')[1].Trim();
-                        heightTopics.Add(id, heighttopic);
-                    }
-                    else if (config[i].Contains("orientationtopic"))
-                    {
-                        string orientationtopic = config[i].Split(':')[1].Split('"')[1].Trim();
-                        orientationTopics.Add(id, orientationtopic);
                     }
                     i++;
                 }
