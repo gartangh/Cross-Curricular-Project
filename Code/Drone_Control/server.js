@@ -10,9 +10,8 @@ var drone  = arDrone.createClient();
 
 // Get height from drone
 drone.on("navdata", function(navdata) {
-	if (navdata.demo) {
+	if (navdata.demo)
 		height = navdata.demo.altitude;
-	}
 	else
 		// Default height = 1.0 m
 		height = 1.0;
@@ -32,7 +31,7 @@ const server = net.createServer((client) => {
 		// Take off the drone
 		if (!takeoff) {
 			console.log("Ready for take off!");
-			
+			// Take of the drone
 			/*drone.takeoff(function(err) {
 				if (err)
 					console.log(err);
@@ -42,43 +41,50 @@ const server = net.createServer((client) => {
 					console.log("Take off!");
 				}
 			});*/
-
 			drone.takeoff();
 			takeoff = true;
 			console.log("Take off!");
-
+			
 			return;
 		}
 
-		instructions = data.split(",")
-		console.log(instructions)
+		instructions = data.split(",");
+		console.log(instructions);
 		if (instructions[8] == 1)
 			// Hover in place
 			drone.stop();
 		else {
-			drone.front(instructions[0]);
-			drone.back(instructions[1]);
-			drone.left(instructions[2]);
-			drone.right(instructions[3]);
-			drone.up(instructions[4]);
-			drone.down(instructions[5]);
-			drone.counterClockwise(instructions[6]);
-			drone.clockwise(instructions[7]);
+			if (instructions[0] != 0)
+				drone.front(instructions[0]);
+			if (instructions[1] != 0)
+				drone.back(instructions[1]);
+			if (instructions[2] != 0)
+				drone.right(instructions[2]);
+			if (instructions[3] != 0)
+				drone.left(instructions[3]);
+			if (instructions[4] != 0)
+				drone.up(instructions[4]);
+			if (instructions[5] != 0)
+				drone.down(instructions[5]);
+			if (instructions[6] != 0)
+				drone.counterClockwise(instructions[6]);
+			if (instructions[7] != 0)
+				drone.clockwise(instructions[7]);
 		}
 		
 		// Return height in mm
-		var heightmm = Math.round(1000 * height);
+		//var heightmm = Math.round(1000 * height);
+		var heightmm = 1000;
 		client.write(heightmm.toString());
 	});
 
 	// On client disconnected
 	client.on("end", () => {
 		console.log("Client disconnected!");
-		
 		// Land the drone
 		if (takeoff) {
 			console.log("Ready for touch down!");
-			drone.land(function(err) {
+			/*drone.land(function(err) {
 				if (err)
 					console.log(err);
 				else {
@@ -86,7 +92,11 @@ const server = net.createServer((client) => {
 					//drone.animateLeds("blinkRed", 5, 2);
 					console.log("Touch down!");
 				}
-			});
+			});*/
+
+			drone.land();
+			takeoff = false;
+			console.log("Touch down!");
 		}
 	});
 });

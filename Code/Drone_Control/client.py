@@ -5,7 +5,7 @@ import sys
 import socket
 import json
 import os
-#import platform
+import platform
 
 import numpy as np
 import paho.mqtt.client as mqtt
@@ -116,6 +116,13 @@ class DronePosition:
 		global currentTime
 		global timeSet
 
+		global TIME_INTERVAL
+		global POSITION_THRESHOLD
+		global MAX_SPEED
+		global MAX_ROTATION
+		global ROTATION_THRESHOLD
+		global heading_ref
+
 		# Update own orientation
 		self.position.x = x
 		self.position.y = y
@@ -126,10 +133,10 @@ class DronePosition:
 		hover = False
 
 		# Execute algorithm here
-		#speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise = self.algo1(waypoint[0], waypoint[1], waypoint[2])
-		speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise = self.algo2(waypoint_x, waypoint_y, waypoint_z)
+		#speed_forward, speed_backward, speed_right, speed_left, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise = self.algo1(waypoint[0], waypoint[1], waypoint[2])
+		speed_forward, speed_backward, speed_right, speed_left, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise = self.algo2(waypoint_x, waypoint_y, waypoint_z)
 		
-		if sum([speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise]) == 0:
+		if sum([speed_forward, speed_backward, speed_right, speed_left, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise]) == 0:
 			done = True
 		
 		if done and wait > 0:
@@ -149,7 +156,7 @@ class DronePosition:
 					hover = True
 					done = False
 
-		return speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise, hover, done
+		return speed_forward * MAX_SPEED, speed_backward * MAX_SPEED, speed_right * MAX_SPEED, speed_left * MAX_SPEED, speed_up * MAX_SPEED, speed_down * MAX_SPEED, rotate_counterclockwise * MAX_ROTATION, rotate_clockwise * MAX_ROTATION, hover, done
 
 	# Return distance from current position to waypoint in mm
 	def distance_horizontal(self, waypoint_x, waypoint_y, waypoint_z):
@@ -181,19 +188,27 @@ class DronePosition:
 		# Distance
 		if abs(delta_distance) <= POSITION_THRESHOLD:
 			speed_forward = 0
-		else:
+		elif abs(delta_distance) > 10000:
 			speed_forward = 1
+		else:
+			speed_forward = delta_distance / 10000
 
 		# Z-axis
 		if abs(delta_z) <= POSITION_THRESHOLD:
 			speed_up = 0
 			speed_down = 0
 		elif delta_z > 0:
-			speed_up = 1
+			if delta_z > 10000:
+				speed_up = 1
+			else:
+				speed_up = delta_z / 10000
 			speed_down = 0
 		else:
 			speed_up = 0
-			speed_down = 1
+			if delta_z < -10000:
+				speed_down = 1
+			else:
+				speed_down = abs(delta_z) / 10000
 
 		# Heading
 		if abs(delta_angle) <= ROTATION_THRESHOLD:
@@ -210,7 +225,7 @@ class DronePosition:
 			# Overwrite speed forward
 			speed_forward = 0
 
-		return speed_forward * MAX_SPEED, speed_backward * MAX_SPEED, speed_right * MAX_SPEED, speed_left * MAX_SPEED, speed_up * MAX_SPEED, speed_down * MAX_SPEED, rotate_counterclockwise * MAX_ROTATION, rotate_clockwise * MAX_ROTATION
+		return speed_forward, speed_backward, speed_right, speed_left, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise
 
 	# Positive axes: forward, left, up and counterclockwise
 	def algo2(self, waypoint_x, waypoint_y, waypoint_z):
@@ -225,62 +240,74 @@ class DronePosition:
 		delta_y = waypoint_y - self.position.y
 		delta_z = waypoint_z - self.position.z
 		delta_angle = heading_ref - self.euler.heading
+		if delta_angle > 180:
+			delta_angle -= 360
+		elif delta_angle < -180:
+			delta_angle += 360
 
 		# X-axis
 		if abs(delta_x) <= POSITION_THRESHOLD:
 			speed_forward = 0
 			speed_backward = 0
 		elif delta_x > 0:
-			speed_forward = 1
+			if delta_x > 10000:
+				speed_forward = 1
+			else:
+				speed_forward = delta_x / 10000
 			speed_backward = 0
 		else:
 			speed_forward = 0
-			speed_backward = 1
+			if delta_x < -10000:
+				speed_backward = 1
+			else:
+				speed_backward = abs(delta_x) / 10000
 
 		# Y-axis
 		if abs(delta_y) <= POSITION_THRESHOLD:
 			speed_left = 0
 			speed_right = 0
 		elif delta_y > 0:
-			speed_left = 1
-			speed_right = 0
-		else:
+			if delta_y > 10000:
+				speed_right = 1
+			else:
+				speed_right = delta_y / 10000
 			speed_left = 0
-			speed_right = 1
+		else:
+			speed_right = 0
+			if delta_y < -10000:
+				speed_left = 1
+			else:
+				speed_left = abs(delta_y) / 10000
 
 		# Z-axis
 		if abs(delta_z) <= POSITION_THRESHOLD:
 			speed_up = 0
 			speed_down = 0
 		elif delta_z > 0:
-			speed_up = 1
+			if delta_z > 10000:
+				speed_up = 1
+			else:
+				speed_up = delta_z / 10000
 			speed_down = 0
 		else:
 			speed_up = 0
-			speed_down = 1
+			if delta_z < -10000:
+				speed_down = 1
+			else:
+				speed_down = abs(delta_z) / 10000
 
 		# Heading
 		if abs(delta_angle) <= ROTATION_THRESHOLD:
 			rotate_counterclockwise = 0
 			rotate_clockwise = 0
-		elif delta_angle > ROTATION_THRESHOLD:
-			rotate_counterclockwise = 1
-			rotate_clockwise = 0
-			# Overwrite horizontal speeds
-			speed_forward = 0
-			speed_backward = 0
-			speed_left = 0
-			speed_right = 0
-		else:
+		elif delta_angle > 0:
 			rotate_counterclockwise = 0
 			rotate_clockwise = 1
-			# Overwrite horizontal speeds
-			speed_forward = 0
-			speed_backward = 0
-			speed_left = 0
-			speed_right = 0
+		else:
+			rotate_counterclockwise = 1
+			rotate_clockwise = 0
 
-		return speed_forward * MAX_SPEED, speed_backward * MAX_SPEED, speed_right * MAX_SPEED, speed_left * MAX_SPEED, speed_up * MAX_SPEED, speed_down * MAX_SPEED, rotate_counterclockwise * MAX_ROTATION, rotate_clockwise * MAX_ROTATION
+		return speed_forward, speed_backward, speed_right, speed_left, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise
 
 # MQTT class
 class MyMQTTClass(mqtt.Client):
@@ -320,7 +347,7 @@ class MyMQTTClass(mqtt.Client):
 	def start(self):
 		# Connect to the MQTT server
 		# TODO Connect via IP address of the correct interface
-		self.connect(IP, port=PORT)#, bind_address="10.10.131.110")
+		self.connect(IP, port=PORT)#, bind_address="10.10.130.158")
 
 		# Subscribe to the topics
 		self.subscribe(topic_waypoints)
@@ -383,18 +410,19 @@ if __name__ == "__main__":
 		print "Next waypoint: [" + str(waypoint_ID) + "] " + str(waypoint_x) + "," + str(waypoint_y) +  "," + str(waypoint_z)
 
 		while True:
-			#if platform.system == "Windows":
-			os.system("cls")
-			#elif platform.system == "Linux":
-			#	os.system("clear")
+			if platform.system == "Windows":
+				os.system("cls")
+			elif platform.system == "Linux":
+				os.system("clear")
 
 			print "ID: " + str(waypoint_ID)
 			print "{:>6}\t->\t{:>6}".format(x, waypoint_x)
 			print "{:>6}\t->\t{:>6}".format(y, waypoint_y)
 			print "{:>6}\t->\t{:>6}".format(z, waypoint_z)
+			print "{:>6}\t->\t{:>6}".format(heading, heading_ref)
 
-			# Calculate instructions and hover 5 s over the waypoint
-			speed_forward, speed_backward, speed_left, speed_right, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise, hover, done = optimus.fly(waypoint_x, waypoint_y, waypoint_z, 5)
+			# Calculate instructions and hover 0 s over the waypoint
+			speed_forward, speed_backward, speed_right, speed_left, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise, hover, done = optimus.fly(waypoint_x, waypoint_y, waypoint_z, 0)
 			
 			if done:
 				# Reached waypoint
@@ -407,11 +435,13 @@ if __name__ == "__main__":
 			else:
 				hover_send = "0"
 
-			clientsocket.send(str(speed_forward) + "," + str(speed_backward) + "," + str(speed_left) + "," + str(speed_right) + "," + str(speed_up) + "," + str(speed_down) + "," + str(rotate_counterclockwise) + "," + str(rotate_clockwise) + "," + hover_send)
+			clientsocket.send(str(speed_forward) + "," + str(speed_backward) + "," + str(speed_right) + "," + str(speed_left) + "," + str(speed_up) + "," + str(speed_down) + "," + str(rotate_counterclockwise) + "," + str(rotate_clockwise) + "," + hover_send)
 
 			if not takoff:
-				time.sleep(5)
+				print "Ready for take off!"
+				time.sleep(2)
 				takoff = True
+				print "Take off!"
 			else:
 				# Get height in mm back (read maximum 16 bytes)
 				z = int(clientsocket.recv(16))

@@ -6,9 +6,9 @@
 	"topic_position": "vopposition",
 	"topic_orientation": "vopeulerangles",
 	"topic_height": "vopheight",
-	"TIME_INTERVAL": 0.2,
-	"MAX_SPEED": 0.125,
+	"TIME_INTERVAL": 0.1,
+	"MAX_SPEED": 0.2,
 	"POSITION_THRESHOLD": 250,
-	"MAX_ROTATION": 0.250,
-	"ROTATION_THRESHOLD": 5
+	"MAX_ROTATION": 0.4,
+	"ROTATION_THRESHOLD": 8
 }
