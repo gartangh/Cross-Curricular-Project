@@ -195,7 +195,7 @@ if __name__ == "__main__":
 		room = Room(json.dumps(json.load(json_file)))
 		json_file.close
 
-    mayPublish = True
+	mayPublish = True
 
 	mqttc.publish(identify,"vop")
 	mqttc.publish(setup,"Tag is online!")
