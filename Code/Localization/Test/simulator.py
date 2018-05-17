@@ -88,7 +88,7 @@ if __name__ == "__main__":
         quit()
     mqttc.start()
 
-    data = str(os.path.join("..","Resources","Waypoints.json"))
+    data = str(os.path.join("..","Resources","Waypoints2.json"))
     with open(data) as json_file:
         json_data = json.load(json_file)
 

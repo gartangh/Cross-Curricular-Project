@@ -10,7 +10,7 @@ import os
 import json
 
 position = "testP"
-waypoints = "testW"
+waypoints = "vopwaypoints1"
 setup = "vopsetup1"
 anchors = "vopanchors1"
 
@@ -38,8 +38,8 @@ if __name__ == "__main__":
     time.sleep(2)
 
     # Publish waypoints
-    if False:
-        data = str(os.path.join("..","Resources","Waypoints.json"))
+    if True:
+        data = str(os.path.join("..","Resources","Waypoints2.json"))
         with open(data) as json_file:
             mqttc.publish(waypoints, json.dumps(json.load(json_file)))
             
@@ -48,7 +48,7 @@ if __name__ == "__main__":
         print "Send waypoints"
 
     # Publish anchors
-    if True:
+    if False:
         data = str(os.path.join("..","Resources","Anchors.json"))
         with open(data) as json_file:
             mqttc.publish(anchors, json.dumps(json.load(json_file)))
@@ -72,7 +72,7 @@ if __name__ == "__main__":
                 mqttc.stop()
                 quit()
 
-    if True:
+    if False:
         print "send start"
         mqttc.publish(setup,"start")
 
