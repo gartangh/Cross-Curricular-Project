@@ -1,7 +1,6 @@
 import time
 import serial
 import json
-import os
 
 import paho.mqtt.client as mqtt
 
@@ -189,14 +188,6 @@ if __name__ == "__main__":
 	# Containers for information of the tag
 	euler = EulerAngles()
 	device_range = DeviceRange()
-
-	# Anchors
-	data = str(os.path.join("..","Resources","Waypoints2.json"))
-	with open(data) as json_file:
-		mqttc.publish(waypoints, json.dumps(json.load(json_file)))
-		json_file.close
-
-	mayPublish = True
 
 	mqttc.publish(identify,"vop")
 	mqttc.publish(setup,"Tag is online!")
