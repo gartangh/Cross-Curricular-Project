@@ -1,6 +1,7 @@
 import time
 import serial
 import json
+import os
 
 import paho.mqtt.client as mqtt
 
@@ -190,9 +191,9 @@ if __name__ == "__main__":
 	device_range = DeviceRange()
 
 	# Anchors
-	data = str(os.path.join("Resources","Waypoints2.json"))
+	data = str(os.path.join("..","Resources","Waypoints2.json"))
 	with open(data) as json_file:
-		room = Room(json.dumps(json.load(json_file)))
+		mqttc.publish(waypoints, json.dumps(json.load(json_file)))
 		json_file.close
 
 	mayPublish = True
