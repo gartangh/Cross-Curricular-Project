@@ -191,9 +191,9 @@ if __name__ == "__main__":
 
 	# Anchors
 	data = str(os.path.join("Resources","Waypoints2.json"))
-    with open(data) as json_file:
-        room = Room(json.dumps(json.load(json_file)))
-        json_file.close
+	with open(data) as json_file:
+		room = Room(json.dumps(json.load(json_file)))
+		json_file.close
 
     mayPublish = True
 
