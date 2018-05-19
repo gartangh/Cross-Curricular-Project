@@ -1,26 +1,27 @@
 // Global variable height, set on 0.0 m
-var height = 2.0;
+var height = 0.0;
 // Gloabal variable take off, set on false
 var takeoff = false;
 
 // Create a drone
 var arDrone = require("ar-drone");
 var drone  = arDrone.createClient();
-//drone.animateLeds("blinkRed", 5, 2);
 
 // Get height from drone
-drone.on("navdata", function(navdata) {
-	if (navdata.demo)
-		height = navdata.demo.altitude;
-	else
-		// Default height = 1.0 m
-		height = 1.0;
+drone.on('navdata', function(navigation_data){
+  if(navigation_data.demo){ //console.log(navigation_data.demo.altitude);
+    height = navigation_data.demo.altitude}
+  else{
+    height = 0.000
+  }
+  
 });
 
 // Create a server
 const net = require("net");
 const server = net.createServer((client) => {
 	// On client connected
+	cient.setEncoding("utf8");
 	console.log("Client connected!");
 
 	// Set data encoding to UFT-8
@@ -74,10 +75,7 @@ const server = net.createServer((client) => {
 				drone.clockwise(instructions[7]);
 		}
 		
-		// Return height in mm
-		//var heightmm = Math.round(1000 * height);
-		var heightmm = 1000;
-		client.write(heightmm.toString());
+		client.write(height.toString());
 	});
 
 	// On client disconnected
