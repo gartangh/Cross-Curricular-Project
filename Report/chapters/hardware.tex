@@ -15,12 +15,13 @@ Er bestaan reeds libraries, waarvan er in dit project ook gebruik gemaakt wordt.
 De camera op de drone zou kunnen dienen om barcodes in te scannen, maar dat onderdeel werd niet onder de doelstellingen van dit project gedefini\"eerd.\\
 Tot slot bezit de drone ook nog een ultrasone sensor om de hoogte t.o.v. de vloer te meten en een camera om stabiel te blijven zweven op dezelfde positie.
 
-\section{Ultra Wide Band}  \label{sec:uwb}
-In theorie is het mogelijk om de drone op een gekende locatie te laten vertrekken en een voorgeprogrammeerde route mee te geven. In de praktijk zorgt dat zeker en vast voor problemen. Denk bijvoorbeeld maar aan een ongekend obstakel dat plots het pad van de drone kruist, of een ventilatieschacht die de drone uit positie blaast. Daarom is het nodig dat z'n precieze locatie in de ruimte op elk moment gekend is. Veelgebruikte lokalisatietools zoals gps, wifi en bluetooth zijn te onnauwkeurig voor deze toepassing. Als de drone tussen 2 rekken met een doorgang van \SI{1}{\m} moet kunnen vliegen, dan moet de lokalisatie veel naukeuriger gebeuren.\\
+\section{Indoor lokalisatie}  \label{sec:uwb}
+In theorie is het mogelijk om, als een drone op een gekende locatie (met een gekende ori\"entatie) vertrekt, deze zonder enige input informatie of correcties een reeks vluchtbewegingen door te geven zodat een voorgeprogrammeerde route gevolgd wordt. In de praktijk wordt dit echter bemoeilijkt door ongekende externe factoren, denk bijvoorbeeld maar aan een ongekend obstakel dat plots het pad van de drone kruist, of een ventilatieschacht die de drone uit positie blaast. Ook het opstijgen gebeurt niet vlekkeloos, waardoor hij met een foutieve ori\"entatie aan zijn tocht zou beginnen. Daarom is het nodig dat het toestel z'n specifieke locatie in de ruimte op elk moment gekend is.\\
 
-Ultra Wide Band komt deze noden tegemoet. Dit is een vrij recente techniek met een nauwkeurigheid in de grootteorde van \SI{0.10}{\m}, wat volstaat om de drone indoor te kunnen localiseren.\\
+Als de drone tussen 2 rekken met een doorgang van \SI{1}{\m} moet kunnen vliegen, dan moet de nauwkeurigheid van lokalisatie in de grootte orde van \SI{0.10}{\m} liggen. Veelgebruikte lokalisatie-technologie\"en zoals gps, wifi en bluetooth zijn te onnauwkeurig voor deze toepassing. Ultra Wide Band komt deze noden tegemoet. Dit is een vrij recente techniek met een nauwkeurigheid in de grootteorde van \SI{0.10}{\m}, wat volstaat om de drone indoor te kunnen lokaliseren.\\
 
-Om deze locatiebepaling via UWB te kunnen doen zijn 2 verschillende hardwarecomponenten noodzakelijk, namelijk enkele anker nodes (die op gekende locaties in het magazijn worden opgehangen) en een mobiele tag (die als onderdeel van de controller op de drone wordt bevestigd). Over de mobiele tag is meer te vinden in sectie \ref{sec:pozyx_tag}.
+Voor de locatiebepaling werd beroep gedaan op de Pozyx-hardware\footnote{\url{https://www.pozyx.io}}, ontwikkeld door een spin-off van de Ugent, meer bepaald op de anker nodes (die op gekende locaties in de ruimte worden opgehangen) en op een mobiele tag (die als onderdeel van de controller op de drone wordt bevestigd). 
+Over de mobiele tag is meer te vinden in sectie \ref{sec:pozyx_tag}.
 
 \section{On-board Controller} \label{sec:onboard_controller}
 \subsection{Pozyx tag}  \label{sec:pozyx_tag}
