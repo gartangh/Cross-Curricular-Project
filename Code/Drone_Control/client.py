@@ -247,14 +247,14 @@ class DronePosition:
 			if delta_x > 10000:
 				speed_forward = 1
 			else:
-				speed_forward = round(float(delta_x) / 10000 * 100) / 100
+				speed_forward = float(delta_x) / 10000
 			speed_backward = 0
 		else:
 			speed_forward = 0
 			if delta_x < -10000:
 				speed_backward = 1
 			else:
-				speed_backward = round(float(abs(delta_x)) / 10000 * 100) / 100
+				speed_backward = abs(float(delta_x)) / 10000
 
 		# Y-axis
 		if abs(delta_y) <= POSITION_THRESHOLD:
@@ -264,14 +264,14 @@ class DronePosition:
 			if delta_y > 10000:
 				speed_right = 1
 			else:
-				speed_right = round(float(delta_y) / 10000 * 100) / 100
+				speed_right = float(delta_y) / 10000
 			speed_left = 0
 		else:
 			speed_right = 0
 			if delta_y < -10000:
 				speed_left = 1
 			else:
-				speed_left = round(float(abs(delta_y)) / 10000 * 100) / 100
+				speed_left = abs(float(delta_y)) / 10000
 
 		# Z-axis
 		if abs(delta_z) <= POSITION_THRESHOLD:
@@ -281,14 +281,14 @@ class DronePosition:
 			if delta_z > 10000:
 				speed_up = 1
 			else:
-				speed_up = round(float(delta_z) / 10000 * 100) / 100
+				speed_up = float(delta_z) / 10000
 			speed_down = 0
 		else:
 			speed_up = 0
 			if delta_z < -10000:
 				speed_down = 1
 			else:
-				speed_down = round(float(abs(delta_z)) / 10000 * 100) / 100
+				speed_down = abs(float(delta_z)) / 10000
 
 		# Heading
 		if abs(delta_angle) <= ROTATION_THRESHOLD:
@@ -301,6 +301,7 @@ class DronePosition:
 			rotate_counterclockwise = 1
 			rotate_clockwise = 0
 
+		print "algo2: " + str(speed_forward), str(speed_backward), str(speed_right), str(speed_left), str(speed_up), str(speed_down), str(rotate_counterclockwise), str(rotate_clockwise)
 		return speed_forward, speed_backward, speed_right, speed_left, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise
 
 # MQTT class
@@ -402,6 +403,8 @@ if __name__ == "__main__":
 		waypoint_z = waypoint["position"]["z"]
 
 		print "Next waypoint: [" + str(waypoint_ID) + "] " + str(waypoint_x) + "," + str(waypoint_y) +  "," + str(waypoint_z)
+		# t1 = datetime.now()
+
 
 		while True:
 			#if platform.system == "Windows":
@@ -415,9 +418,13 @@ if __name__ == "__main__":
 			print "{:>6}\t->\t{:>6}".format(z, waypoint_z)
 			print "{:>6}\t->\t{:>6}".format(heading, heading_ref)
 
+
 			# Calculate instructions and hover 0 s over the waypoint
 			speed_forward, speed_backward, speed_right, speed_left, speed_up, speed_down, rotate_counterclockwise, rotate_clockwise, hover, done = optimus.fly(waypoint_x, waypoint_y, waypoint_z, 0)
-			
+
+
+
+
 			if done:
 				# Reached waypoint
 				break

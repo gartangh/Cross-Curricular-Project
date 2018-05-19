@@ -7,8 +7,8 @@
 	"topic_orientation": "vopeulerangles",
 	"topic_height": "vopheight",
 	"TIME_INTERVAL": 0.1,
-	"MAX_SPEED": 0.2,
+	"MAX_SPEED": 0.1,
 	"POSITION_THRESHOLD": 250,
-	"MAX_ROTATION": 0.4,
-	"ROTATION_THRESHOLD": 8
+	"MAX_ROTATION": 0.05,
+	"ROTATION_THRESHOLD": 5
 }

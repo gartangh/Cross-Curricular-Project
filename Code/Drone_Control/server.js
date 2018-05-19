@@ -31,22 +31,11 @@ const server = net.createServer((client) => {
 		// Take off the drone
 		if (!takeoff) {
 			console.log("Ready for take off!");
-			// Take of the drone
-			/*drone.takeoff(function(err) {
-				if (err)
-					console.log(err);
-				else {
-					takeoff = true;
-					//drone.animateLeds("blinkGreen", 5, 2);
-					console.log("Take off!");
-				}
-			});*/
 			drone.takeoff();
 			takeoff = true;
 			console.log("Take off!");
 			
-			return;
-		}
+			}
 
 		instructions = data.split(",");
 		console.log(instructions);
@@ -82,9 +71,10 @@ const server = net.createServer((client) => {
 	client.on("end", () => {
 		console.log("Client disconnected!");
 		// Land the drone
+		drone.land()
 		if (takeoff) {
 			console.log("Ready for touch down!");
-			/*drone.land(function(err) {
+			drone.land(function(err) {
 				if (err)
 					console.log(err);
 				else {
@@ -92,7 +82,7 @@ const server = net.createServer((client) => {
 					//drone.animateLeds("blinkRed", 5, 2);
 					console.log("Touch down!");
 				}
-			});*/
+			});
 
 			drone.land();
 			takeoff = false;
