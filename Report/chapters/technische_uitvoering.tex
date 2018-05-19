@@ -1,6 +1,6 @@
 \chapter{Technische uitvoering}
 De eerste beslissing omtrent hardware was het uitzoeken van de drone.
-Hier werd geopteerd voor de Parrot AR.Drone 2.0 Elite Edition met jungle camo.
+Hier werd geopteerd voor de Parrot\footnote{\url{https://parrot.com}} AR.Drone 2.0 Elite Edition met jungle camo.
 De belangrijkste argumenten voor deze keuze zijn de kostprijs (\SI{116.71}{\euro{}}), de vluchtduur (\SI{12}{\min}) en het laadvermogen.\\
 De meeste types drone die een lading van zo'n \SI{100}{\g} kunnen dragen minstens \SI{250}{\euro{}}.
 Dit type is echter al even niet meer in productie, waardoor de prijs enorm gezakt is.
@@ -100,7 +100,7 @@ De drone zet een eigen wifi-netwerk met ESSID adrone2\_XXXXXX  op en geeft zichz
 Als de Raspberry Pi 3 B verbindt met het netwerk van de drone, krijgt het een IP-adres tussen 192.168.1.2 en 192.168.1.5 (met de grenzen inbegrepen) toegekend.
 Indien de drone een ander IP-adres aan zichzelf toegekend heeft, zullen de gebruikers één van de 4 volgende adressen toegekend krijgen.\\
 Het besturen van de drone gebeurd door het versturen van \textit{AT commands} op UDP poort 5556.
-De maximale frequentie waarmee de commando's kunnen doorgestuurd worden ligt rond de \SI{30}{\Hz}, om de drone snel te kunnen laten reageren, en een goede gebruikerservaring te garanderen.\\
+De maximale frequentie waarmee de commando's kunnen doorgestuurd worden ligt rond de \SI{30}{\Hz}, om de drone snel te kunnen laten reageren, en een goede gebruikerservaring te garanderen.\\ 
 
 Informatie over de drone (zoals status, positie, snelheid, snelheid van de rotoren, ...) wordt naar de gebruiker gestuurd op UDP poort 5554.
 De frequentie waarmee deze \textit{navdata} wordt verstuurd ligt tussen de \SI{15}{\Hz} (in demo mode) en \SI{200}{\Hz} in full (debug) mode.\\
@@ -114,7 +114,8 @@ Op figuur \ref{fig:setup} vindt u de hardware setup, aangevuld met de gebruikte 
 	\centering
 	\includegraphics[width=\textwidth]{Setup}
 	\caption[Setup]{Hardware setup, aangevuld met protocollen.}
-	\label{fig:setup_software}
+	\label{fig:setup}
 \end{figure}
 
 \section{Visualisatie} \label{sec:visualization}
+Unity\footnote{\url{https://unity3d.com/}}.
