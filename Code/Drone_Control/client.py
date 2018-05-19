@@ -169,10 +169,7 @@ class DronePosition:
 
 	# Positive axes: forward, left, up and counterclockwise
 	def algo1(self, waypoint_x, waypoint_y, waypoint_z):
-		global TIME_INTERVAL
 		global POSITION_THRESHOLD
-		global MAX_SPEED
-		global MAX_ROTATION
 		global ROTATION_THRESHOLD
 		global heading_ref
 
@@ -229,10 +226,7 @@ class DronePosition:
 
 	# Positive axes: forward, left, up and counterclockwise
 	def algo2(self, waypoint_x, waypoint_y, waypoint_z):
-		global TIME_INTERVAL
 		global POSITION_THRESHOLD
-		global MAX_SPEED
-		global MAX_ROTATION
 		global ROTATION_THRESHOLD
 		global heading_ref
 
@@ -253,14 +247,14 @@ class DronePosition:
 			if delta_x > 10000:
 				speed_forward = 1
 			else:
-				speed_forward = delta_x / 10000
+				speed_forward = round(float(delta_x) / 10000 * 100) / 100
 			speed_backward = 0
 		else:
 			speed_forward = 0
 			if delta_x < -10000:
 				speed_backward = 1
 			else:
-				speed_backward = abs(delta_x) / 10000
+				speed_backward = round(float(abs(delta_x)) / 10000 * 100) / 100
 
 		# Y-axis
 		if abs(delta_y) <= POSITION_THRESHOLD:
@@ -270,14 +264,14 @@ class DronePosition:
 			if delta_y > 10000:
 				speed_right = 1
 			else:
-				speed_right = delta_y / 10000
+				speed_right = round(float(delta_y) / 10000 * 100) / 100
 			speed_left = 0
 		else:
 			speed_right = 0
 			if delta_y < -10000:
 				speed_left = 1
 			else:
-				speed_left = abs(delta_y) / 10000
+				speed_left = round(float(abs(delta_y)) / 10000 * 100) / 100
 
 		# Z-axis
 		if abs(delta_z) <= POSITION_THRESHOLD:
@@ -287,14 +281,14 @@ class DronePosition:
 			if delta_z > 10000:
 				speed_up = 1
 			else:
-				speed_up = delta_z / 10000
+				speed_up = round(float(delta_z) / 10000 * 100) / 100
 			speed_down = 0
 		else:
 			speed_up = 0
 			if delta_z < -10000:
 				speed_down = 1
 			else:
-				speed_down = abs(delta_z) / 10000
+				speed_down = round(float(abs(delta_z)) / 10000 * 100) / 100
 
 		# Heading
 		if abs(delta_angle) <= ROTATION_THRESHOLD:
@@ -410,10 +404,10 @@ if __name__ == "__main__":
 		print "Next waypoint: [" + str(waypoint_ID) + "] " + str(waypoint_x) + "," + str(waypoint_y) +  "," + str(waypoint_z)
 
 		while True:
-			if platform.system == "Windows":
-				os.system("cls")
-			elif platform.system == "Linux":
-				os.system("clear")
+			#if platform.system == "Windows":
+			os.system("cls")
+			#elif platform.system == "Linux":
+			#	os.system("clear")
 
 			print "ID: " + str(waypoint_ID)
 			print "{:>6}\t->\t{:>6}".format(x, waypoint_x)

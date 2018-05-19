@@ -1,7 +1,7 @@
 \chapter{Planning}
 
-\section{Initi\"ele planning} \label{sec:initiele_planning}
-De initi\"ele planning is terug te vinden op figuur \ref{fig:initiele_planning}.
+\section{Initi\"ele planning en taakverdeling} \label{sec:initiele_planning}
+De initi\"ele planning is terug te vinden op figuur \ref{fig:initiele_planning}, terwijl de taakverdeling verduidelijkt staat in tabel \ref{tab:taakverdeling}.
 \begin{figure}[p]
 \centering
 \begin{ganttchart}[vgrid, y unit chart=0.75cm, bar/.append style={fill=White, rounded corners=2pt}, milestone/.append style={fill=White}]{1}{13}
@@ -29,8 +29,6 @@ De initi\"ele planning is terug te vinden op figuur \ref{fig:initiele_planning}.
 \label{fig:initiele_planning}
 \end{figure}
 
-\section{Taakverdeling} \label{sec:taakverdeling}
-Wie doet wat? Dit kunt u terug vinden in tabel \ref{tab:taakverdeling}.
 \begin{table}[p]
 \centering
 \begin{tabular}{ |c|c|c| } \hline
@@ -51,6 +49,15 @@ Eindpresentatie & Iedereen & WIT \\ \hline
 \caption[Taakverdeling]{Taakverdeling.}
 \label{tab:taakverdeling}
 \end{table}
+
+De bedoeling was om het hardware gedeelte zo snel mogelijk af te hebben, zodat er daarna gefocust kon worden op software.
+De hardware uitzoeken en bestellen neemt een 3-tal weken in beslag, omdat hier de belangrijkste ontwerpskeuzes gemaakt werden.
+De verschillende onderdelen samenvoegen neemt niet veel tijd in beslag.
+Wachten tot de leveringen binnen zijn echter wel.\\
+
+UWB opzetten en het controlebord verbinden met de server zou niet lang mogen duren.
+De aansturing van de drone leek een groter obstakel om te overwinnen.
+Op het einde van de planning is er tijd vrijgemaakt om een wifi-mesh op te zetten tussen meerdere drones.
 
 \section{Finale planning} \label{sec:finale_planning}
 De finale planning is terug te vinden op figuur \ref{fig:finale_planning}.
@@ -84,10 +91,14 @@ De finale planning is terug te vinden op figuur \ref{fig:finale_planning}.
 
 De grootste verschillen tussen de initi\"ele planning en de finale planning zijn dat de visualisatie er bij is gekomen en dat het hardware gedeelte later ge\"eindigd is.\\
 
-De motivatie van de belangrijkste wijzigingen zijn dat het visuele gedeelte enorm uitgebreid is ten opzichte van wat initi\"eel gepland werd. Zo worden nu meerdere drones live ondersteund in Unity en kun je die volgen met verscheidene camera's. Ook de paden kunnen aangemaakt, bewerkt en verstuurd worden vanuit Unity.\\
+De motivatie van de belangrijkste wijzigingen zijn dat het visuele gedeelte enorm uitgebreid is ten opzichte van wat initi\"eel gepland werd.
+Eerder dan gebruik te maken van de bestaande visualisatie van drone paden (die beperkt was tot 2D) is een 3D weergave ontworpen in Unity, waar meerdere drones gevolgd kunnen worden met verscheidene camera's.
 
 De reden waarom het hardware gedeelte langer duurde dan oorspronkelijk ingepland werd, is vrij simpel te verklaren.\\
 In het begin werden enkele afwegingen gemaakt (vb. tussen verschillende drones en de DecaWave tegenover de Pozyx tag), die pas na enkele weken vastgelegd werden.\\
-Om de kosten te drukken werden kabels, batterijen, ... besteld uit China. Het nadeel daarvan is dat onderdelen enkele weken onderweg kunnen zijn, waardoor die pas laat voorhanden waren. De code kon ondertussen al geschreven worden, maar nog niet uitgetest op de hardware.\\
+Om de kosten te drukken werden kabels, batterijen, ... besteld uit China.
+Het nadeel daarvan is dat onderdelen enkele weken onderweg kunnen zijn, waardoor deze pas laat voorhanden waren.
+De code kon ondertussen al geschreven worden, maar nog niet uitgetest op de hardware.\\
 De houder voor de controller werd pas in de laatste 3 weken in 3D getekend en geprint.
-De reden waarom er pas in de laatste weken voor de controller houder gekeken werd is dat de prioriteit op andere delen lag. Indien er tijd over zou zijn, kon er gekeken worden om een esthetischere houder te cre\"eren dan wat wit plakband.
+De reden waarom er pas in de laatste weken voor een houder voor de controller gekeken werd is dat de prioriteit op andere delen lag.
+Deze meer esthetische houder is een uitbreiding, een verbetering over de eerder gebruikte witte plakband.

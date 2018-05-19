@@ -1,7 +1,8 @@
 \chapter{Resultaten}
-De resultaten van het project zijn ...\\
+Het belangrijkste resultaat is natuurlijk de implementatie van het volledige drone systeem. Hierbij krijgen we locatieupdates met \SI{27.5}{\Hz} en sturen we de drone aan met \SI{20}{\Hz}\\
 
-Een resultaten van enkele testvluchten zijn te vinden op figuur \ref{fig:test_flight_1}, \ref{fig:test_flight_2}, \ref{fig:test_flight_3}, \ref{fig:test_flight_4}.\\
+Een resultaten van enkele testvluchten zijn te vinden op figuur \ref{fig:test_flight_1}, figuur \ref{fig:test_flight_2}, figuur \ref{fig:test_flight_3} en figuur \ref{fig:test_flight_4}.\\
+\textit{Uitleg bij de figuren.}
 \begin{figure}[p]
 	\centering
 	\includegraphics[width=\textwidth]{Test_Flight_1}
@@ -24,15 +25,21 @@ Een resultaten van enkele testvluchten zijn te vinden op figuur \ref{fig:test_fl
 	\label{fig:test_flight_4}
 \end{figure}
 
-Een openstaand probleem van het project is dat het verbinden van de off-board controller met 2 verschillende netwerken nog niet optimaal verloopt. Vaak wil de ene applicatie niet verbinden met het juiste netwerk.
+\section{Testen} \label{sec:test}
+Indien u dit project zelf wil gebruiken of testen, bezoek dan zeker de git repository op ...
 
-Een tekort aan het project is dat de drone momenteel altijd moet opstarten met de voorkant wijzend naar de positieve x-as. Dit kan manueel niet altijd even nauwkeurig gebeuren waardoor vaker correcties moeten gebeuren tijdens een vlucht. Dit is van toepassing op beide algoritmes.\\
+\section{Problemen} \label{sec:problems}
+Een openstaand probleem van het project is dat het verbinden van de off-board controller met 2 verschillende netwerken nog niet optimaal verloopt. Vaak wil de applicatie niet verbinden met het netwerk van de drone.\\
+
+Een tekortkoming aan het project is dat de drone momenteel altijd moet opstarten met de voorkant wijzend naar de positieve x-as.
+Dit kan manueel niet altijd even nauwkeurig gebeuren waardoor het tweede algoritme vaker moet corrigeren tijdens een vlucht.
+Een illustratie van dit probleem is niet voorhanden, maar het kon wel visueel vastgesteld worden.\\
 Een mogelijke oplossing voor dit probleem is om de drone op een bepaald punt in de ruimte vast te zetten zodat de lengte van de drone parallel ligt met de x-as, met de voorkant richting het positieve deel.\\
 Een andere oplossing is om de drone eerst te calibreren alvorens de vlucht aan te vatten.
 Hierbij kun je eerst een aantal meter recht vooruit vliegen en vervolgens checken in welke richting de drone gevlogen heeft.
-Dit brengt enkele veronderstellingen met zich mee, die haast onmogelijk in werkelijkheid gereproduceerd kunnen worden. bijvoorbeeld: de drone moet recht vooruit vliegen, zonder af te wijken door luchtstromingen of te roteren tijdens de vlucht.
-Ook heb je een relatief grote plaats nodig waar je in alle mogelijke richtingen enkele meters kan vliegen.\\
-
+Dit brengt enkele veronderstellingen met zich mee, die haast onmogelijk in werkelijkheid gereproduceerd kunnen worden.
+bijvoorbeeld: de drone moet recht vooruit vliegen, zonder af te wijken door luchtstromingen of te roteren tijdens de vlucht.
+Ook is er een relatief grote plaats nodig waar je in alle mogelijke richtingen enkele meters kan vliegen.\\
 
 \section{Kosten}
 Hier komt de verantwoording van gemaakte kosten.\\
@@ -41,7 +48,7 @@ De eerste LiPo batterijen (van \SI{150}{\mA\hour}) die aangekocht werden bleken 
 De aankoop van de Adafruit HUZZAH bleek overbodig nadat de controller opgesplitst werd. Ook zou het niet meer mogelijk geweest zijn om de gekozen libraries te gebruiken.\\
 
 Een overzicht van alle gemaakte kosten vindt u in tabel \ref{tab:kosten}.\\
-Niet alles staat hier in verwerkt. Zo werden de Pozyx location anchors en tags vrij verkregen, alsook de Raspberry Pis.
+Materiaal dat reeds beschikbaar was zoals de Pozyx location anchors en tags en de Raspberry Pis is niet in de tabel verwerkt.
 \begin{table}[p]
 \centering
 \begin{tabular}{ |l|r|r|r| } \hline
