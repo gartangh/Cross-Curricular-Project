@@ -42,3 +42,12 @@ Het gebruik van de 'ardrone-autonomy' library werd ook onderzocht. Dit is een ui
 \section{Verwerken van de data in Python}
 
 
+Het Python script doet het meeste van het werk. De locatie vanop de mqtt server wordt gebruikt om te berekenen tegen welke snelheid en in welke richting de drone moet vliegen. Deze informatie wordt dan doorgestuurd over een lokale socket naar het Node.js script.
+
+\subsection{Vliegalgoritme 1}
+
+Een eerste poging bestond eruit de info omtrent de locatie te gebruiken en om te zetten in twee snelheden, namelijk een voorwaartste snelheid en een hoeksnelheid. Het idee was simpel: de drone draait zich telkens in de juist richting en gaat dat vooruit. Hoewel dit idee theoretisch goed klinkt was dit praktisch moeilijker uit te voeren. Een eerste probleem was dat het vooruit vliegen en draaien parallel gebeurde, wat er dus voor zorgde dat de drone eerder in een boog vloog in plaats van rechtdoor. Dit kon eventueel verholpen worden door de twee acties sequentieel uit te voeren, maar op die manier zouden we nog een nieuwe timing afhankeijkheid creeren (Wat als de drone nieuwe vlieg data ontvangt maar hij is nog bezit met draaien?), en dat leek ons suboptimaal. 
+
+\subsection{Vliegalgoritme 2}
+
+In een tweede poging werd enkel gebruik gemaakt van de lineare richtingen van de drone, en niet geroteerd. Het komt er dus op neer dat de drone enkel naar voor, achter, link of rechts gaat, en zijn 'oog' steeds naar dezelfde kant wijst. Dit bleek een accurater algoritme dus hebben we dit verder uitgewerkt. Een grote beperking in de set up waarop we zijn gestoten is dat de hoek berekend d.m.v. de pozyx tags relatief is, en bij elke opstart anders is. Dit heeft als gevolg dat de drone telkens gealligneerd met het assenstelsel moet opstijgen. Ook hier neemt de snelheid linear af, tot de drone binnen een gegeven afstand van het punt is. Dan zet hij de 'done' parameter op true, en kan er over gegaan worden naar het volgende punt in de lijst.
