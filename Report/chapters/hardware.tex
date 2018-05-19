@@ -19,20 +19,40 @@ Voor de locatiebepaling werd beroep gedaan op de Pozyx-hardware\footnote{\url{ht
 Over de mobiele tag is meer te vinden in sectie \ref{sec:pozyx_tag}.
 
 \section{On-board Controller} \label{sec:onboard_controller}
-\subsection{Pozyx tag}  \label{sec:pozyx_tag}
-De mobiele tag kan om de beurt de verschillende ankers aanspreken, en opvragen hoe ver hij van hen verwijderd is. Wanneer er enkele afstanden gekend zijn, kan hij zijn locatie bepalen ten opzichte van de ankers.\\
 
-De DecaWave DWM1001 bevat dezelfde UWB chip als de Pozyx tag, maar is goedkoper, compacter, en lichter. Voor de gebruikte drone is het minieme gewichtsverschil niet echt een probleem. Men moet echter wel in het achterhoofd houden dat meer massa de stabiliteit en vliegminuten in negatieve zin be\"invloedt.\\
-Aangezien de DecaWave veel complexer te programmeren is, werd er voor deze toepassing toch gebruikt gemaakt van de Pozyx tag.
+De locatiebepaling gebeurt via een controller die we op de drone monteren, deze bestaat uit een Pozyx tag, een Raspberry Pi Zero W en een batterij.
+
+\subsection{Pozyx tag}  \label{sec:pozyx_tag}
+De mobiele tag kan om de beurt de verschillende ankers aanspreken, en opvragen hoe ver hij van hen verwijderd is. Wanneer er enkele van deze afstanden gekend zijn, kan hij zijn locatie bepalen ten opzichte van de ankers.\\
+
+Er werden twee verschillende opties vergelijken (zie tabel \ref{tab:decavspozyx}) als mogelijke UWB component: DecaWave DWM1001 en Pozyx. De DecaWave is een goedkope, lichte en compacte module. Echter zou het implementeren van de lokalisatie geen makkelijk programmeertaak zijn, mede doordat de communicatie met de chip niet evident is. Ook waren deze module niet direct beschikbaar. Hierdoor is er gekozen voor de duurdere, zwaardere en grotere pozyx tag. Deze waren direct beschikbaar, en ook de begeleiders hadden hier reeds ervaring mee. Voor de gebruikte drone is het minieme gewichtsverschil niet echt een probleem. Men moet echter wel in het achterhoofd houden dat meer massa de stabiliteit en vliegminuten in negatieve zin be\"invloedt.\\
+
+\begin{table}[p]
+\centering
+\begin{tabular}{ | l | c | c | } \hline
+& DecaWave DWM1001 & Pozyx \\
+\hline 
+\hline
+Prijs (\euro{}) & 20 & 135 \\ 
+\hline
+Massa (g) & 4 & 12 \\ 
+\hline
+Afmetingen ($mm \times mm$) & $19.1 \times 26.2$ & $60 \times 53$ \\ 
+\hline
+\end{tabular}
+\caption[Vergelijking DecaWave DWM1001 Module en Pozyx tag]{Vergelijking DecaWave DWM1001 Module en Pozyx tag}
+\label{tab:decavspozyx}
+\end{table}
 
 \subsection{Raspberry Pi Zero W} \label{sec:raspberry_pi}
-De Raspberry Pi Zero W wordt gebruikt om de Pozyx tag aan te sturen en de link te leggen met de MQTT server.
+
+Het aansturen van de Pozyx tag gebeurt met een Raspberry Pi Zero W. 
 
 \subsection{LiPo Batterij en Power Supply} \label{sec:lipo}
 De Lithium-ion Polymeer Batterij (LiPo) moet de controller gedurende ongeveer een kwartier van stroom kunnen voorzien, aangezien de drone ook ongeveer \SI{15}{\min} lang in de lucht kan blijven.\\
 De controller heeft gedurende een kwartier ongeveer \SI{350}{\mA} nodig. Om pieken op te kunnen vangen werd gekozen voor een batterij van \SI{500}{\mA\hour}. Deze kan gedurende een kwartier zo'n \SI{2000}{\mA} leveren aan de controller.\\
 
-Omdat de Rasberry Pi Zero W op \SI{5}{\V} opereert i.p.v. op de \SI{3.7}{\V} van de LiPo batterij, wordt er nog een LiPo SHIM tussen geplaatst. Deze zal niet enkel het voltage omvormen, maar bezit ook een indicator dat inschakeld wanneer de batterij bijna leeg is.
+Omdat de Rasberry Pi Zero W op \SI{5}{\V} opereert i.p.v. op de \SI{3.7}{\V} van de LiPo batterij, wordt er nog een LiPo SHIM tussen geplaatst. Deze zal niet enkel het voltage omvormen, maar bezit ook een indicator dat inschakelt wanneer de batterij bijna leeg is.
 
 \section{Off-board Controller} \label{sec:offboard_controller}
 Om de drone effectief aan te sturen maken we gebruik van een Raspberry Pi 3 B. Deze heeft de mogelijkheid om met 2 netwerken tegelijk te verbinden. De Ethernet interface wordt gebruikt om verbinding te maken met het internet (en de MQTT server), terwijl de wifi interface gebruikt wordt om met het netwerk van de drone te verbinden.
