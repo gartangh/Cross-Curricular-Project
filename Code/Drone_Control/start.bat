@@ -2,4 +2,4 @@
 start cmd /k node server.js
 
 :: Take control over the drone
-start cmd /k python2 client.py
+start cmd /k python client.py
