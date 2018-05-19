@@ -438,7 +438,7 @@ if __name__ == "__main__":
 				print "Take off!"
 			else:
 				# Get height in mm back (read maximum 16 bytes)
-				z = int(clientsocket.recv(16))
+				z = int(clientsocket.recv(8))
 				mqttc.publish_height(z)
 				
 				# Wait some time before sending next instructions

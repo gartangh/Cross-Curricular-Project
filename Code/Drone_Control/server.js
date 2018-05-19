@@ -1,27 +1,26 @@
-// Global variable height, set on 0.0 m
-var height = 0.0;
+// Global variable height, set on 1.0 m
+var height = 1.0;
 // Gloabal variable take off, set on false
 var takeoff = false;
 
 // Create a drone
 var arDrone = require("ar-drone");
 var drone  = arDrone.createClient();
+//drone.animateLeds("blinkRed", 5, 2);
 
 // Get height from drone
-drone.on('navdata', function(navigation_data){
-  if(navigation_data.demo){ //console.log(navigation_data.demo.altitude);
-    height = navigation_data.demo.altitude}
-  else{
-    height = 0.000
-  }
-  
+drone.on('navdata', function(navdata) {
+	if (navdata.demo)
+		height = navdata.demo.altitude;
+	else
+		// Default height = 1.0 m
+		height = 1.0;
 });
 
 // Create a server
 const net = require("net");
 const server = net.createServer((client) => {
 	// On client connected
-	cient.setEncoding("utf8");
 	console.log("Client connected!");
 
 	// Set data encoding to UFT-8
@@ -35,14 +34,14 @@ const server = net.createServer((client) => {
 			// Take off the drone
 			/*
 			drone.takeoff(function(err) {
--				if (err)
--					console.log(err);
--				else {
--					takeoff = true;
--					//drone.animateLeds("blinkGreen", 5, 2);
--					console.log("Take off!");
--				}
--			});
+				if (err)
+					console.log(err);
+				else {
+					takeoff = true;
+					//drone.animateLeds("blinkGreen", 5, 2);
+					console.log("Take off!");
+				}
+			});
 			*/
 			drone.takeoff();
 			takeoff = true;
@@ -75,7 +74,8 @@ const server = net.createServer((client) => {
 				drone.clockwise(instructions[7]);
 		}
 		
-		client.write(height.toString());
+		// Return height in mm
+		client.write(Math.round(1000 * height).toString());
 	});
 
 	// On client disconnected
