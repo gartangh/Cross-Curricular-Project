@@ -7,7 +7,6 @@ import paho.mqtt.client as mqtt
 from pypozyx import *
 
 # Global variables
-mayPublish = False
 room = None
 pos_x = None
 pos_y = None
@@ -55,7 +54,6 @@ class MyMQTTClass(mqtt.Client):
 
 
 	def on_message_setup(self, userdate, message):
-		global mayPublish
 		global room
 
 		global setup 
@@ -67,16 +65,9 @@ class MyMQTTClass(mqtt.Client):
 		action = str(message.payload)
 
 		# Start sending data
-		if action == "start":
-			mayPublish = True
-			print "Start sending data"
-		# Stop sending data
-		elif action == "stop":
-			mayPublish = False
-			print "Stop sending data"
-		elif action == "Tag is online!":
+		if action == "Tag is online!":
 			print "Tag is online!"
-		# Wrong message
+		# Set topics
 		else:
 			json_data = json.loads(message.payload)
 
@@ -203,8 +194,7 @@ if __name__ == "__main__":
 				last_time = now
 
 			# Ready to collect 
-
-			if (mayPublish == True and room != None):
+			if (room != None):
 				# Calculate the Euler angles
 				pozyx.getEulerAngles_deg(euler)
 				mqttc.publish_eulerAngles(euler.data)
