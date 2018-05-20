@@ -15,6 +15,13 @@
 \usepackage{pgfgantt}
 \usepackage[gen]{eurosym}
 
+% Keywords command
+\providecommand{\keywords}[1]
+{
+	\small	
+	\textbf{\textit{Kernwoorden:}} #1
+}
+
 \begin{document}
 	
 \begin{titlepage}
@@ -51,12 +58,13 @@
 
 \pagenumbering{roman}
 
+\input{chapters/abstract.tex}
+
 \tableofcontents
 \listoffigures
 \listoftables
 
-\input{chapters/abstract.tex}
-
+\input{chapters/inleiding.tex}
 \pagenumbering{arabic}
 \input{chapters/technische_uitvoering.tex}
 \input{chapters/planning.tex}

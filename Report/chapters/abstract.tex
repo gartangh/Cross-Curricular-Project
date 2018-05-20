@@ -1,11 +1,14 @@
 \begin{abstract}
 Voorraadbeheer in een magazijn gebeurt traditioneel door werknemers die op een vorklift handmatig barcodes inscannen.
 Dit is een zeer langzame, dure en gevaarlijke aanpak.
-Een kosteneffectievere oplossing maakt gebruik van automatisch aangestuurde drones die met een hun camera barcodes kunnen inscannen.\\
+Een kosteneffectievere oplossing maakt gebruik van automatisch aangestuurde drones die met een hun camera barcodes kunnen inscannen.
+Het doel van dit vakoverschrijdend project is om een basis te leggen voor dit systeem, door commercieel beschikbare drones te voorzien van een controller.\\
 
-Het doel van dit vakoverschrijdend project is om een basis te leggen voor dit systeem, door commercieel beschikbare drones te voorzien van een controller.
-Dit is een controlebord, gemonteerd op de drone dat instaat voor drone aansturing, lokalisatie en communicatie met een centraal punt.\\
-De ge\"implementeerde controller laat toe om de drone autonoom en probleemloos een vanuit het controlepunt verzonden route af te leggen.\\
+A.d.h.v. Pozyx location anchors die op gekende plaatsen hangen, een Pozyx tag die gemonteerd is op de drone en Mosquitto server kan de locatie van de drone nauwkeurig bepaald worden.
+Vervolgens kan de drone aangestuurd worden met een beschikbare Node.js library.\\
 
-Problemen waarmee rekening moet gehouden worden zijn de nauwkeurigheid van de locatie bepaling, het gewicht van de on-board controller en de kostprijs van het systeem.
+Het belangrijkste resultaat is de implementatie van het volledige systeem.
+Hierbij vinden er locatie-updates plaats met een frequentie van \SI{27.5}{\Hz} en wordt de drone aangestuurd met een frequentie van \SI{10}{\Hz}.\\
+
+\keywords{Drone, Ultra-wideband (UWB)}
 \end{abstract}
