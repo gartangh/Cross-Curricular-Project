@@ -1,6 +1,6 @@
 \chapter{Technische uitvoering}
 In wat volgt, worden alle componenten (zowel hardware als software) uitvoerig besproken en wordt een verantwoording gegeven van de ontwerp keuzes.
-Dit hoofdstuk wordt opgedeeld in 3 grote onderdelen: lokalisatie, drone aansturing en visualisatie.\\
+Dit hoofdstuk wordt opgedeeld in 3 grote onderdelen: sectie \ref{sec:localization} lokalisatie, sectie \ref{sec:drone_control} drone aansturing en sectie \ref{sec:visualization} visualisatie.\\
 
 Op figuur \ref{fig:setup} vindt u de hardware setup, aangevuld met de gebruikte protocollen.\\
 \begin{figure}[p]
@@ -21,7 +21,7 @@ Er bestaan reeds bibliotheken, waarvan er in dit project ook gebruik gemaakt wor
 De camera op de drone zou kunnen dienen om barcodes in te scannen, maar dat onderdeel werd niet onder de doelstellingen van dit project gedefini\"eerd.\\
 Tot slot bezit de drone ook nog een ultrasone sensor om de hoogte t.o.v. de vloer te meten en een camera om stabiel te blijven zweven op dezelfde positie.\\
 
-\section{Lokalisatie}
+\section{Lokalisatie} \label{sec:localization}
 In theorie is het mogelijk om, als een drone op een gekende locatie (met een gekende ori\"entatie) vertrekt, deze zonder enige input informatie of correcties een reeks vluchtbewegingen door te geven zodat een voorgeprogrammeerde route gevolgd wordt.
 In de praktijk wordt dit echter bemoeilijkt door ongekende externe factoren, denk bijvoorbeeld maar aan een ongekend obstakel dat plots het pad van de drone kruist, of een ventilatieschacht die de drone uit positie blaast.
 Ook het opstijgen gebeurt niet vlekkeloos, waardoor hij met een foutieve ori\"entatie aan zijn tocht zou beginnen.
@@ -127,22 +127,24 @@ Er kan simpelweg een drone object worden aangemaakt waarop functies als 'forward
 Het gebruik van de 'ardrone-autonomy' library werd ook onderzocht.
 Dit is een uitbreiding op de standaard library die toelaat om de drone nog meer high level aan te sturen aan de hand van afstand en draaihoek in plaats van snelheid.
 Al snel werd echter duidelijk dat deze library niet accuraat genoeg is  voor binnenvluchten met kleine foutmarges.
+Een flowchart voor dit deel is te vinden in figuur \ref{fig:flowchart_server}.
 \begin{figure}[p]
 	\centering
 	\includegraphics[width=\textwidth]{images/node_server_flowchart}
 	\caption[Flowchart van de server]{Flowchart van de server.}
-	\label{flowchart_server}
+	\label{fig:flowchart_server}
 \end{figure}
 
 \subsection{Verwerken van de data in Python}
 Het Python script levert het meeste werk.
 De locatie verkeregen van de Mosquitto server wordt gebruikt om te berekenen tegen welke snelheid en in welke richting de drone moet vliegen.
 Deze informatie wordt dan doorgestuurd over een lokale socket naar het Node.js script op poort 8124.
+Een flowchart voor dit deel is te vinden in figuur \ref{fig:flowchart_client}.
 \begin{figure}[p]
 	\centering
 	\includegraphics[width=\textwidth]{images/python_client_flowchart}
 	\caption[Flowchart van de client]{Flowchart van de client.}
-	\label{flowchart_client}
+	\label{fig:flowchart_client}
 \end{figure}
 
 \subsubsection{Vliegalgoritme 1}
