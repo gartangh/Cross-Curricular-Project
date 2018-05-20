@@ -1,14 +1,14 @@
 \begin{thebibliography}{1}
 
-\bibitem{developer_guide2012}
-S.~Piskorski, N.~Brulez, P.~Eline, and F.~D'Haeyer, ``{Developer Guide SDK
-  2.0},'' p.~124, March 2012.
-
 \bibitem{uwb2016}
 A.~Alarifi, A.~Al-Salman, M.~Alsaleh, A.~Alnafessah, S.~Al-Hadhrami, M.~A.
   Al-Ammar, and H.~S. Al-Khalifa, ``Ultra wideband indoor positioning
   technologies: Analysis and recent advances,'' {\em Sensors}, vol.~16, no.~5,
   p.~707, 2016.
+
+\bibitem{developer_guide2012}
+S.~Piskorski, N.~Brulez, P.~Eline, and F.~D'Haeyer, ``{Developer Guide SDK
+  2.0},'' p.~124, March 2012.
 
 \bibitem{tiemann2017scalable}
 J.~Tiemann and C.~Wietfeld, ``Scalable and precise multi-uav indoor navigation
