@@ -9,12 +9,13 @@ var drone  = arDrone.createClient();
 //drone.animateLeds("blinkRed", 5, 2);
 
 // Get height from drone
-drone.on('navdata', function(navdata) {
-	if (navdata.demo)
-		height = navdata.demo.altitude;
-	else
-		// Default height = 1.0 m
-		height = 1.0;
+drone.on('navdata', function(navigation_data){
+  if(navigation_data.demo){
+    height = navigation_data.demo.altitude}
+  else{
+    height = 0.000
+  }
+  
 });
 
 // Create a server

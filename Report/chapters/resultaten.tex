@@ -1,8 +1,18 @@
 \chapter{Resultaten}
+
 Het belangrijkste resultaat is natuurlijk de implementatie van het volledige drone systeem. Hierbij vinden er locatie-updates plaats met een frequentie van \SI{27.5}{\Hz} en wordt de drone aangestuurd met een frequentie van \SI{10}{\Hz}.\\
 
 Tijdens de proefopstelling is er gebruik gemaakt van vier pozyx ankers voor de locatiebepaling. Het doel was dat de drone een op voorhand gedefini\"eerd pad vloog, weergegeven met de witte lijnen op figuur \ref{fig:Opstelling}. Op de figuren \ref{fig:SuccesfullFlight1} en  \ref{fig:SuccesfullFlight2} staan de waypoints en de effectief gevlogen paden van twee verschillende testvluchten gevisualiseerd. De waypoints (rode plustekens) komen overeen met de hoekpunten van de rechthoek voorgesteld op figuur \ref{fig:Opstelling}. Rond elk waypoint is een cirkel getekend die de grootte van het waypoint weergeeft, hier $150mm$. Wanneer de drone binnen dit bereik valt, heeft hij het waypoint bereikt. De stippellijnen op komen overeen met de tegels van de ruimte, deze zijn $600mm \times 600mm$. De drone probeert de waypoints de doorlopen in wijzerzin, met het linkerbovenhoek als startpunt. 
 
+
+Tijdens de proefopstelling is er gebruik gemaakt van vier Pozyx ankers voor de locatiebepaling.
+Het doel was dat de drone een op voorhand gedefini\"eerd pad vloog, weergegeven met de witte lijnen op figuur \ref{fig:Opstelling}.
+Op de figuren \ref{fig:SuccesfullFlight1} en \ref{fig:SuccesfullFlight2} staan de waypoints en de effectief gevlogen paden van twee verschillende testvluchten gevisualiseerd.
+De waypoints (rode plustekens) komen overeen met de hoekpunten van de rechthoek voorgesteld op figuur \ref{fig:Opstelling}.
+Rond elk waypoint is een cirkel getekend die de grootte van het waypoint weergeeft, hier \SI{150}{\mm}.
+Wanneer de drone binnen dit bereik valt, heeft hij het waypoint bereikt.
+De stippellijnen op komen overeen met de tegels van de ruimte, deze zijn \SI{600}{\mm} $\times$ \SI{600}{\mm}.
+De drone probeert de waypoints de doorlopen in wijzerzin, met het de linkerbovenhoek als startpunt.
 \begin{figure}[p]
 	\centering
 	\includegraphics[width=\textwidth]{Opstelling}
@@ -13,20 +23,20 @@ Tijdens de proefopstelling is er gebruik gemaakt van vier pozyx ankers voor de l
 \begin{figure}[p]	
 	\centering
 	\includegraphics[width=\textwidth]{SuccesfullFlight1}
-	\caption[Testvlucht1]{Testvlucht van de drone waarbij hij langs de vier waypoints passeert. }
+	\caption[Testvlucht 1]{Testvlucht van de drone waarbij hij langs de vier waypoints passeert.}
 	\label{fig:SuccesfullFlight1}
 \end{figure}
 	
 \begin{figure}[p]
 	\centering
 	\includegraphics[width=\textwidth]{SuccesfullFlight2}
-	\caption[Testvlucht2]{Testvlucht}
+	\caption[Testvlucht 2]{Testvlucht}
 	\label{fig:SuccesfullFlight2}
-	
 \end{figure}
 
 \section{Testen} \label{sec:test}
-Indien u dit project zelf wil gebruiken of testen, bezoek dan zeker de git repository\footnote{\url{https://github.ugent.be/gartangh/VOP_Voorraadbeheer}}.
+Indien u dit project zelf wil gebruiken of testen, bezoek dan zeker de git repository\footnote{\url{https://github.ugent.be/gartangh/VOP_Voorraadbeheer}} of de website\footnote{\url{https://github.ugent.be/pages/gartangh/VOP_Voorraadbeheer}}.
+Hier kan meer informatie gevonden worden over verscheidene onderwerpen, zoals bijvoorbeeld de installatie, MQTT topics en configuratiebestanden.
 
 \section{Problemen} \label{sec:problems}
 Een openstaand probleem van het project is dat het verbinden van de off-board controller met 2 verschillende netwerken nog niet optimaal verloopt. Vaak wil de applicatie niet verbinden met het netwerk van de drone.\\
@@ -54,14 +64,14 @@ Materiaal dat reeds beschikbaar was zoals de Pozyx location anchors en tags en d
 \begin{tabular}{ |l|r|r|r| } \hline
 Product & Prijs (\euro{}) & Aantal & Totaal (\euro{}) \\ [.5ex] \hline \hline
 Parrot AR.Drone 2.0 Elite Edition & 116.71 & 1 & 116.71 \\ \hline
-Micro USB OTG & 1.32 & 2 & 2.64 \\ \hline
-5 LiPo batterijen \SI{150}{\mA\hour} en lader voor controller & 12.47 & 1 & 12.47 \\ \hline
+Micro USB OTG & 1.32 & 2 & 2.63 \\ \hline
+5 LiPo batterijen \SI{150}{\mA\hour} en lader voor controller & 12.46 & 1 & 12.46 \\ \hline
 Adafruit HUZZAH & 14.57 & 1 & 14.57 \\ \hline
 LiPo batterij \SI{1000}{\mA\hour} voor drone & 34.99 & 1 & 34.99 \\ \hline
 2 LiPo batterijen \SI{500}{\mA\hour} en lader voor controller & 35.35 & 1 & 35.35 \\ [.5ex] \hline
 Velcro & 0.79 & 1 & 0.79 \\ \hline
 \hline
-Totaal & & & 218.16 \\ \hline
+Totaal & & & 217.50 \\ \hline
 \end{tabular}
 \caption[Kosten]{Verantwoording van gemaakte kosten.}
 \label{tab:kosten}
