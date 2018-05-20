@@ -31,7 +31,7 @@ Als de drone tussen twee rekken met een doorgang van \SI{1}{\m} moet kunnen vlie
 Veelgebruikte lokalisatie-technologieën zoals gps, wifi en bluetooth zijn te onnauwkeurig voor deze toepassing.
 Ultra-wideband komt deze noden tegemoet.
 Dit is een vrij recente techniek met een nauwkeurigheid in de grootteorde van \SI{0.10}{\m}, wat volstaat om de drone indoor te kunnen lokaliseren.
-De locatiebepaling gebeurt via een controller die we op de drone monteren, deze bestaat uit een UWB component, een Raspberry Pi\footnote{\url{https://raspberrypi.org}} Zero W en een batterij.\\
+De locatiebepaling gebeurt a.d.h.v. een controller op de drone, die bestaat uit een UWB component, een Raspberry Pi\footnote{\url{https://raspberrypi.org}} Zero W en een LiPo batterij.\\
 
 \subsection{UWB component} \label{sec:uwb}
 Er werden twee verschillende opties vergelijken (zie tabel \ref{tab:decavspozyx}) als mogelijke UWB component: DecaWave DWM1001 en Pozyx.
@@ -93,7 +93,7 @@ Deze zal niet enkel het voltage omvormen, maar bezit ook een indicator dat insch
 
 \section{Drone aansturing} \label{sec:drone_control}
 \subsection{Off-board Controller} \label{sec:offboard_controller}
-Om de drone effectief aan te sturen maken we gebruik van een Raspberry Pi 3 B.
+Om de drone effectief aan te sturen wordt gebruik gemaakt van een Raspberry Pi 3 B.
 Deze heeft de mogelijkheid om met 2 netwerken tegelijk te verbinden.
 De Ethernet interface wordt gebruikt om verbinding te maken met het internet (en de Mosquitto server), terwijl de wifi interface gebruikt wordt om met het netwerk van de drone te verbinden.\\
 
@@ -119,7 +119,7 @@ Aangezien alle berekeningen reeds worden gedaan in het Python script is de Node.
 De enige andere noemenswaardige feature is dat het script ook de hoogte zal ontvangen van de drone en dit terugsturen over dezelfde socket.
 Dit gebeurd in parallel met de besturingslus zodanig dat deze niet moet wachten op de hoogte.\\
 
-We gebruiken de 'node-ar-drone' library van Nodecopter.
+Er wordt gebruik gemaakt van de 'node-ar-drone' library van Nodecopter.
 Dit is de standaard library voor het besturen van de drone.
 Deze laat toe om de drone high level aan de sturen.
 Er kan simpelweg een drone object worden aangemaakt waarop functies als 'forward' of 'left' kunnen opgeroepen worden met als argumenten een fractionele snelheid tussen 0 (stil) en 1 (maximum snelheid).\\
@@ -156,7 +156,7 @@ Een eerste probleem was dat het vooruit vliegen en draaien parallel gebeurde, wa
 \subsubsection{Vliegalgoritme 2}
 In een tweede poging werd enkel gebruik gemaakt van de lineare richtingen van de drone, en niet geroteerd.
 Het komt er dus op neer dat de drone enkel naar voor, achter, link of rechts gaat, en zijn heading steeds in dezelfde richting wijst.
-Dit bleek een accurater algoritme dus hebben we dit verder uitgewerkt.
+Dit bleek een accurater algoritme, dus werd hier mee verder gewerkt.
 Een grote beperking in de setup is dat de hoek berekend d.m.v. de Pozyx tags relatief is, en telkens anders is na het opstarten.
 Dit heeft als gevolg dat de drone telkens gealligneerd met het assenstelsel moet opstijgen.
 Ook hier neemt de snelheid linear af, tot de drone binnen een gegeven afstand van het punt is.
