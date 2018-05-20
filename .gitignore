@@ -12,6 +12,7 @@
 *.cb2
 *.fdb_latexmk
 *.blg
+*.gz
 
 Report/*.pdf
 
