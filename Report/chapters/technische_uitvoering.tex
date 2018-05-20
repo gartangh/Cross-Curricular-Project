@@ -88,7 +88,7 @@ Het gebruik van de 'ardrone-autonomy' library werd ook onderzocht. Dit is een ui
 
 
 \begin{figure}[h]
-\caption{Een flowchart van het Nodescript}
+\caption{Een flowchart van het Nodes.js cript}
 \centering
 \includegraphics[width=\textwidth]{images/node_server_flowchart}
 \end{figure}
@@ -99,7 +99,7 @@ Het gebruik van de 'ardrone-autonomy' library werd ook onderzocht. Dit is een ui
 Het Python script doet het meeste van het werk. De locatie vanop de mqtt server wordt gebruikt om te berekenen tegen welke snelheid en in welke richting de drone moet vliegen. Deze informatie wordt dan doorgestuurd over een lokale socket naar het Node.js script op poort 8124.
 
 \begin{figure}[h]
-\caption{Een flowchart van het Nodescript}
+\caption{Een flowchart van het Python script}
 \centering
 \includegraphics[width=\textwidth]{images/python_client_flowchart}
 \end{figure}
@@ -114,7 +114,7 @@ In een tweede poging werd enkel gebruik gemaakt van de lineare richtingen van de
 
 \subsection{Gebruik}
 
-\subsection{Lijst van afhankelijkheden}
+\subsubsection{Lijst van afhankelijkheden}
 
 Python:\\
 paho-mqtt\footnote{\url{https://pypi.org/project/paho-mqtt}}\\
