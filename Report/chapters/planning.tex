@@ -1,8 +1,11 @@
 \chapter{Planning en taakverdeling}
 Dit hoofdstuk vergelijkt de initiële planning met de finale planning en behandelt de taakverdeling.
 
-\section{Initiële planning} \label{sec:initiele_planning}
-De initiële planning is terug te vinden op figuur \ref{fig:initiele_planning}.
+\section{Initi\"ele planning} \label{sec:initiele_planning}
+De initi\"ele planning is terug te vinden op figuur \ref{fig:initiele_planning}. De bedoeling was om het hardware gedeelte zo snel mogelijk af te hebben, zodat er daarna gefocust kon worden op software. De hardware uitzoeken en bestellen neemt een 3-tal weken in beslag, omdat hier de belangrijkste ontwerp-keuzes gemaakt moeten worden. Er wordt ook een week ingepland om de verschillende onderdelen samen te voegen.\\
+
+UWB opzetten en het controlebord verbinden met de server zou niet lang mogen duren. De aansturing van de drone leek een groter obstakel om te overwinnen. Op het einde van de planning is er tijd vrijgemaakt om een wifi-mesh op te zetten tussen meerdere drones.\\
+
 \begin{figure}[p]
 	\centering
 	\begin{ganttchart}[vgrid, y unit chart=0.75cm, bar/.append style={fill=White, rounded corners=2pt}, milestone/.append style={fill=White}]{1}{13}
@@ -26,20 +29,16 @@ De initiële planning is terug te vinden op figuur \ref{fig:initiele_planning}.
 		\ganttlinkedmilestone{Verslag}{12}\\
 		\ganttlinkedmilestone{Eindpresentatie}{13}
 	\end{ganttchart}
-	\caption[Gantt chart van de initiële planning.]{Gantt chart van de initiële planning.}
+	\caption[Gantt chart van de initiële planning.]{Gantt chart van de initi\"ele planning.}
 	\label{fig:initiele_planning}
 \end{figure}
 
-De bedoeling was om het hardware gedeelte zo snel mogelijk af te hebben, zodat er daarna gefocust kon worden op software.
-De hardware uitzoeken en bestellen neemt een 3-tal weken in beslag, omdat hier de belangrijkste ontwerpkeuzes gemaakt moeten worden.
-Er wordt ook een week ingepland om de verschillende onderdelen samen te voegen.\\
-
-UWB opzetten en het controlebord verbinden met de server zou niet lang mogen duren.
-De aansturing van de drone leek een groter obstakel om te overwinnen.
-Op het einde van de planning is er tijd vrijgemaakt om een wifi-mesh op te zetten tussen meerdere drones.
-
 \section{Finale planning en taakverdeling} \label{sec:finale_planning}
-De finale planning is terug te vinden op figuur \ref{fig:finale_planning}, terwijl de taakverdeling verduidelijkt staat in tabel \ref{tab:taakverdeling}.\\
+De finale planning is terug te vinden op figuur \ref{fig:finale_planning}, terwijl de taakverdeling verduidelijkt staat in tabel \ref{tab:taakverdeling}. De grootste verschillen tussen de initi\"ele planning en de finale planning zijn dat de visualisatie er bij is gekomen en dat het hardware gedeelte later ge\"eindigd is. De achterliggende motivatie bij deze wijzigingen is dat het visuele gedeelte enorm uitgebreid is ten opzichte van wat initieel gepland werd. Eerder dan gebruik te maken van de bestaande visualisatie van drone paden (die beperkt was tot 2D) is een 3D weergave ontworpen in Unity, waar meerdere drones gevolgd kunnen worden met verscheidene camera's.
+
+De reden waarom het hardware gedeelte langer duurde dan oorspronkelijk ingepland werd, is vrij simpel te verklaren. In het begin werden enkele afwegingen gemaakt (o.a. tussen verschillende drones en de DecaWave tegenover de Pozyx tag), die pas na 3 weken vastgelegd werden.Kabels, batterijen, ... werden besteld uit China om de kosten te drukken. Het nadeel daarvan is dat onderdelen tot 6 weken onderweg kunnen zijn, waardoor deze pas laat voorhanden waren. De code kon ondertussen al geschreven worden, maar nog niet uitgetest op de hardware.\\
+De houder voor de controller werd pas in de laatste 3 weken in 3D getekend en geprint. De reden waarom er pas in de laatste weken voor een houder voor de controller gekeken werd is dat de prioriteit op andere delen lag. Deze meer esthetische houder is een uitbreiding, een verbetering over de eerder gebruikte witte plakband.
+
 \begin{figure}[p]
 \centering
 	\begin{ganttchart}[vgrid, y unit chart=0.75cm, bar/.append style={fill=White, rounded corners=2pt}, milestone/.append style={fill=White}]{1}{13}
@@ -88,17 +87,3 @@ De finale planning is terug te vinden op figuur \ref{fig:finale_planning}, terwi
 	\caption[Taakverdeling]{Taakverdeling.}
 	\label{tab:taakverdeling}
 \end{table}
-
-De grootste verschillen tussen de initiële planning en de finale planning zijn dat de visualisatie er bij is gekomen en dat het hardware gedeelte later geËindigd is.\\
-
-De motivatie van de belangrijkste wijzigingen zijn dat het visuele gedeelte enorm uitgebreid is ten opzichte van wat initiëel gepland werd.
-Eerder dan gebruik te maken van de bestaande visualisatie van drone paden (die beperkt was tot 2D) is een 3D weergave ontworpen in Unity, waar meerdere drones gevolgd kunnen worden met verscheidene camera's.
-
-De reden waarom het hardware gedeelte langer duurde dan oorspronkelijk ingepland werd, is vrij simpel te verklaren.\\
-In het begin werden enkele afwegingen gemaakt (vb. tussen verschillende drones en de DecaWave tegenover de Pozyx tag), die pas na 3 weken vastgelegd werden.\\
-Kabels, batterijen, ... werden besteld uit China om de kosten te drukken.
-Het nadeel daarvan is dat onderdelen tot 6 weken onderweg kunnen zijn, waardoor deze pas laat voorhanden waren.
-De code kon ondertussen al geschreven worden, maar nog niet uitgetest op de hardware.\\
-De houder voor de controller werd pas in de laatste 3 weken in 3D getekend en geprint.
-De reden waarom er pas in de laatste weken voor een houder voor de controller gekeken werd is dat de prioriteit op andere delen lag.
-Deze meer esthetische houder is een uitbreiding, een verbetering over de eerder gebruikte witte plakband.
