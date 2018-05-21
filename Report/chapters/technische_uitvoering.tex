@@ -13,7 +13,7 @@ Figuur \ref{fig:setup} toont de hardware setup, aangevuld met de gebruikte proto
 De eerste beslissing omtrent hardware was het uitzoeken van de drone.
 Hier werd geopteerd voor de Parrot\footnote{\url{https://parrot.com}} AR.Drone 2.0 Elite Edition met jungle camo.
 De belangrijkste argumenten voor deze keuze zijn de kostprijs (\SI{116.71}{\euro{}}), de vluchtduur (\SI{12}{\min}) en het laadvermogen.
-De meeste types drone die een lading van zo'n \SI{100}{\g} kunnen dragen kosten minstens \SI{250}{\euro{}}.
+De meeste types drone die een lading van zo'n \SI{100}{\g} kunnen dragen, kosten minstens \SI{250}{\euro{}}.
 Dit type is echter al even niet meer in productie, waardoor de prijs enorm gezakt is.
 Een goedkopere drone met hetzelfde draagvermogen kon niet gevonden worden.\\
 
@@ -111,7 +111,8 @@ Er wordt gebruik gemaakt van een Raspberry Pi 3 B om de drone effectief aan te s
 Deze heeft de mogelijkheid om met twee netwerken tegelijk te verbinden.
 De ethernet interface wordt gebruikt om verbinding te maken met het internet (meer bepaald de Mosquitto server), terwijl de wifi interface gebruikt wordt om met het netwerk van de drone te verbinden.\\
 
-Het eerste waarover een beslissing moest genomen worden was het al dan niet gebruiken van een reeds bestaande library, en zo ja de welke? Bij de keuze van drone werd beschikbaarheid van documentatie steeds in het achterhoofd gehouden waardoor er veel opties beschikbaar waren. Volgende opties werden onderzocht:
+Het eerste waarover een beslissing moest genomen worden was het al dan niet gebruiken van een reeds bestaande library, en zo ja de welke?
+Bij de keuze van drone werd beschikbaarheid van documentatie steeds in het achterhoofd gehouden waardoor er veel opties beschikbaar waren. Volgende opties werden onderzocht:
 \begin{itemize}
 \item python-ardrone
 \item YADrone
@@ -120,7 +121,7 @@ Het eerste waarover een beslissing moest genomen worden was het al dan niet gebr
 \item Nodecopter
 \end{itemize}
 
-Er werd al snel besloten om gebruik te maken van een library, aangezien er hierdoor meer tijd besteed kon worden aan de eigenlijke projectdoelstellingen. De finale keuze werd gemaakt tussen python-ardrone en Nodecopter. Doorslaggevend voor de keuze voor Nodecopter was de zeer grote beschikbaarheid van documentatie en extra modules.\\
+De finale keuze werd gemaakt tussen python-ardrone en Nodecopter. Doorslaggevend voor de keuze voor Nodecopter was de zeer grote beschikbaarheid van documentatie en extra modules.\\
 
 Aangezien er via Python werd gecommuniceerd zorgde dit er wel voor dat de drone aansturing moest worden opgesplitst in twee delen. Enerzijds het Node.js deel dat de commando's doorstuurt naar de drone, en anderzijds het python script dat de positie en \textit{waypoints} ophaalt van de Mosquitto server en omvormt tot instructies voor de drone.
 
@@ -140,7 +141,8 @@ Een flowchart voor dit deel is te vinden in figuur \ref{fig:flowchart_server}.
 \end{figure}
 
 \subsection{Data verwerken in Python}
-Het Python script levert het meeste werk. De locatie verkregen van de Mosquitto server wordt gebruikt om te berekenen tegen welke snelheid en in welke richting de drone moet vliegen.
+Het Python script levert het meeste werk.
+De locatie verkregen van de Mosquitto server wordt gebruikt om te berekenen tegen welke snelheid en in welke richting de drone moet vliegen.
 Deze informatie wordt dan doorgestuurd over een lokale socket naar het Node.js script op poort 8124.
 Een flowchart voor dit deel is te vinden in figuur \ref{fig:flowchart_client}.
 \begin{figure}[p]
@@ -152,7 +154,8 @@ Een flowchart voor dit deel is te vinden in figuur \ref{fig:flowchart_client}.
 
 \subsubsection{Vliegalgoritme 1}
 Een eerste poging bestond eruit de informatie omtrent de locatie te gebruiken en om te zetten in twee snelheden, namelijk een voorwaartste snelheid en een hoeksnelheid.
-Het idee was simpel: de drone draait zich telkens in de juist richting en gaat dan vooruit met een snelheid linear afhankelijk met de afstand tot het doel. Indien hij binnen een bepaalde radius van is zal hij de coordinaten updaten en naar het volgende punt vliegen.
+Het idee was simpel: de drone draait zich telkens in de juist richting en gaat dan vooruit met een snelheid linear afhankelijk met de afstand tot het doel.
+Indien hij binnen een bepaalde radius van het \textit{waypoint} is zal hij de coordinaten updaten en naar het volgende punt vliegen.
 Hoewel dit idee theoretisch goed klinkt was dit praktisch moeilijker uit te voeren.
 Een voornaamste probleem was dat het vooruit vliegen en draaien parallel gebeurde, wat er voor zorgde dat de drone eerder in een boog vloog in plaats van rechtdoor.
 
