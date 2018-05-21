@@ -13,17 +13,19 @@ Op figuur \ref{fig:setup} vindt u de hardware setup, aangevuld met de gebruikte 
 De eerste beslissing omtrent hardware was het uitzoeken van de drone.
 Hier werd geopteerd voor de Parrot\footnote{\url{https://parrot.com}} AR.Drone 2.0 Elite Edition met jungle camo.
 De belangrijkste argumenten voor deze keuze zijn de kostprijs (\SI{116.71}{\euro{}}), de vluchtduur (\SI{12}{\min}) en het laadvermogen. De meeste types drone die een lading van zo'n \SI{100}{\g} kunnen dragen kosten minstens \SI{250}{\euro{}}. Dit type is echter al even niet meer in productie, waardoor de prijs enorm gezakt is. Een goedkopere drone met hetzelfde draagvermogen kon niet gevonden worden.\\
+
 Ook voor het software gedeelte is deze drone een goede keuze. Parrot stelt een SDK, die toelaat om de drone via wifi aan te sturen en vlucht gegevens op te halen, openbaar ter beschikking.
 Er bestaan reeds bibliotheken, waarvan er in dit project ook gebruik gemaakt wordt.\\
+
 De frontale camera op de drone zou kunnen dienen om barcodes in te scannen, maar dat onderdeel werd niet onder de doelstellingen van dit project gedefini\"eerd. De drone bezit ook nog een ultrasone sensor om de hoogte ten opzichte van de vloer te meten en een naar de grond gerichte camera die toelaat dat de drone stabiel kan blijven zweven boven dezelfde positie.\\
 
 %2de beslissing, controllers scheiden
 
 \section{Lokalisatie} \label{sec:localization}
 In theorie is het mogelijk om, als een drone op een gekende locatie (met een gekende ori\"entatie) vertrekt, deze zonder enige input informatie of correcties een reeks vluchtbewegingen door te geven zodat een voorgeprogrammeerde route gevolgd wordt.
-In de praktijk wordt dit echter bemoeilijkt door ongekende externe factoren, denk bijvoorbeeld maar aan een ongekend obstakel dat plots het pad van de drone kruist, of een ventilatieschacht die de drone uit positie blaast.
+In de praktijk wordt dit echter bemoeilijkt door ongekende externe factoren. Denk bijvoorbeeld aan een ongekend obstakel dat plots het pad van de drone kruist of een ventilatieschacht die de drone uit positie blaast.
 Ook het opstijgen gebeurt niet vlekkeloos, waardoor hij met een foutieve ori\"entatie aan zijn tocht zou beginnen.
-Daarom is het nodig dat het toestel z'n specifieke locatie in de ruimte op elk moment gekend is.\\
+Daarom is het nodig dat de specifieke locatie van het toestel in de ruimte op elk ogenblik gekend is.\\
 
 Als de drone tussen twee rekken met een doorgang van \SI{1}{\m} moet kunnen vliegen, dan moet de nauwkeurigheid van lokalisatie in de grootteorde van \SI{0.1}{\m} liggen.
 Veelgebruikte lokalisatie-technologieën zoals gps, wifi en bluetooth zijn te onnauwkeurig voor deze toepassing.
@@ -129,7 +131,7 @@ Hoewel dit idee theoretisch goed klinkt was dit praktisch moeilijker uit te voer
 Een voornaamste probleem was dat het vooruit vliegen en draaien parallel gebeurde, wat er voor zorgde dat de drone eerder in een boog vloog in plaats van rechtdoor.
 
 \subsubsection{Vliegalgoritme 2}
-In een tweede poging werd enkel gebruik gemaakt van de lineare richtingen van de drone, en niet geroteerd. Het komt er op neer dat de drone enkel naar voor, achter, link of rechts gaat, en zijn heading steeds in dezelfde richting wijst. Dit bleek een accurater algoritme, dus werd hier mee verder gewerkt. Een grote beperking in de setup is dat de hoek berekend d.m.v. de Pozyx tags relatief is, en telkens anders is na het opstarten. Dit heeft als gevolg dat de drone telkens gealligneerd met het assenstelsel moet opstijgen. Ook hier neemt de
+In een tweede poging werd enkel gebruik gemaakt van de lineare richtingen van de drone, en niet geroteerd. Het komt er op neer dat de drone enkel naar voor, achter, links of rechts gaat, en zijn heading steeds in dezelfde richting wijst. Dit bleek een accurater algoritme, dus werd hier mee verder gewerkt. Een grote beperking in de setup is dat de hoek berekend d.m.v. de Pozyx tags relatief is, en telkens anders is na het opstarten. Dit heeft als gevolg dat de drone telkens gealligneerd met het assenstelsel moet opstijgen. Ook hier neemt de
 snelheid linear af, tot de drone binnen een gegeven afstand van het punt is. Dan zet hij de
 parameter ’done’ op true, en kan er over gegaan worden naar het volgende waypoint in de
 lijst.
@@ -150,7 +152,7 @@ In de eerste fase was het de bedoeling om de ruimte en de drone te modelleren. H
 
 Om de gemodelleerde ruimte aan te passen moet de scene in de Unity editor aangepast worden. Voor de muren, vloer en obstakels zijn enkel standaardvormen gebruikt. De colliders worden hier automatisch aan toegevoegd. Het volstaat dus om ofwel de bestaande objecten te verslepen en herschalen ofwel te verwijderen en nieuwe toe te voegen. Hierbij moet wel in het achterhoofd gehouden worden dat de oorsprong van het Unity model gelijk moet liggen met de oorsprong volgens de server. Om kleuren aan de obstakels toe te voegen kunnen de gemaakte materials uit de map Assets/Colors simpelweg op de obstakels in de scene gesleept worden.\\
 
-De tweede fase bestond erin om de drone live te kunnen volgen in het model van de ruimte. Dit wordt met behulp van een zelfgeschreven C\# script gedaan. Dit script is in staat om de locatie van de echte drone van de server te halen en met behulp van die informatie het model te updaten. Hierdoor wordt de drone op de correcte plaats in het model weergegeven. De grootste uitdaging in deze fase was het verbinden met de server vanuit het script en de informatie op de correcte manier verwerkt te krijgen. Een probleem dat hier tevoorschijn kwam, was dat Unity een ander assenstelsel hanteerde dan de server. Dit kon met een simpele co\"ordinatentransformatie opgelost worden en werd voor de rest van het project in het achterhoofd gehouden.\\
+De tweede fase bestond erin om de drone live te kunnen volgen in het model van de ruimte. Dit wordt met behulp van een zelfgeschreven C\# script gedaan. Dit script is in staat om de locatie van de echte drone van de server te halen en met behulp van die informatie het model te updaten. Hierdoor wordt de drone op de correcte plaats in het model weergegeven. De grootste uitdaging in deze fase was het verbinden met de server vanuit het script en de informatie op de correcte manier verwerkt te krijgen. Een probleem dat hier tevoorschijn kwam, was dat Unity een ander assenstelsel hanteert dan de server. Dit kon met een simpele co\"ordinatentransformatie opgelost worden en werd voor de rest van het project in het achterhoofd gehouden.\\
 
 Toen de drone live weergegeven kon worden, was de volgende uitdaging om routes naar de drone te kunnen verzenden. Om input van de gebruiker mogelijk te maken werd een andere UI gemaakt. Het script genereert \textit{waypoints} op locaties die door de gebruiker in de aangewezen velden ingegeven worden. Wanneer de gebruiker deze punten in de juiste volgorde ingegeven geeft worden deze met een druk op de knop op de server gezet, waar ze afgehaald kunnen worden om de drone aan te sturen. De locaties worden in JSON-formaat doorgegeven, opdat verwerking ervan gemakkelijk zou kunnen gebeuren. Problemen die in deze fase de kop opstaken waren het dynamisch genereren van elementen in het 3D model en het versturen van de locaties naar de server. Het versturen naar de server bleek, dankzij de beschikbare voorbeeldcode, geen groot obstakel. Voor het dynamisch genereren van elementen was ook voorbeeldcode beschikbaar, maar die moest toch nog wat aangepast worden alvorens deze aan de noden van het project voldeed.\\
 
