@@ -27,35 +27,37 @@ Een tweede beslissing gaat over het opsplitsen van de on- en off-board controlle
 Oorsponkelijk was de bedoeling om slechts één controller op de drone te plaatsen, die instaat voor communicatie met de Mosquitto server en aansturing van de drone.
 Dit ontwerp brengt een groot probleem met zicht mee: de Raspberry Pi\footnote{\url{https://raspberrypi.org}} Zero W moet verbonden zijn met twee netwerken.\\
 Een mogelijke manier om dit te bereiken is om een wifi dongle in de USB interface te pluggen, maar deze was reeds in gebruik genomen door de Pozyx\footnote{\url{https://www.pozyx.io}} tag.
-Men kan ook met de Pozyx tag verbinden via een seriële poort, maar dan nog stijgt het gewicht van de controller noemenswaardig door de extra kabels, adapter en wifi dongle.\\
+Het is ook mogelijk om met de Pozyx tag verbinden via een seriële poort en zo de USB interface vrij te houden, maar dan stijgt het gewicht van de controller noemenswaardig door de extra kabels, adapter en wifi dongle.\\
 Een andere piste die onderzocht werd, was om een wifi chip te verbinden met een seriële poort van de Raspberry Pi.
 Er werd geöpteerd voor de Adafruit\footnote{\url{https://adafruit.com}} HUZZAH.
 Dit is een \textit{breakout} van de ESP8266 wifi chip.
 Opnieuw brengt dit enig gewicht met zich mee, maar vooral het stroomverbruik is nu een probleem.
 Ook functioneert deze chip niet als een gewone wifi interface, maar moet hij aangesproken worden via commando's op de seriële poort.
-Dit zorgt er voor dat de gekozen Node.js library onbruikbaar wordt.\\
+Dit zorgt er voor dat de Node.js library onbruikbaar wordt.\\
 De gekozen oplossing om dit probleem te omzeilen is de volgende: een extra off-board controller dat het aansturen van de drone voor z'n rekening zal nemen.
 Meer over de off-board controller is te vinden in sectie \ref{sec:offboard_controller}.
 
 \section{Lokalisatie} \label{sec:localization}
-In theorie is het mogelijk om, als een drone op een gekende locatie (met een gekende ori\"entatie) vertrekt, deze zonder enige input informatie of correcties een reeks vluchtbewegingen door te geven zodat een voorgeprogrammeerde route gevolgd wordt.
+In theorie is het mogelijk om, als een drone op een gekende locatie (met een gekende oriëntatie) vertrekt, deze zonder enige input informatie of correcties een reeks vluchtbewegingen door te geven zodat een voorgeprogrammeerde route gevolgd wordt.
 In de praktijk wordt dit echter bemoeilijkt door ongekende externe factoren. Denk bijvoorbeeld aan een ongekend obstakel dat plots het pad van de drone kruist of een ventilatieschacht die de drone uit positie blaast.
-Ook het opstijgen gebeurt niet vlekkeloos, waardoor hij met een foutieve ori\"entatie aan zijn tocht zou beginnen.
+Ook het opstijgen gebeurt niet vlekkeloos, waardoor hij met een foutieve oriëntatie aan zijn tocht zou beginnen.
 Daarom is het nodig dat de specifieke locatie van het toestel in de ruimte op elk ogenblik gekend is.\\
 
 Als de drone tussen twee rekken met een doorgang van \SI{1}{\m} moet kunnen vliegen, dan moet de nauwkeurigheid van lokalisatie in de grootteorde van \SI{0.1}{\m} liggen.
 Veelgebruikte lokalisatie-technologieën zoals gps, wifi en bluetooth zijn te onnauwkeurig voor deze toepassing.
 Ultra-wideband (UWB) komt deze noden tegemoet.
 Dit is een vrij recente techniek met een nauwkeurigheid in de grootteorde van \SI{0.1}{\m}, wat volstaat om de drone indoor te kunnen lokaliseren.
-De locatiebepaling gebeurt a.d.h.v. een controller op de drone, die bestaat uit een UWB component, een Raspberry Pi Zero W en een Lithium-ion Polymeer (LiPo) batterij.\\
+De locatiebepaling gebeurt aan de hand van een controller op de drone, die bestaat uit een UWB component, een Raspberry Pi Zero W en een Lithium-ion Polymeer (LiPo) batterij.\\
 
 \subsection{Ultra-wideband} \label{sec:uwb}
 Er werden twee verschillende opties vergeleken (cf. tabel \ref{tab:decavspozyx}) die als mogelijke ultra-wideband (UWB) component zouden kunnen dienen: de DecaWave DWM1001 en een Pozyx tag.
 De DecaWave DWM1001 is een goedkope, lichte en compacte module. Lokalisatie werkt bij deze chip echter niet out-of-the-box, en het implementeren van de lokalisatie zou geen makkelijke programmeertaak zijn, mede doordat de communicatie met de chip niet evident is.
 Ook was deze module niet direct beschikbaar.
 Daarom werd er gekozen om beroep te doen op de Pozyx-hardware, ontwikkeld door een spin-off van de UGent.
-Deze zijn duurder, zwaarder en groter, maar waren direct beschikbaar en de begeleiders hadden hier al ervaring mee.
-Voor de gebruikte drone is het minieme gewichtsverschil van de Pozyx tag niet echt een probleem. Men moet echter wel in het achterhoofd houden dat meer massa de stabiliteit en vliegminuten in negatieve zin beïnvloedt.\\
+Deze zijn duurder, zwaarder en groter, maar waren direct beschikbaar.
+De begeleiders hadden hier ook al ervaring mee.
+Voor de gebruikte drone is het minieme gewichtsverschil van de Pozyx tag niet echt een probleem.
+Er moet echter wel in het achterhoofd houden worden dat meer massa de stabiliteit en vliegminuten in negatieve zin beïnvloedt.\\
 
 Op gekende locaties in de ruimte worden Pozyx ankers opgehangen.
 De mobiele tag, die onderdeel uit maakt van de controller, kan om de beurt de verschillende ankers aanspreken, en opvragen hoe ver hij van hen verwijderd is.
@@ -126,9 +128,13 @@ De finale keuze werd gemaakt tussen python-ardrone en Nodecopter. Doorslaggevend
 Aangezien er via Python werd gecommuniceerd zorgde dit er wel voor dat de drone aansturing moest worden opgesplitst in twee delen. Enerzijds het Node.js deel dat de commando's doorstuurt naar de drone, en anderzijds het python script dat de positie en \textit{waypoints} ophaalt van de Mosquitto server en omvormt tot instructies voor de drone.
 
 \subsection{Communiceren met de drone via Nodecopter}
-Aangezien alle berekeningen reeds worden gedaan in het Python script is de Node.js kant niet veel meer dan een tussenstuk dat alle data ontvangt op een lokale socket en direct doorstuurt naar de drone door middel van Nodecopter commands. De enige andere noemenswaardige feature is dat het script ook de hoogte ontvangt van de drone en dit terugstuurt over dezelfde socket. Dit gebeurt in parallel met de besturingslus zodanig dat deze niet moet wachten op de hoogte.\\
+Aangezien alle berekeningen reeds worden gedaan in het Python script is de Node.js kant niet veel meer dan een tussenstuk dat alle data ontvangt op een lokale socket en meteen doorstuurt naar de drone door middel van Nodecopter commands.
+De enige andere noemenswaardige feature is dat het script ook de hoogte ontvangt van de drone en dit terugstuurt over dezelfde socket.
+Dit gebeurt in parallel met de besturingslus zodanig dat deze niet moet wachten op de hoogte.\\
 
-Er wordt gebruik gemaakt van de 'node-ar-drone' bibliotheek van Nodecopter. Dit is de standaard library voor het besturen van de drone. Deze laat toe om de drone high level aan de sturen. Er kan simpelweg een drone object worden aangemaakt waarop functies als 'forward' of 'left' kunnen opgeroepen worden met als argumenten een fractionele snelheid tussen 0 (stil) en 1 (maximum snelheid).\\
+Er wordt gebruik gemaakt van de 'node-ar-drone' bibliotheek van Nodecopter.
+Dit is de standaard library voor het besturen van de drone. Deze laat toe om de drone high level aan de sturen.
+Er kan simpelweg een drone object worden aangemaakt waarop functies als 'forward' of 'left' kunnen opgeroepen worden met als argumenten een fractionele snelheid tussen 0 (stil) en 1 (maximum snelheid).\\
 
 Het gebruik van de 'ardrone-autonomy' library werd ook onderzocht. Dit is een uitbreiding op de standaard library die toelaat om de drone nog meer high-level aan te sturen aan de hand van afstand en draaihoek in plaats van snelheid.
 Al snel werd echter duidelijk dat deze library niet accuraat genoeg is  voor indoor vluchten met kleine foutmarges.
@@ -157,12 +163,12 @@ Een eerste poging bestond eruit de informatie omtrent de locatie te gebruiken en
 Het idee was simpel: de drone draait zich telkens in de juist richting en gaat dan vooruit met een snelheid linear afhankelijk met de afstand tot het doel.
 Indien hij binnen een bepaalde radius van het \textit{waypoint} is zal hij de coordinaten updaten en naar het volgende punt vliegen.
 Hoewel dit idee theoretisch goed klinkt was dit praktisch moeilijker uit te voeren.
-Een voornaamste probleem was dat het vooruit vliegen en draaien parallel gebeurde, wat er voor zorgde dat de drone eerder in een boog vloog in plaats van rechtdoor.
+Het voornaamste probleem was dat het vooruit vliegen en draaien in parallel gebeurde, wat er voor zorgde dat de drone eerder in een boog vloog in plaats van rechtdoor.
 
 \subsubsection{Vliegalgoritme 2}
 In een tweede poging werd enkel gebruik gemaakt van de lineare richtingen van de drone, en niet geroteerd.
 Het komt er op neer dat de drone enkel naar voor, achter, links of rechts gaat, en zijn \textit{heading} steeds in dezelfde richting wijst.
-Dit bleek een accurater algoritme, dus werd hier mee verder gewerkt. Een grote beperking in de setup is dat de hoek berekend d.m.v. de Pozyx tags relatief is, en telkens anders is na het opstarten.
+Dit bleek een accurater algoritme, dus werd hier mee verder gewerkt. Een grote beperking in de setup is dat de hoek berekend door middel van de Pozyx tags relatief is, en telkens anders is na het opstarten.
 Dit heeft als gevolg dat de drone telkens gealligneerd met het assenstelsel moet opstijgen.
 Ook hier neemt de snelheid linear af, tot de drone binnen een gegeven afstand van het punt is.
 Dan zet hij de parameter ’done’ op true, en kan er over gegaan worden naar het volgende waypoint in de lijst.
@@ -175,7 +181,7 @@ Aangezien deze ontoereikend leken voor dit project werd besloten om dit onderdee
 \subsection{Bestaande visualisatiemogelijkheden} \label{sec:opties}
 Er werden eerst bestaande opties verkend, om geen onnodig werk te verrichten.
 De minimumvereisten waren dat zowel de huidige positie van de drone in de ruimte als de te volgen route in drie dimensies weergegeven moesten kunnen worden.
-Daarnaast moest de route ook op een initu\"itieve manier ingegeven kunnen worden.
+Daarnaast moest de route ook op een inituïtieve manier ingegeven kunnen worden.
 Tot slot werd ook verwacht dat de route gecontroleerd werd op eventuele problemen onderweg, zoals collisies met obstakels.\\
 
 Geen van alle bestaande opties leek echter aan de eisen te voldoen.
@@ -188,12 +194,13 @@ De enige optie die over bleef was om zelf aan de slag te gaan en een applicatie 
 Het ontwikkelen van de applicatie gebeurde in verschillende fasen. In elke fase werd het bestaande ontwerp verder verfijnd en uitgebreid met nieuwe functionaliteiten om zo tot het eindresultaat te komen.\\
 
 In de eerste fase was het de bedoeling om de ruimte en de drone te modelleren.
-Het nabootsen van de ruimte bestond erin om via elementaire 3D-vormen een zo accuraat mogelijk model voor de gehele ruimte te cre\"eren.
+Het nabootsen van de ruimte bestond erin om via elementaire 3D-vormen een zo accuraat mogelijk model voor de gehele ruimte te creëren.
 Elk obstakel moest daarbovenop van een \textit{collider} voorzien worden opdat er later op collisies met de drone gecheckt zou kunnen worden.
 Deze \textit{colliders} zijn standaard componenten die Unity gebruikt om botsingen te detecteren en waren reeds voorhanden.
 Voor de drone werd een gratis model\footnote{\url{https://clara.io/view/1c6e9fef-d10d-42d0-8493-d619c2b95f55}} rechtstreeks in Unity geïmporteerd.\\
 
-Om de gemodelleerde ruimte aan te passen moet de scene in de Unity editor aangepast worden. Voor de muren, vloer en obstakels zijn enkel standaardvormen gebruikt.
+Om de gemodelleerde ruimte aan te passen moet de scene in de Unity editor aangepast worden.
+Voor de muren, vloer en obstakels zijn alleen maar standaardvormen gebruikt.
 De \textit{colliders} worden hier automatisch aan toegevoegd.
 Het volstaat dus om ofwel de bestaande objecten te verslepen en herschalen ofwel te verwijderen en nieuwe toe te voegen.
 Hierbij moet wel in het achterhoofd gehouden worden dat de oorsprong van het Unity model gelijk moet liggen met de oorsprong volgens de server.
@@ -207,16 +214,16 @@ Hierdoor wordt de drone op de correcte plaats in het model weergegeven. De groot
 Toen de drone live weergegeven kon worden, was de volgende uitdaging om routes naar de drone te kunnen verzenden.
 Om input van de gebruiker mogelijk te maken werd een Graphical User Interface (GUI) gemaakt.
 Het script genereert \textit{waypoints} op locaties die door de gebruiker in de aangewezen velden ingegeven werden.
-Wanneer de gebruiker deze punten in de juiste volgorde ingegeven geeft worden deze met een druk op de knop op de server gezet, waar ze afgehaald kunnen worden om de drone aan te sturen.
+Wanneer de gebruiker deze punten in de juiste volgorde ingegeven heeft worden deze met een druk op de knop op de server gezet, waar ze afgehaald kunnen worden om de drone aan te sturen.
 De locaties worden in JavaScript Object Notation (JSON) doorgegeven, opdat verwerking ervan gemakkelijk zou kunnen gebeuren.
 Problemen die in deze fase de kop opstaken waren het dynamisch genereren van elementen in het 3D model en het versturen van de locaties naar de server.
 Het versturen naar de server bleek, dankzij de beschikbare voorbeeldcode, geen groot obstakel.
 Voor het dynamisch genereren van elementen was ook voorbeeldcode beschikbaar, maar die moest toch nog wat aangepast worden alvorens deze aan de noden van het project voldeed.\\
 
-Eenmaal de basisfunctionaliteit in orde was, werd er bekeken wat de volgende mogelijke stappen waren.
+Eenmaal de basisfunctionaliteit in orde was, werd er gekeken naar mogelijke, volgende stappen.
 Een eerste uitbreiding bestond erin om de route, die door de drone afgelegd moest worden, volledig visueel weer te geven door middel van lijnsegmenten tussen de \textit{waypoints}.
 Daarnaast moest er ook gecontroleerd worden of de opgegeven route wel kon afgelegd worden door de drone.
-Beide stapper bleken gerelateerd.
+Beide stappen bleken gerelateerd.
 Het tekenen van de lijnen gebeurt door een simpele functie in het script.
 Deze functie wordt uitgevoerd wanneer de gebruiker alle gewenste wegpunten ingevoerd heeft.
 Vervolgens wordt in een bepaalde straal rond deze lijnen gezocht naar objecten met \textit{colliders}, waarmee de drone mogelijks in botsing zou komen op zijn route.
@@ -228,4 +235,4 @@ Ook worden de waypoints niet langer verstuurd wanneer er zich een probleem zou v
 Tot slot werd de applicatie ook aangepast om zo uitbreidbaar mogelijk te zijn.
 Door middel van een configuratiebestand in JSON formaat kan de gebruiker zelf het aantal gewenste drones meegeven, elk met een ID en kleur.
 De kleur wordt gebruikt om de drones te kunnen onderscheiden in het model, het ID om de routes aan de juiste drone mee te kunnen geven.
-Van elke drone wordt live zijn positie, hoogte en orientatie weergegeven en de gebruiker kan via het inputveld in de GUI aangeven voor welke drone een bepaalde route bedoeld is.
+Van elke drone wordt live zijn positie, hoogte en oriëntatie weergegeven en de gebruiker kan via het inputveld in de GUI aangeven voor welke drone een bepaalde route bedoeld is.

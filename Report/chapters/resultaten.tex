@@ -1,5 +1,7 @@
 \chapter{Resultaten}
-Het belangrijkste resultaat is natuurlijk de implementatie van het volledige drone systeem. Uit testen bleek dat de Pozyx tag 110 afstanden per seconde kon bepalen. Doordat er steeds gebruikt wordt gemaakt van vier verschillende ankers, vinden er locatie-updates plaats met een frequentie van \SI{27.5}{\Hz} en verder is de keuze gemaakt om de drone aan te sturen met een frequentie van \SI{10}{\Hz}.\\
+Het belangrijkste resultaat is natuurlijk de implementatie van het volledige drone systeem.
+Uit testen bleek dat de Pozyx tag 110 afstanden per seconde kon bepalen.
+Doordat er steeds gebruik wordt gemaakt van vier verschillende ankers, vinden er locatie-updates plaats met een frequentie van \SI{27.5}{\Hz} en verder is de keuze gemaakt om de drone aan te sturen met een frequentie van \SI{10}{\Hz}.\\
 
 Tijdens de proefopstelling is er gebruik gemaakt van vier Pozyx ankers voor de locatiebepaling.
 Het doel was dat de drone een op voorhand gedefini\"eerd pad vloog, weergegeven met de witte lijnen op figuur \ref{fig:Opstelling}.
@@ -7,8 +9,8 @@ Op figuur \ref{fig:SuccesfullFlight1} staan de \textit{waypoints} en het effecti
 De \textit{waypoints} (rode plustekens) komen overeen met de hoekpunten van de rechthoek voorgesteld op figuur \ref{fig:Opstelling}.
 Rond elk \textit{waypoint} is een cirkel getekend die de grootte van het \textit{waypoint} weergeeft, hier \SI{150}{\mm}.
 Wanneer de drone binnen dit bereik valt, heeft hij het \textit{waypoint} bereikt.
-De stippellijnen op komen overeen met de tegels van de ruimte, deze zijn \SI{600}{\mm} $\times$ \SI{600}{\mm} groot.
-De drone probeert de \textit{waypoints} de doorlopen in wijzerzin, met het linkerbovenhoek als startpunt. 
+De stippellijnen op figurr \ref{fig:SuccesfullFlight1} komen overeen met de tegels van de ruimte, deze zijn \SI{600}{\mm} $\times$ \SI{600}{\mm} groot.
+De drone probeert de \textit{waypoints} de doorlopen in wijzerzin, met de linkerbovenhoek als startpunt. 
 \begin{figure}[p]
 	\centering
 	\includegraphics[width=\textwidth]{Opstelling}
@@ -36,7 +38,7 @@ Een illustratie van dit probleem is niet voorhanden, maar het kon wel visueel va
 
 Een mogelijke oplossing voor dit probleem is om de drone op een bepaald punt in de ruimte vast te zetten zodat de lengte van de drone parallel ligt met de x-as, met de voorkant richting het positieve deel.\\
 Een andere oplossing is om de drone eerst te calibreren alvorens de vlucht aan te vatten.
-Hierbij kan eerst een aantal meter recht vooruit gevlogen worden en vervolgens bepalen in welke richting de drone gevlogen heeft.
+Hierbij kan eerst een aantal meter recht vooruit gevlogen worden en vervolgens kan bepaald worden in welke richting de drone gevlogen heeft.
 Dit brengt enkele veronderstellingen met zich mee, die haast onmogelijk in werkelijkheid gereproduceerd kunnen worden.
 Bijvoorbeeld: de drone moet recht vooruit vliegen, zonder af te wijken door luchtstromingen of te roteren tijdens de vlucht.
 Ook is er een relatief grote plaats nodig waar de drone in alle mogelijke richtingen enkele meters kan vliegen.\\
