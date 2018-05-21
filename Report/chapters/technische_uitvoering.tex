@@ -2,7 +2,7 @@
 In wat volgt, worden alle componenten (zowel hardware als software) uitvoerig besproken en wordt een verantwoording gegeven van de ontwerpkeuzes.
 Dit hoofdstuk wordt opgedeeld in drie onderdelen: sectie \ref{sec:localization} lokalisatie, sectie \ref{sec:drone_control} drone aansturing en sectie \ref{sec:visualization} visualisatie.\\
 
-Op figuur \ref{fig:setup} vindt u de hardware setup, aangevuld met de gebruikte protocollen.\\
+Figuur \ref{fig:setup} toont de hardware setup, aangevuld met de gebruikte protocollen.\\
 \begin{figure}[p]
 	\centering
 	\includegraphics[width=\textwidth]{Setup}
@@ -12,12 +12,16 @@ Op figuur \ref{fig:setup} vindt u de hardware setup, aangevuld met de gebruikte 
 
 De eerste beslissing omtrent hardware was het uitzoeken van de drone.
 Hier werd geopteerd voor de Parrot\footnote{\url{https://parrot.com}} AR.Drone 2.0 Elite Edition met jungle camo.
-De belangrijkste argumenten voor deze keuze zijn de kostprijs (\SI{116.71}{\euro{}}), de vluchtduur (\SI{12}{\min}) en het laadvermogen. De meeste types drone die een lading van zo'n \SI{100}{\g} kunnen dragen kosten minstens \SI{250}{\euro{}}. Dit type is echter al even niet meer in productie, waardoor de prijs enorm gezakt is. Een goedkopere drone met hetzelfde draagvermogen kon niet gevonden worden.\\
+De belangrijkste argumenten voor deze keuze zijn de kostprijs (\SI{116.71}{\euro{}}), de vluchtduur (\SI{12}{\min}) en het laadvermogen.
+De meeste types drone die een lading van zo'n \SI{100}{\g} kunnen dragen kosten minstens \SI{250}{\euro{}}.
+Dit type is echter al even niet meer in productie, waardoor de prijs enorm gezakt is.
+Een goedkopere drone met hetzelfde draagvermogen kon niet gevonden worden.\\
 
 Ook voor het software gedeelte is deze drone een goede keuze. Parrot stelt een SDK, die toelaat om de drone via wifi aan te sturen en vlucht gegevens op te halen, openbaar ter beschikking.
 Er bestaan reeds bibliotheken, waarvan er in dit project ook gebruik gemaakt wordt.\\
 
-De frontale camera op de drone zou kunnen dienen om barcodes in te scannen, maar dat onderdeel werd niet onder de doelstellingen van dit project gedefini\"eerd. De drone bezit ook nog een ultrasone sensor om de hoogte ten opzichte van de vloer te meten en een naar de grond gerichte camera die toelaat dat de drone stabiel kan blijven zweven boven dezelfde positie.\\
+De frontale camera op de drone zou kunnen dienen om barcodes in te scannen, maar dat onderdeel werd niet onder de doelstellingen van dit project gedefiniëerd.
+De drone bezit ook nog een ultrasone sensor om de hoogte ten opzichte van de vloer te meten en een naar de grond gerichte camera die toelaat dat de drone stabiel kan blijven zweven boven dezelfde positie.\\
 
 Een tweede beslissing gaat over het opsplitsen van de on- en off-board controller.
 Oorsponkelijk was de bedoeling om slechts één controller op de drone te plaatsen, die instaat voor communicatie met de Mosquitto server en aansturing van de drone.
@@ -45,13 +49,13 @@ Ultra-wideband (UWB) komt deze noden tegemoet.
 Dit is een vrij recente techniek met een nauwkeurigheid in de grootteorde van \SI{0.1}{\m}, wat volstaat om de drone indoor te kunnen lokaliseren.
 De locatiebepaling gebeurt a.d.h.v. een controller op de drone, die bestaat uit een UWB component, een Raspberry Pi Zero W en een Lithium-ion Polymeer (LiPo) batterij.\\
 
-\subsection{Ultra-wideband component} \label{sec:uwb}
-Er werden twee verschillende opties vergeleken (zie tabel \ref{tab:decavspozyx}) als mogelijke ultra-wideband (UWB) component: DecaWave DWM1001 en Pozyx.
-De DecaWave is een goedkope, lichte en compacte module. Lokalisatie werkt bij deze chip echter niet out-of-the-box, en het implementeren van de lokalisatie zou geen makkelijke programmeertaak zijn, mede doordat de communicatie met de chip niet evident is.
+\subsection{Ultra-wideband} \label{sec:uwb}
+Er werden twee verschillende opties vergeleken (cf. tabel \ref{tab:decavspozyx}) die als mogelijke ultra-wideband (UWB) component zouden kunnen dienen: de DecaWave DWM1001 en een Pozyx tag.
+De DecaWave DWM1001 is een goedkope, lichte en compacte module. Lokalisatie werkt bij deze chip echter niet out-of-the-box, en het implementeren van de lokalisatie zou geen makkelijke programmeertaak zijn, mede doordat de communicatie met de chip niet evident is.
 Ook was deze module niet direct beschikbaar.
 Daarom werd er gekozen om beroep te doen op de Pozyx-hardware, ontwikkeld door een spin-off van de UGent.
 Deze zijn duurder, zwaarder en groter, maar waren direct beschikbaar en de begeleiders hadden hier al ervaring mee.
-Voor de gebruikte drone is het minieme gewichtsverschil van de Pozyx tag niet echt een probleem. Men moet echter wel in het achterhoofd houden dat meer massa de stabiliteit en vliegminuten in negatieve zin be\"invloedt.\\
+Voor de gebruikte drone is het minieme gewichtsverschil van de Pozyx tag niet echt een probleem. Men moet echter wel in het achterhoofd houden dat meer massa de stabiliteit en vliegminuten in negatieve zin beïnvloedt.\\
 
 Op gekende locaties in de ruimte worden Pozyx ankers opgehangen.
 De mobiele tag, die onderdeel uit maakt van de controller, kan om de beurt de verschillende ankers aanspreken, en opvragen hoe ver hij van hen verwijderd is.
@@ -69,7 +73,7 @@ Deze data wordt dan verwerkt door een Raspberry Pi Zero W.
 		Afmetingen ($mm \times mm$) & $19.1 \times 26.2$ & $60 \times 53$ \\ 
 		\hline
 	\end{tabular}
-	\caption[Vergelijking DecaWave DWM1001 Module en Pozyx tag]{Vergelijking DecaWave DWM1001 Module en Pozyx tag}
+	\caption[Vergelijking DecaWave DWM1001 en Pozyx tag]{Vergelijking DecaWave DWM1001 en Pozyx tag.}
 	\label{tab:decavspozyx}
 \end{table}
 
@@ -92,7 +96,7 @@ Wanneer de drone zich verplaatst kan het zijn dat hij buiten het bereik is van s
 Alle ankers aanspreken zou er dan voor kunnen zorgen dat de update tijd vertraagd.
 Een mogelijke manier om dit te verhinderen zou zijn dat de drone enkel de vier ankers aanspreekt die het dichts bij hem in de buurt liggen.
 
-\subsection{Power Supply} \label{sec:power_supply}
+\subsection{Power supply} \label{sec:power_supply}
 Een Lithium-ion Polymeer (LiPo) batterij moet de controller gedurende ongeveer een kwartier van stroom kunnen voorzien, aangezien de drone ook ongeveer \SI{15}{\min} lang in de lucht kan blijven.
 De controller met de aanwezige Pozyx tag heeft gedurende een kwartier ongeveer \SI{350}{\mA} nodig.
 Er werd gekozen voor een batterij van \SI{500}{\mA\hour} om pieken op te kunnen vangen.
@@ -102,7 +106,7 @@ Er wordt een LiPo SHIM tussen de Raspberry Pi Zero W en de LiPo batterij geplaat
 Deze zal niet enkel het voltage omvormen, maar bezit ook een indicator die inschakelt wanneer de batterij bijna leeg is.
 
 \section{Drone aansturing} \label{sec:drone_control}
-\subsection{Off-board Controller} \label{sec:offboard_controller}
+\subsection{Off-board controller} \label{sec:offboard_controller}
 Er wordt gebruik gemaakt van een Raspberry Pi 3 B om de drone effectief aan te sturen.
 Deze heeft de mogelijkheid om met twee netwerken tegelijk te verbinden.
 De ethernet interface wordt gebruikt om verbinding te maken met het internet (meer bepaald de Mosquitto server), terwijl de wifi interface gebruikt wordt om met het netwerk van de drone te verbinden.\\
@@ -135,7 +139,7 @@ Een flowchart voor dit deel is te vinden in figuur \ref{fig:flowchart_server}.
 	\label{fig:flowchart_server}
 \end{figure}
 
-\subsection{Verwerken van de data in Python}
+\subsection{Data verwerken in Python}
 Het Python script levert het meeste werk. De locatie verkregen van de Mosquitto server wordt gebruikt om te berekenen tegen welke snelheid en in welke richting de drone moet vliegen.
 Deze informatie wordt dan doorgestuurd over een lokale socket naar het Node.js script op poort 8124.
 Een flowchart voor dit deel is te vinden in figuur \ref{fig:flowchart_client}.
