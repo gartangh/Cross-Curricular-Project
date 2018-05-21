@@ -1,16 +1,18 @@
 \chapter{Resultaten}
 Het belangrijkste resultaat is natuurlijk de implementatie van het volledige drone systeem. Uit testen bleek dat de Pozyx tag 110 afstanden per seconde kon bepalen. Doordat er steeds gebruikt wordt gemaakt van vier verschillende ankers, vinden er locatie-updates plaats met een frequentie van \SI{27.5}{\Hz} en verder is de keuze gemaakt om de drone aan te sturen met een frequentie van \SI{10}{\Hz}.\\
 
-Tijdens de proefopstelling is er gebruik gemaakt van vier Pozyx ankers voor de locatiebepaling. Het doel was dat de drone een op voorhand gedefini\"eerd pad vloog, weergegeven met de witte lijnen op figuur \ref{fig:Opstelling}. Op figuur \ref{fig:SuccesfullFlight1} staan de waypoints en het effectief gevlogen pad tijdens een testvlucht gevisualiseerd.
-De waypoints (rode plustekens) komen overeen met de hoekpunten van de rechthoek voorgesteld op figuur \ref{fig:Opstelling}.
-Rond elk waypoint is een cirkel getekend die de grootte van het waypoint weergeeft, hier \SI{150}{\mm}.
-Wanneer de drone binnen dit bereik valt, heeft hij het waypoint bereikt.
-De stippellijnen op komen overeen met de tegels van de ruimte, deze zijn \SI{600}{\mm} $\times$ \SI{600}{\mm}.
-De drone probeert de waypoints de doorlopen in wijzerzin, met het linkerbovenhoek als startpunt. 
+Tijdens de proefopstelling is er gebruik gemaakt van vier Pozyx ankers voor de locatiebepaling.
+Het doel was dat de drone een op voorhand gedefini\"eerd pad vloog, weergegeven met de witte lijnen op figuur \ref{fig:Opstelling}.
+Op figuur \ref{fig:SuccesfullFlight1} staan de \textit{waypoints} en het effectief gevlogen pad tijdens een testvlucht gevisualiseerd.
+De \textit{waypoints} (rode plustekens) komen overeen met de hoekpunten van de rechthoek voorgesteld op figuur \ref{fig:Opstelling}.
+Rond elk \textit{waypoint} is een cirkel getekend die de grootte van het \textit{waypoint} weergeeft, hier \SI{150}{\mm}.
+Wanneer de drone binnen dit bereik valt, heeft hij het \textit{waypoint} bereikt.
+De stippellijnen op komen overeen met de tegels van de ruimte, deze zijn \SI{600}{\mm} $\times$ \SI{600}{\mm} groot.
+De drone probeert de \textit{waypoints} de doorlopen in wijzerzin, met het linkerbovenhoek als startpunt. 
 \begin{figure}[p]
 	\centering
 	\includegraphics[width=\textwidth]{Opstelling}
-	\caption[Opstelling testvluchten]{Testopstelling voor aansturen van de drone.}
+	\caption[Opstelling testvluchten]{Testopstelling voor het aansturen van de drone.}
 	\label{fig:Opstelling}
 \end{figure}
 
@@ -41,23 +43,24 @@ Ook is er een relatief grote plaats nodig waar de drone in alle mogelijke richti
 
 \section{Kosten}
 Tot slot geven we een overzicht van de gemaakte kosten binnen dit project.\\
-De extra batterij van \SI{1000}{\mA\hour} was nodig om op korte tijd voldoende te kunnen testen. Zonder die extra batterij zou er telkens meer dan een uur gewacht moeten worden na een kwartier testen.\\
+De extra batterij van \SI{1000}{\mA\hour} was nodig om op korte tijd voldoende te kunnen testen.
+Zonder die extra batterij zou er telkens een paar uur gewacht moeten worden na een kwartier testen.\\
 De eerste LiPo batterijen (van \SI{150}{\mA\hour}) die aangekocht werden bleken niet lang genoeg stroom te kunnen leveren aan de on-board controller. Daarna werd geopteerd voor grotere batterijen van \SI{500}{\mA\hour}.\\
-De aankoop van de Adafruit HUZZAH bleek overbodig nadat de controller opgesplitst werd. Ook zou het niet meer mogelijk geweest zijn om de gekozen libraries te gebruiken.\\
+De aankoop van de Adafruit HUZZAH bleek overbodig nadat de controller opgesplitst werd.\\
 
 Een overzicht van alle gemaakte kosten vindt u in tabel \ref{tab:kosten}.\\
-Materiaal dat reeds beschikbaar was zoals de Pozyx \textit{location anchors} en \textit{tags} en de Raspberry Pis is niet in de tabel verwerkt.
+Materiaal dat reeds beschikbaar was zoals de Pozyx ankers en tags en de Raspberry Pis is niet in de tabel verwerkt.
 \begin{table}[p]
 \centering
 \begin{tabular}{ |l|r|r|r| } \hline
 Product & Prijs (\euro{}) & Aantal & Totaal (\euro{}) \\ [.5ex] \hline \hline
-Parrot AR.Drone 2.0 Elite Edition & 116.71 & 1 & 116.71 \\ \hline
-Micro USB OTG & 1.32 & 2 & 2.63 \\ \hline
+Parrot AR.Drone 2.0 Elite Edition met jungle camo & 116.71 & 1 & 116.71 \\ \hline
+Micro USB OTG kabel & 1.32 & 2 & 2.63 \\ \hline
 5 LiPo batterijen \SI{150}{\mA\hour} en lader voor controller & 12.46 & 1 & 12.46 \\ \hline
 Adafruit HUZZAH & 14.57 & 1 & 14.57 \\ \hline
 LiPo batterij \SI{1000}{\mA\hour} voor drone & 34.99 & 1 & 34.99 \\ \hline
 2 LiPo batterijen \SI{500}{\mA\hour} en lader voor controller & 35.35 & 1 & 35.35 \\ [.5ex] \hline
-Velcro & 0.79 & 1 & 0.79 \\ \hline
+Velcro (\SI{1}{\m}) & 0.79 & 1 & 0.79 \\ \hline
 \hline
 Totaal & & & 217.50 \\ \hline
 \end{tabular}

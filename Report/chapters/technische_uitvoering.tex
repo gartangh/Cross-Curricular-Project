@@ -197,11 +197,28 @@ Dit wordt met behulp van een zelfgeschreven C\# script gedaan.
 Dit script is in staat om de locatie van de echte drone van de server te halen en met behulp van die informatie het model te updaten.
 Hierdoor wordt de drone op de correcte plaats in het model weergegeven. De grootste uitdaging in deze fase was het verbinden met de server vanuit het script en de informatie op de correcte manier verwerkt te krijgen. Een probleem dat hier tevoorschijn kwam, was dat Unity een ander assenstelsel hanteert dan de server. Dit kon met een simpele coördinatentransformatie opgelost worden en werd voor de rest van het project in het achterhoofd gehouden.\\
 
-Toen de drone live weergegeven kon worden, was de volgende uitdaging om routes naar de drone te kunnen verzenden. Om input van de gebruiker mogelijk te maken werd een andere UI gemaakt. Het script genereert \textit{waypoints} op locaties die door de gebruiker in de aangewezen velden ingegeven worden. Wanneer de gebruiker deze punten in de juiste volgorde ingegeven geeft worden deze met een druk op de knop op de server gezet, waar ze afgehaald kunnen worden om de drone aan te sturen. De locaties worden in JSON-formaat doorgegeven, opdat verwerking ervan gemakkelijk zou kunnen gebeuren. Problemen die in deze fase de kop opstaken waren het dynamisch genereren van elementen in het 3D model en het versturen van de locaties naar de server. Het versturen naar de server bleek, dankzij de beschikbare voorbeeldcode, geen groot obstakel. Voor het dynamisch genereren van elementen was ook voorbeeldcode beschikbaar, maar die moest toch nog wat aangepast worden alvorens deze aan de noden van het project voldeed.\\
+Toen de drone live weergegeven kon worden, was de volgende uitdaging om routes naar de drone te kunnen verzenden.
+Om input van de gebruiker mogelijk te maken werd een Graphical User Interface (GUI) gemaakt.
+Het script genereert \textit{waypoints} op locaties die door de gebruiker in de aangewezen velden ingegeven werden.
+Wanneer de gebruiker deze punten in de juiste volgorde ingegeven geeft worden deze met een druk op de knop op de server gezet, waar ze afgehaald kunnen worden om de drone aan te sturen.
+De locaties worden in JavaScript Object Notation (JSON) doorgegeven, opdat verwerking ervan gemakkelijk zou kunnen gebeuren.
+Problemen die in deze fase de kop opstaken waren het dynamisch genereren van elementen in het 3D model en het versturen van de locaties naar de server.
+Het versturen naar de server bleek, dankzij de beschikbare voorbeeldcode, geen groot obstakel.
+Voor het dynamisch genereren van elementen was ook voorbeeldcode beschikbaar, maar die moest toch nog wat aangepast worden alvorens deze aan de noden van het project voldeed.\\
 
-Eenmaal de basisfunctionaliteit in orde was, werd er bekeken wat de volgende mogelijke stappen waren. Een eerste uitbreiding bestond erin om de weg, die door de drone afgelegd moest worden, volledig visueel weer te geven door middel van lijnsegmenten tussen de wegpunten. Daarnaast moest er ook gecontroleerd worden of de opgegeven route wel kon afgelegd worden door de drone. Beide stapper bleken gerelateerd. Het tekenen van de lijnen gebeurt door een simpele functie in het script. Deze functie wordt uitgevoerd wanneer de gebruiker alle gewenste wegpunten ingevoerd heeft. Vervolgens wordt in een bepaalde straal rond deze lijnen gezocht naar objecten (colliders), waarmee de drone mogelijks in botsing zou komen op zijn route. Indien er zich een probleem zou voordoen ergens op de route wordt dat deel van het traject met een rode kleur aangeduid. Zo is het voor de gebruiker duidelijk waar het probleem zich bevindt en kunnen er aanpassingen aangebracht worden indien nodig. Deze aanpassingen kunnen enerzijds door de wegpunten te verslepen doorheen de ruimte of anderzijds door de route volledig opnieuw in te geven. Ook worden de waypoints niet langer verstuurd wanneer er zich een probleem zou voordoen, zo wordt er verzekerd dat de drone geen trajecten zal afleggen waarop zich mogelijke problemen kunnen voordoen.\\
+Eenmaal de basisfunctionaliteit in orde was, werd er bekeken wat de volgende mogelijke stappen waren.
+Een eerste uitbreiding bestond erin om de route, die door de drone afgelegd moest worden, volledig visueel weer te geven door middel van lijnsegmenten tussen de \textit{waypoints}.
+Daarnaast moest er ook gecontroleerd worden of de opgegeven route wel kon afgelegd worden door de drone.
+Beide stapper bleken gerelateerd.
+Het tekenen van de lijnen gebeurt door een simpele functie in het script.
+Deze functie wordt uitgevoerd wanneer de gebruiker alle gewenste wegpunten ingevoerd heeft.
+Vervolgens wordt in een bepaalde straal rond deze lijnen gezocht naar objecten met \textit{colliders}, waarmee de drone mogelijks in botsing zou komen op zijn route.
+Indien er zich een probleem zou voordoen ergens op de route wordt dat deel van het traject met een rode kleur aangeduid.
+Zo is het voor de gebruiker duidelijk waar het probleem zich bevindt en kunnen er aanpassingen aangebracht worden indien nodig.
+Deze aanpassingen kunnen enerzijds door de wegpunten te verslepen doorheen de ruimte of anderzijds door de route volledig opnieuw in te geven.
+Ook worden de waypoints niet langer verstuurd wanneer er zich een probleem zou voordoen, zo wordt er verzekerd dat de drone geen trajecten zal afleggen waarop zich mogelijke problemen kunnen voordoen.\\
 
 Tot slot werd de applicatie ook aangepast om zo uitbreidbaar mogelijk te zijn.
 Door middel van een configuratiebestand in JSON formaat kan de gebruiker zelf het aantal gewenste drones meegeven, elk met een ID en kleur.
 De kleur wordt gebruikt om de drones te kunnen onderscheiden in het model, het ID om de routes aan de juiste drone mee te kunnen geven.
-Van elke drone wordt live zijn positie, hoogte en orientatie weergegeven en de gebruiker kan via het inputveld in de UI aangeven voor welke drone een bepaalde route bedoeld is.
+Van elke drone wordt live zijn positie, hoogte en orientatie weergegeven en de gebruiker kan via het inputveld in de GUI aangeven voor welke drone een bepaalde route bedoeld is.

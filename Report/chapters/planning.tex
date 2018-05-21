@@ -2,9 +2,14 @@
 Dit hoofdstuk vergelijkt de initiële planning met de finale planning en behandelt de taakverdeling.
 
 \section{Initi\"ele planning} \label{sec:initiele_planning}
-De initi\"ele planning is terug te vinden op figuur \ref{fig:initiele_planning}. De bedoeling was om het hardware gedeelte zo snel mogelijk af te hebben, zodat er daarna gefocust kon worden op software. De hardware uitzoeken en bestellen neemt een 3-tal weken in beslag, omdat hier de belangrijkste ontwerp-keuzes gemaakt moeten worden. Er wordt ook een week ingepland om de verschillende onderdelen samen te voegen.\\
+De initi\"ele planning is terug te vinden op figuur \ref{fig:initiele_planning}.
+De bedoeling was om het hardware gedeelte zo snel mogelijk af te hebben, zodat er daarna gefocust kon worden op software.
+De hardware uitzoeken en bestellen neemt een drietal weken in beslag, omdat hier de belangrijkste ontwerpkeuzes gemaakt moeten worden.
+Er wordt ook een week ingepland om de verschillende onderdelen samen te voegen.\\
 
-UWB opzetten en het controlebord verbinden met de server zou niet lang mogen duren. De aansturing van de drone leek een groter obstakel om te overwinnen. Op het einde van de planning is er tijd vrijgemaakt om een wifi-mesh op te zetten tussen meerdere drones.\\
+UWB opzetten en het controlebord verbinden met de server zou niet lang mogen duren. 
+De aansturing van de drone leek een groter obstakel om te overwinnen.
+Op het einde van de planning is er tijd vrijgemaakt om een wifi-\textit{mesh} op te zetten tussen meerdere drones.\\
 
 \begin{figure}[p]
 	\centering
@@ -12,7 +17,7 @@ UWB opzetten en het controlebord verbinden met de server zou niet lang mogen dur
 		\gantttitlelist{1,...,13}{1}\\
 
 		\ganttgroup{Hardware}{1}{5}\\
-		\ganttbar{Uitzoeken en bestellen}{1}{2}\\
+		\ganttbar{Uitzoeken en bestellen}{1}{3}\\
 		\ganttbar[bar/.append style={fill=RedOrange}]{Power supply}{5}{5}\\
 		\ganttbar[bar/.append style={fill=RedOrange}]{Controller aan drone bevestigen}{5}{5}\\
 
@@ -33,11 +38,19 @@ UWB opzetten en het controlebord verbinden met de server zou niet lang mogen dur
 \end{figure}
 
 \section{Finale planning en taakverdeling} \label{sec:finale_planning}
-De finale planning is terug te vinden op figuur \ref{fig:finale_planning}, terwijl de taakverdeling verduidelijkt staat in tabel \ref{tab:taakverdeling}. De grootste verschillen tussen de initi\"ele planning en de finale planning zijn dat de visualisatie er bij is gekomen en dat het hardware gedeelte later ge\"eindigd is. De achterliggende motivatie bij deze wijzigingen is dat het visuele gedeelte enorm uitgebreid is ten opzichte van wat initieel gepland werd. Eerder dan gebruik te maken van de bestaande visualisatie van drone paden (die beperkt was tot 2D) is een 3D weergave ontworpen in Unity, waar meerdere drones gevolgd kunnen worden met verscheidene camera's.\\
+De finale planning is terug te vinden op figuur \ref{fig:finale_planning}, terwijl de taakverdeling verduidelijkt staat in tabel \ref{tab:taakverdeling}.
+De grootste verschillen tussen de initiële planning en de finale planning zijn dat de visualisatie er bij is gekomen en dat het hardware gedeelte later geëindigd is.
+De achterliggende motivatie bij deze wijzigingen is dat het visuele gedeelte enorm uitgebreid is ten opzichte van wat initieel gepland werd.
+Eerder dan gebruik te maken van de bestaande visualisatie (die beperkt was tot 2D), is een 3D weergave ontworpen in Unity, waarin meerdere drones gevolgd kunnen worden met verscheidene camera's.\\
 
-De reden waarom het hardware gedeelte langer duurde dan oorspronkelijk ingepland werd, is vrij simpel te verklaren. In het begin werden enkele afwegingen gemaakt (o.a. tussen verschillende drones en de DecaWave tegenover de Pozyx tag), die pas na 3 weken vastgelegd werden.Kabels, batterijen, ... werden besteld uit China om de kosten te drukken. Het nadeel daarvan is dat onderdelen tot 6 weken onderweg kunnen zijn, waardoor deze pas laat voorhanden waren. De code kon ondertussen al geschreven worden, maar nog niet uitgetest op de hardware.\\
+De reden waarom het hardware gedeelte langer duurde dan oorspronkelijk ingepland werd, kan als volgt verklaard worden:
+in het begin werden enkele afwegingen gemaakt (onder andere tussen verschillende drones en de DecaWave DWM1001 tegenover de Pozyx), die pas na drie weken vastgelegd werden.
+Kabels, batterijen, ... werden besteld uit China om de kosten te drukken. Het nadeel daarvan is dat onderdelen tot zes weken onderweg kunnen zijn, waardoor deze pas laat voorhanden waren.
+De code werd ondertussen al geschreven, maar kon nog niet uitgetest worden op de hardware.\\
 
-De houder voor de controller werd pas in de laatste 3 weken in 3D getekend en geprint. De reden waarom er pas in de laatste weken voor een houder voor de controller gekeken werd is dat de prioriteit op andere delen lag. Deze meer esthetische houder is een uitbreiding, een verbetering over de eerder gebruikte witte plakband.
+De houder voor de controller werd pas in de laatste drie weken in 3D getekend met Blender\footnote{\url{https://blender.org}}.
+De reden waarom er pas in de laatste weken voor een houder voor de controller gekeken werd is dat de prioriteit op andere delen lag.
+Deze meer esthetische houder is een uitbreiding, een verbetering over de eerder gebruikte witte plakband.
 
 \begin{figure}[p]
 \centering
@@ -71,14 +84,14 @@ De houder voor de controller werd pas in de laatste 3 weken in 3D getekend en ge
 	\begin{tabular}{ |c|c|c| } \hline
 		Wat? & Wie? & Kleur \\ [.5ex] \hline\hline
 		Uitzoeken en bestellen & Iedereen & WIT \\ \hline
-		Power supply & Garben & \textcolor{RedOrange}{ROODORANJE} \\ \hline
-		Controller houder & Garben & \textcolor{RedOrange}{ROODORANJE} \\ \hline
+		Power supply & Garben & \textcolor{RedOrange}{ORANJE} \\ \hline
+		Controller houder & Garben & \textcolor{RedOrange}{ORANJE} \\ \hline
 		UWB & Bram & \textcolor{Yellow}{GEEL} \\ \hline
 		Connectie met server & Iedereen & WIT \\ \hline
-		Aansturing drone & Robbe en Garben & \textcolor{Fuchsia}{FUCHSIA} \\ \hline
-		Visualisatie & Xavier & \textcolor{Sepia}{SEPIA} \\ \hline
-		Presentatie 1 & Bram en Garben & \textcolor{JungleGreen}{JUNGLEGROEN} \\ \hline
-		Presentatie 2 & Robbe en Xavier & \textcolor{Cyan}{CYAAN} \\ \hline
+		Aansturing drone & Robbe en Garben & \textcolor{Fuchsia}{PAARS} \\ \hline
+		Visualisatie & Xavier & \textcolor{Sepia}{BRUIN} \\ \hline
+		Presentatie 1 & Bram en Garben & \textcolor{JungleGreen}{GROEN} \\ \hline
+		Presentatie 2 & Robbe en Xavier & \textcolor{Cyan}{BLAUW} \\ \hline
 		Verslag & Iedereen & WIT \\ \hline
 		Eindpresentatie & Iedereen & WIT \\ \hline
 	\end{tabular}
