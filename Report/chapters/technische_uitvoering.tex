@@ -1,6 +1,6 @@
 \chapter{Technische uitvoering}
 In wat volgt, worden alle componenten (zowel hardware als software) uitvoerig besproken en wordt een verantwoording gegeven van de ontwerpkeuzes.
-Dit hoofdstuk wordt opgedeeld in 3 grote onderdelen: sectie \ref{sec:localization} lokalisatie, sectie \ref{sec:drone_control} drone aansturing en sectie \ref{sec:visualization} visualisatie.\\
+Dit hoofdstuk wordt opgedeeld in drie onderdelen: sectie \ref{sec:localization} lokalisatie, sectie \ref{sec:drone_control} drone aansturing en sectie \ref{sec:visualization} visualisatie.\\
 
 Op figuur \ref{fig:setup} vindt u de hardware setup, aangevuld met de gebruikte protocollen.\\
 \begin{figure}[p]
@@ -17,7 +17,19 @@ Ook voor het software gedeelte is deze drone een goede keuze. Parrot stelt een S
 Er bestaan reeds bibliotheken, waarvan er in dit project ook gebruik gemaakt wordt.\\
 De frontale camera op de drone zou kunnen dienen om barcodes in te scannen, maar dat onderdeel werd niet onder de doelstellingen van dit project gedefini\"eerd. De drone bezit ook nog een ultrasone sensor om de hoogte ten opzichte van de vloer te meten en een naar de grond gerichte camera die toelaat dat de drone stabiel kan blijven zweven boven dezelfde positie.\\
 
-%2de beslissing, controllers scheiden
+Een tweede beslissing gaat over het opsplitsen van de on- en off-board controller.
+Oorsponkelijk was de bedoeling om slechts één controller op de drone te plaatsen, die instaat voor communicatie met de Mosquitto server en aansturing van de drone.
+Dit ontwerp brengt een groot probleem met zicht mee: de Raspberry Pi\footnote{\url{https://raspberrypi.org}} Zero W moet verbonden zijn met twee netwerken.\\
+Een mogelijke manier om dit te bereiken is om een wifi dongle in de USB interface te pluggen, maar deze was reeds in gebruik genomen door de Pozyx\footnote{\url{https://www.pozyx.io}} tag.
+Men kan ook met de Pozyx tag verbinden via een seriële poort, maar dan nog stijgt het gewicht van de controller noemenswaardig door de extra kabels, adapter en wifi dongle.\\
+Een andere piste die onderzocht werd, was om een wifi chip te verbinden met een seriële poort van de Raspberry Pi.
+Er werd geöpteerd voor de Adafruit\footnote{\url{https://adafruit.com}} HUZZAH.
+Dit is een \textit{breakout} van de ESP8266 wifi chip.
+Opnieuw brengt dit enig gewicht met zich mee, maar vooral het stroomverbruik is nu een probleem.
+Ook functioneert deze chip niet als een gewone wifi interface, maar moet hij aangesproken worden via commando's op de seriële poort.
+Dit zorgt er voor dat de gekozen Node.js library onbruikbaar wordt.\\
+De gekozen oplossing om dit probleem te omzeilen is de volgende: een extra off-board controller dat het aansturen van de drone voor z'n rekening zal nemen.
+Meer over de off-board controller is te vinden in sectie \ref{sec:offboard_controller}.
 
 \section{Lokalisatie} \label{sec:localization}
 In theorie is het mogelijk om, als een drone op een gekende locatie (met een gekende ori\"entatie) vertrekt, deze zonder enige input informatie of correcties een reeks vluchtbewegingen door te geven zodat een voorgeprogrammeerde route gevolgd wordt.
@@ -27,15 +39,21 @@ Daarom is het nodig dat het toestel z'n specifieke locatie in de ruimte op elk m
 
 Als de drone tussen twee rekken met een doorgang van \SI{1}{\m} moet kunnen vliegen, dan moet de nauwkeurigheid van lokalisatie in de grootteorde van \SI{0.1}{\m} liggen.
 Veelgebruikte lokalisatie-technologieën zoals gps, wifi en bluetooth zijn te onnauwkeurig voor deze toepassing.
-Ultra-wideband komt deze noden tegemoet.
+Ultra-wideband (UWB) komt deze noden tegemoet.
 Dit is een vrij recente techniek met een nauwkeurigheid in de grootteorde van \SI{0.1}{\m}, wat volstaat om de drone indoor te kunnen lokaliseren.
-De locatiebepaling gebeurt a.d.h.v. een controller op de drone, die bestaat uit een ultra-wideband (UWB) component, een Raspberry Pi\footnote{\url{https://raspberrypi.org}} Zero W en een Lithium-ion Polymeer (LiPo) batterij.\\
+De locatiebepaling gebeurt a.d.h.v. een controller op de drone, die bestaat uit een UWB component, een Raspberry Pi Zero W en een Lithium-ion Polymeer (LiPo) batterij.\\
 
 \subsection{UWB component} \label{sec:uwb}
-Er werden twee verschillende opties vergeleken (zie tabel \ref{tab:decavspozyx}) als mogelijke UWB component: DecaWave DWM1001 en Pozyx. De DecaWave is een goedkope, lichte en compacte module. Lokalisatie werkt bij deze chip echter niet out-of-the-box, and het implementeren van de lokalisatie zou geen makkelijke programmeertaak zijn, mede doordat de communicatie met de chip niet evident is. Ook was deze module niet direct beschikbaar. Daarom werd er gekozen om beroep te doen op de Pozyx-hardware\footnote{\url{https://www.pozyx.io}}, ontwikkeld door een spin-off van de UGent. Deze zijn duurder, zwaarder en groter, maar waren direct beschikbaar en de begeleiders hadden hier al ervaring mee. Voor de gebruikte drone is het minieme gewichtsverschil van de Pozyx \textit{tag} niet echt een probleem. Men moet echter wel in het achterhoofd houden dat meer massa de stabiliteit en vliegminuten in negatieve zin be\"invloedt.\\
+Er werden twee verschillende opties vergeleken (zie tabel \ref{tab:decavspozyx}) als mogelijke UWB component: DecaWave DWM1001 en Pozyx.
+De DecaWave is een goedkope, lichte en compacte module. Lokalisatie werkt bij deze chip echter niet out-of-the-box, en het implementeren van de lokalisatie zou geen makkelijke programmeertaak zijn, mede doordat de communicatie met de chip niet evident is.
+Ook was deze module niet direct beschikbaar.
+Daarom werd er gekozen om beroep te doen op de Pozyx-hardware, ontwikkeld door een spin-off van de UGent.
+Deze zijn duurder, zwaarder en groter, maar waren direct beschikbaar en de begeleiders hadden hier al ervaring mee.
+Voor de gebruikte drone is het minieme gewichtsverschil van de Pozyx \textit{tag} niet echt een probleem. Men moet echter wel in het achterhoofd houden dat meer massa de stabiliteit en vliegminuten in negatieve zin be\"invloedt.\\
 
-Op gekende locaties in de ruimte worden Pozyx ankers opgehangen. De mobiele \textit{tag}, die onderdeel uit maakt van de controller, kan om de beurt de verschillende ankers aanspreken, en opvragen hoe ver hij van hen verwijderd is. Deze data wordt dan verwerkt door een Raspberry Pi Zero W.\\
-
+Op gekende locaties in de ruimte worden Pozyx ankers opgehangen.
+De mobiele \textit{tag}, die onderdeel uit maakt van de controller, kan om de beurt de verschillende ankers aanspreken, en opvragen hoe ver hij van hen verwijderd is.
+Deze data wordt dan verwerkt door een Raspberry Pi Zero W.
 \begin{table}[p]
 	\centering
 	\begin{tabular}{ | l | c | c | } \hline
