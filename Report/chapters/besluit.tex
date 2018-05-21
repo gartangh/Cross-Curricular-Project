@@ -1,11 +1,18 @@
 \chapter*{Besluit}
 \addcontentsline{toc}{chapter}{Besluit}  
-Zoals in de inleiding reeds gezegd was het voornaamste doel van dit project om een basis te leggen voor een systeem waarbij drones indoor bepaalde routes kunnen volgen. Deze basis kan dan gebruikt worden om bijvoorbeeld barcodes in magazijnen te scannen.\\
+Zoals in de inleiding reeds gezegd is, was het voornaamste doel van dit project om een basis te leggen voor een systeem waarbij drones indoor bepaalde routes kunnen volgen.
+Deze basis kan dan gebruikt worden om bijvoorbeeld drones barcodes te laten scannen in magazijnen.\\
 
-Het project bestond uit verschillende delen die apart uitgevoerd konden worden om dan uiteindelijk tot een werkend geheel te komen, namelijk: lokalisatie van de drone, aansturing van de drone en visualisatie van het geheel. De laatste stap van het project bestond er dan in om deze delen mooi te integreren tot een werkende structuur.\\
+Dit project bestaat uit drie verschillende onderdelen die apart uitgevoerd kunnen worden om één werkend geheel te vormen.
+De drie delen zijn: lokalisatie van de drone in een magazijn, aansturing van de drone en visualisatie van het geheel.
+De laatste stap van het project bestond er in om deze delen te integreren tot een werkende structuur.\\
 
-Voor de lokalisatie is gekozen om gebruik te maken van een controller die via UWB-signalen de afstanden tot vaste punten in de ruimte bepaald en deze afstanden gebruikt om zijn positie in de ruimte te berekenen. Aansturing wordt gedaan met behulp van een off-board controller die via een bestaande library de drone naar voor, achter, links of rechts stuurt, afhankelijk van de route die in de visualisatie ingegeven is. Het geheel wordt gevisualiseerd in een 3D-model van de ruimte. Hierin wordt de positie van de drone live weergegeven en kunnen routes opgesteld en doorgestuurd worden. De integratie van het geheel werkt a.d.h.v. een MQTT server en wifi-verbindingen tussen de off- en on-board controller.\\
+Voor de lokalisatie is gekozen om gebruik te maken van een controller die via UWB-signalen de afstanden tot gekende, vaste punten in de ruimte bepaald en deze afstanden gebruikt om zijn positie in de ruimte te berekenen.\\
+Aansturing wordt gedaan met behulp van een off-board controller die gebruik maakt van een bestaande Node.js library.\\
+Het geheel wordt gevisualiseerd in een 3D-model van de ruimte. Hierin wordt de positie van de drone live weergegeven en kunnen routes opgesteld en doorgestuurd worden.\\
+De integratie van het geheel verloopt via een Mosquitto server.\\
 
-Het resultaat is een werkend, uitbreidbaar geheel dat de drone langs de gewenste route stuurt. Zoals op figuur \ref{fig:SuccesfullFlight1} te zien is, volgt de drone het aangegeven traject maar kunnen er nog verbeteringen aangebracht worden aan het algoritme dat de drone aanstuurt om de nauwkeurigheid te verbeteren.\\
+Het resultaat is een werkend, uitbreidbaar geheel dat de drone langs de gewenste route stuurt. Zoals op figuur \ref{fig:SuccesfullFlight1} te zien is, volgt de drone het aangegeven traject maar er is nog ruimte voor verbetering op vlak van nauwkeurigheid.\\
 
-Later kunnen uitbreidingen op dit project gemaakt worden. Voorbeelden van mogelijke uitbreidingen zijn: een wifi-mesh opzetten met meerdere drones en een scanner op de drone monteren, die de gescande codes naar het centrale controlepunt verstuurd. Een andere uitbreiding is om de on- en de off-board controller te integreren.\\
+Later kunnen uitbreidingen op dit project gemaakt worden. Voorbeelden van mogelijke uitbreidingen zijn: een wifi-\textit{mesh} opzetten met meerdere drones en een scanner op de drone monteren, die de gescande codes naar het centrale controlepunt verstuurd.
+Een andere uitbreiding is om de on- en de off-board controller te integreren.\\
